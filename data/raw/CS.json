@@ -1,0 +1,3360 @@
+{
+    "category": "BACKEND CLASSES",
+    "classes": [
+      {
+        "name": "cs",
+        "description": "The main Code Studio helper class",
+        "methods": [
+          {
+            "name": "access_checks_processor",
+            "summary": "Invoke an Access Check Processor",
+            "signature": "cs.access_checks_processor(access_check_id, params)",
+            "since": "2021.1",
+            "parameters": [
+              {
+                "name": "access_check_id",
+                "type": "string",
+                "description": "ID of the Access Check",
+                "required": true
+              },
+              {
+                "name": "params",
+                "type": "object",
+                "description": "Extra data params to send to the Access Check",
+                "required": false,
+                "default": "{}"
+              }
+            ],
+            "return_value": {
+              "type": "boolean",
+              "description": "Returns whether access is granted or not"
+            },
+            "description": "Any additional data to be passed which the Access Check may need to determine whether access should be granted or not. Will be available in the Access Check code via the \"params\" parameter.",
+            "examples": []
+          },
+          {
+            "name": "api_call",
+            "summary": "Performs a Create API call",
+            "signature": "cs.api_call(api_call_id, record_id)",
+            "since": "10.2",
+            "parameters": [
+              {
+                "name": "api_call_id",
+                "type": "string",
+                "description": "The API Call to invoke",
+                "required": true
+              },
+              {
+                "name": "record_id",
+                "type": "number",
+                "description": "The record to pass to the API call",
+                "required": false
+              }
+            ],
+            "return_value": {
+              "type": "record object",
+              "description": "A record representing the API Response"
+            },
+            "description": "Performs a Create API call with the specified API call ID and optional record ID.",
+            "examples": [
+              {
+                "title": "Fetch a remote record using the current record as search criteria",
+                "description": "",
+                "code": "var response = mats.api_call('ACL0000001CBACD1', params.record_id);\nmats.log(response.get(':api_response_payload'));",
+                "output": null
+              }
+            ]
+          },
+          {
+            "name": "append_file",
+            "summary": "Concatenate a given string onto the end of the contents of a file",
+            "signature": "cs.append_file(record_id, file_field_path, additional_content)",
+            "since": "2021.1",
+            "parameters": [
+              {
+                "name": "record_id",
+                "type": "number",
+                "description": "The record id to append the file to",
+                "required": true
+              },
+              {
+                "name": "file_field_path",
+                "type": "string",
+                "description": "The path to file field to write to",
+                "required": true
+              },
+              {
+                "name": "additional_content",
+                "type": "string",
+                "description": "The additional content you want to append to the file",
+                "required": true
+              }
+            ],
+            "return_value": {
+              "type": "boolean",
+              "description": "1/0"
+            },
+            "description": "Concatenates a given string onto the end of the contents of a file.",
+            "examples": [
+              {
+                "title": "Appending contents to a file",
+                "description": "When appending contents to a file, you would specify the record id, the file field path (via reference) and the text to append on the file. Although this function will output a boolean to indicate whether the function was successful or not, the appended contents will be added to the original file source.",
+                "code": "let text = \"Hello world, this is the text to append\"\nlet input = cs.ref('file_field_path')\n\nlet output = cs.append_file(record_id, input, text);\ncs.log(output)",
+                "output": null
+              }
+            ]
+          },
+          {
+            "name": "asset_file_url",
+            "summary": "Return a full URL to a specified asset",
+            "signature": "cs.asset_file_url(asset_id)",
+            "since": "10.2",
+            "parameters": [
+              {
+                "name": "asset_id",
+                "type": "string",
+                "description": "The asset ID",
+                "required": true
+              }
+            ],
+            "return_value": {
+              "type": "string",
+              "description": "A valid URL for the given asset ID"
+            },
+            "description": "Returns a full URL to a specified asset.",
+            "examples": [
+              {
+                "title": "Loading an asset image in a widget",
+                "description": "We might want to display an image that is stored in Assets -> Images. Firstly we need to get the reference of the Asset. There are different ways how we can get the Asset ID but for this example we will create a reference to the asset in the References page.",
+                "code": "// main.js inside get_template_data()\n\nlet image = cs.asset_file_url(cs.ref('Logo_image'));\nreturn {\n\timage : image\n}\n\n// Now the asset's url is available as a variable image in the frontend\n// Lets use this in our template file main.htm\n\n// <img :src=\"image\" />",
+                "output": null
+              }
+            ]
+          },
+          {
+            "name": "base64_decode",
+            "summary": "Decodes a base64 encoded data",
+            "signature": "cs.base64_decode(input)",
+            "since": "2020.1",
+            "parameters": [
+              {
+                "name": "input",
+                "type": "string",
+                "description": "The data to decode",
+                "required": true
+              }
+            ],
+            "return_value": {
+              "type": "string",
+              "description": "base64 encoded data"
+            },
+            "description": "Decodes base64 encoded data.",
+            "examples": [
+              {
+                "title": "Base64 decode usage",
+                "description": "Decoding a base64 encoded string",
+                "code": "let decoded = cs.base64_decode('SGVsbG8gd29ybGQ=');\ncs.log(decoded);\n// Outputs: 'Hello world'",
+                "output": null
+              }
+            ]
+          },
+          {
+            "name": "base64_encode",
+            "summary": "Encodes the given data with base64",
+            "signature": "cs.base64_encode(input)",
+            "since": "2020.1",
+            "parameters": [
+              {
+                "name": "input",
+                "type": "string",
+                "description": "The data to encode",
+                "required": true
+              }
+            ],
+            "return_value": {
+              "type": "string",
+              "description": "String that will be encoded"
+            },
+            "description": "Encodes the given data with base64.",
+            "examples": [
+              {
+                "title": "Base64 encode usage",
+                "description": "Encoding a string to base64",
+                "code": "let encoded = cs.base64_encode('Hello world');\ncs.log(encoded);\n// Outputs: 'SGVsbG8gd29ybGQ='",
+                "output": null
+              }
+            ]
+          },
+          {
+            "name": "benchmark",
+            "summary": "Track and benchmark the performance of code functions",
+            "signature": "cs.benchmark(label, callback)",
+            "since": "2021.4",
+            "parameters": [
+              {
+                "name": "label",
+                "type": "string",
+                "description": "The name for the benchmark to display in the performance monitoring tool",
+                "required": true
+              },
+              {
+                "name": "callback",
+                "type": "object",
+                "description": "The function that you would like to benchmark performance",
+                "required": true
+              }
+            ],
+            "return_value": {
+              "type": "void",
+              "description": ""
+            },
+            "description": "Track and benchmark the performance of code functions.",
+            "examples": [
+              {
+                "title": "Referencing a function",
+                "description": "With the benchmark function, you can reference a function that should be passed within the benchmark, providing you with a global mechanism for trigger benchmarks.",
+                "code": "// This is my benchmark\ncs.benchmark('My performance benchmark', myRecord)\n\n// This is my function\nfunction myRecord(record_id) {\n\tlet rec = cs.record(record_id)\n}",
+                "output": null
+              },
+              {
+                "title": "Specifying a function",
+                "description": "With the benchmark function, you can specify the details of the function within the benchmark itself, providing you with a contextual method for trigger benchmarks.",
+                "code": "// This is my benchmark and my function\ncs.benchmark('My performance benchmark', function(record_id) {\n\tlet rec = cs.record(record_id)\n})",
+                "output": null
+              }
+            ]
+          },
+          {
+            "name": "build_choices",
+            "summary": "Return a list of build components in a format suitable for dropdowns",
+            "signature": "cs.build_choices(component_type, options)",
+            "since": "10.2",
+            "parameters": [
+              {
+                "name": "component_type",
+                "type": "string",
+                "description": "The type of component you want a list of, e.g 'event'",
+                "required": true
+              },
+              {
+                "name": "options",
+                "type": "object",
+                "description": "Optional parameters for filtering certain types of component",
+                "required": false
+              }
+            ],
+            "return_value": {
+              "type": "object",
+              "description": "List of items safe for Code Studio-generated dropdowns"
+            },
+            "description": "Returns a list of build components in a format suitable for dropdowns with various filtering options.",
+            "examples": [
+              {
+                "title": "Retrieving the list of choice values from a data type choice",
+                "description": "In Data Store -> Data Types create a new type with the base format 'Choice' and add some choice values. In Code Studio -> References create a reference to the created data type. Copy the code example and replace the cs.ref('letters') with your own reference.",
+                "code": "let choices = cs.build_choices('data_type', { 'base_format' : 'choice', 'data_type_id' : cs.ref('letters') })\ncs.log(choices);",
+                "output": "Array\n(\n    [0] => Array\n        (\n            [id] => DTC0000061EFCAE1\n            [original_id] => DTC0000061EFCAE1\n            [data_type_id] => DTP0000085EFCAE1\n            [name] => A\n            [display_name] => A\n            [subset_1] =>\n            [subset_2] =>\n            [subset_3] =>\n            [subset_4] =>\n            [subset_5] =>\n            [source] => local\n            [status] => active\n            [in_order] => 0\n            [value] => DTC0000061EFCAE1\n        )\n    [1] => Array\n        (\n            [id] => DTC0000062EFCAE1\n            [original_id] => DTC0000062EFCAE1\n            [data_type_id] => DTP0000085EFCAE1\n            [name] => B\n            [display_name] => B\n            [subset_1] =>\n            [subset_2] =>\n            [subset_3] =>\n            [subset_4] =>\n            [subset_5] =>\n            [source] => local\n            [status] => active\n            [in_order] => 1\n            [value] => DTC0000062EFCAE1\n        )\n)"
+              }
+            ]
+          },
+          {
+            "name": "config",
+            "summary": "Fetch a system or environment variable",
+            "signature": "cs.config(config_name)",
+            "since": "10.2",
+            "parameters": [
+              {
+                "name": "config_name",
+                "type": "string",
+                "description": "Configuration item to fetch",
+                "required": true
+              }
+            ],
+            "return_value": {
+              "type": "string",
+              "description": "The configuration value"
+            },
+            "description": "Fetches a system or environment variable with the specified name.",
+            "examples": [
+              {
+                "title": "Using config method call",
+                "description": "Retrieving the application url",
+                "code": "let url = cs.config('SYSTEM_URL')\ncs.log(url);",
+                "output": "https://app-test.oncreate.app"
+              }
+            ]
+          },
+          {
+            "name": "context",
+            "summary": "Returns a collection of information about the context within which your Code Studio code is executing in",
+            "signature": "cs.context()",
+            "since": "2020.1",
+            "parameters": [],
+            "return_value": {
+              "type": "object",
+              "description": "collection of information about the context"
+            },
+            "description": "Returns a collection of information about the context within which your Code Studio code is executing in. This is useful if the context contribute to the logical decision making, for example, if a block of code should only be executed on a particular environment.",
+            "examples": [
+              {
+                "title": "Here is an example of the return value for context()",
+                "description": "",
+                "code": "cs.context()",
+                "output": "{\n\t\"application_id\": \"EEAEE\",\n\t\"environment_id\": 2,\n\t\"environment\": \"test\",\n\t\"sphere\": \"interface\",\n\t\"url\": \"https://app-test.oncreate.app/i/admin/?source=portal\",\n\t\"url_path\": \"i/admin/\",\n\t\"url_params\": {\n\t\t\"source\": \"portal\"\n\t}\n}"
+              }
+            ]
+          },
+          {
+            "name": "curl",
+            "summary": "Perform a cURL request",
+            "signature": "cs.curl(url, data, extra)",
+            "since": "10.2",
+            "parameters": [
+              {
+                "name": "url",
+                "type": "string",
+                "description": "The URL to send the request to",
+                "required": true
+              },
+              {
+                "name": "data",
+                "type": "object",
+                "description": "Data to send",
+                "required": false
+              },
+              {
+                "name": "extra",
+                "type": "object",
+                "description": "Extra optional settings. For example: 'verb' can specify the HTTP request method, 'headers' (10.3+) is an Object of key/value HTTP request headers, and 'max_redirects' (2020.1+) specifies the number of allowed redirects. See description for more options.",
+                "required": false
+              }
+            ],
+            "return_value": {
+              "type": "object",
+              "description": "Returns a structure containing the status, status code, content type and response."
+            },
+            "description": "Performs a cURL request to the specified URL with optional data and extra settings.",
+            "examples": [
+              {
+                "title": "Making a curl request",
+                "description": "Before making a request to an endpoint make sure that the domain is allowed in the relevant firewall profile and Ajax/Curl is selected.",
+                "code": "let response = cs.curl('https://www.example-endpoint.com', {'test' : 123})\ncs.log(response);",
+                "output": null
+              }
+            ]
+          },
+          {
+            "name": "context",
+            "summary": "Returns a collection of information about the context within which your Code Studio code is executing in",
+            "signature": "cs.context()",
+            "since": "2020.1",
+            "parameters": [],
+            "return_value": {
+              "type": "object",
+              "description": "Collection of information about the context"
+            },
+            "description": "Returns a collection of information about the context within which your Code Studio code is executing in. This is useful if the context contribute to the logical decision making, for example, if a block of code should only be executed on a particular environment.",
+            "examples": [
+              {
+                "title": "Context method usage",
+                "description": "Here is an example of the return value for context()",
+                "code": "cs.context();",
+                "output": "{\n\t\"application_id\": \"EEAEE\",\n\t\"environment_id\": 2,\n\t\"environment\": \"test\",\n\t\"sphere\": \"interface\",\n\t\"url\": \"https://app-test.oncreate.app/i/admin/?source=portal\",\n\t\"url_path\": \"i/admin/\",\n\t\"url_params\": {\n\t\t\"source\": \"portal\"\n\t}\n}"
+              }
+            ]
+          },
+          {
+            "name": "data_processor",
+            "summary": "Invoke a Data Processor",
+            "signature": "cs.data_processor(data_processor_id, fields)",
+            "since": "10.4",
+            "parameters": [
+              {
+                "name": "data_processor_id",
+                "type": "string",
+                "description": "ID of the Data Processor",
+                "required": true
+              },
+              {
+                "name": "fields",
+                "type": "object",
+                "description": "Field data to be sent to the Data Processor. Will be available in the Data Processor code via the \"fields\" parameter.",
+                "required": true
+              }
+            ],
+            "return_value": {
+              "type": "object",
+              "description": "Returns the processed data"
+            },
+            "description": "Invoke a Data Processor",
+            "examples": [
+              {
+                "title": "Calling a Data Processor",
+                "description": "We might want to keep certain data processing separated out as a single method which could be called from a number of different code studio components.",
+                "code": "let data = [\n\t{\n\t\t'number' : 1\n\t},\n\t{\n\t\t'number' : 2\n\t},\n\t{\n\t\t'number' : 3\n\t}\n];\nlet result = cs.data_processor(cs.ref('TestDataProcessor'), data);\ncs.log(result);",
+                "output": "The return from the Data Processor should have the number key value multiplied."
+              },
+              {
+                "title": "Parsing the search term for a relation type ahead presenter",
+                "description": "We might need to parse the search terms that is typed into a relation type ahead presenter. In this use case we need to replace iOS apostrophes with standard ones so that the results could be searched correctly.",
+                "code": "let search_string = fields['search_string'];\nsearch_string = search_string.replace(\"'\",\"'\").replace(\"'\",\"'\").replace(/[\\u2018\\u2019]/g, \"'\");\nreturn {search_string : search_string}",
+                "output": ""
+              }
+            ]
+          },
+          {
+            "name": "decrypt",
+            "summary": "Decrypt a string of data using a selected algorithm",
+            "signature": "cs.decrypt(data, algorithm, key, options)",
+            "since": "2023.1",
+            "parameters": [
+              {
+                "name": "data",
+                "type": "string",
+                "description": "The data string to be decrypted",
+                "required": true
+              },
+              {
+                "name": "algorithm",
+                "type": "string",
+                "description": "The algorithm to use for the decryption, e.g. 'aes-256-gcm'",
+                "required": true
+              },
+              {
+                "name": "key",
+                "type": "string",
+                "description": "The key to use for decryption",
+                "required": true
+              },
+              {
+                "name": "options",
+                "type": "object",
+                "description": "Additional options for the decryption",
+                "required": false
+              }
+            ],
+            "return_value": {
+              "type": "string",
+              "description": "Decrypted data as a string"
+            },
+            "description": "Decrypt a string of data using a selected algorithm",
+            "examples": []
+          },
+          {
+            "name": "delegate_to_server_function",
+            "summary": "Calls server-side code within Create",
+            "signature": "cs.delegate_to_server_function()",
+            "since": "",
+            "parameters": [],
+            "return_value": {
+              "type": "",
+              "description": ""
+            },
+            "description": "This is used for certain built-in Code Studio Components, and you can ignore this function.",
+            "examples": []
+          },
+          {
+            "name": "delete_multi",
+            "summary": "A performant way of deleting a large number of records",
+            "signature": "cs.delete_multi(object_ref, record_ids)",
+            "since": "2024.1",
+            "parameters": [
+              {
+                "name": "object_ref",
+                "type": "string",
+                "description": "Reference of base object",
+                "required": true
+              },
+              {
+                "name": "record_ids",
+                "type": "array",
+                "description": "An array of record IDs that you would like to delete",
+                "required": true
+              }
+            ],
+            "return_value": {
+              "type": "any",
+              "description": ""
+            },
+            "description": "A performant way of deleting a large number of records",
+            "examples": [
+              {
+                "title": "Batch deleting multiple records",
+                "description": "In this example, we want to search for any record within the object which contains a true value within a property.",
+                "code": "// Search for a list of records where the boolean value is 1\nlet records = cs.search({\n\t'base_object_id': cs.ref('object_case'),\n\t'selects': [':id'],\n\t'filters': [{ 'field_path': cs.ref('property_boolean'), 'comparator': 'contains', 'value': 1 }],\n\t'return': 'column'\n});\n\n// Batch delete those records\ncs.delete_multi(cs.ref('object_case'), records )",
+                "output": ""
+              }
+            ]
+          },
+          {
+            "name": "displayable",
+            "summary": "Fetch a displayable value for a given field path and value",
+            "signature": "cs.displayable(reference, value)",
+            "since": "10.0",
+            "parameters": [
+              {
+                "name": "reference",
+                "type": "string",
+                "description": "Field path reference",
+                "required": true
+              },
+              {
+                "name": "value",
+                "type": "mixed",
+                "description": "The raw value, returned from cs.search() for example, usually a string.",
+                "required": true
+              }
+            ],
+            "return_value": {
+              "type": "any",
+              "description": "The displayable value"
+            },
+            "description": "Fetch a displayable value for a given field path and value",
+            "examples": [
+              {
+                "title": "Displayable method usage",
+                "description": "Displaying our raw value to a displayable decimal value",
+                "code": "let displayable = cs.displayable('UserDecimalFieldPath', 1); \ncs.log(displayable);",
+                "output": "1,00"
+              }
+            ]
+          },
+          {
+            "name": "editable",
+            "summary": "Fetch an edtiable value for a given field path and value",
+            "signature": "cs.editable(reference, value)",
+            "since": "10.0",
+            "parameters": [
+              {
+                "name": "reference",
+                "type": "string",
+                "description": "Field path reference",
+                "required": true
+              },
+              {
+                "name": "value",
+                "type": "any",
+                "description": "The raw value, returned from cs.search() for example, usually a string.",
+                "required": true
+              }
+            ],
+            "return_value": {
+              "type": "any",
+              "description": "The editable value"
+            },
+            "description": "Fetch an edtiable value for a given field path and value",
+            "examples": [
+              {
+                "title": "Editable method usage",
+                "description": "Displaying our raw value to a editable decimal value",
+                "code": "let editable= cs.editable('UserDecimalFieldPath', '123.000000'); \ncs.log(editable);",
+                "output": "123,00"
+              }
+            ]
+          },
+          {
+            "name": "encrypt",
+            "summary": "Encrypt a string of data using a selected algorithm",
+            "signature": "cs.encrypt(data, algorithm, key, options)",
+            "since": "2021.3",
+            "parameters": [
+              {
+                "name": "data",
+                "type": "string",
+                "description": "The data string to be encrypted",
+                "required": true
+              },
+              {
+                "name": "algorithm",
+                "type": "string",
+                "description": "The algorithm to use for the encryption, e.g. 'aes-256-gcm'",
+                "required": true
+              },
+              {
+                "name": "key",
+                "type": "string",
+                "description": "The key to use for encryption",
+                "required": true
+              },
+              {
+                "name": "options",
+                "type": "object",
+                "description": "Additional options for the encryption",
+                "required": false
+              }
+            ],
+            "return_value": {
+              "type": "string",
+              "description": "Encrypted data as an encoded string"
+            },
+            "description": "Encrypt a string of data using a selected algorithm",
+            "examples": [
+              {
+                "title": "Simple encryption",
+                "description": "A simple example of AES-256 encryption with minimal options. The result is returned as base64 encoded string.",
+                "code": "let encrypted = cs.encrypt('Example data to be encrypted', 'aes-256-cbc', 'my_secret_key');\ncs.log(encrypted);",
+                "output": "\"rgUPaXVW1Xh9IIXFUU4eRcmn56X2032bD7/z85kp+zU=\""
+              },
+              {
+                "title": "Encryption with more options",
+                "description": "A more detailed example of AES-256 encryption with more options specified. The result is returned as hexadecimal string.",
+                "code": "let key = 'my_secret_key'; // Should be a randomly generated secure key\nlet data = 'Example data to be encrypted';\n\nlet iv = cs.random_bytes(16, 'hex'); // Generate a random IV value as a hexadecimal string\n\nlet encrypted = cs.encrypt(data, 'aes-256-cbc', key, {\n    'key_format': 'hex', // Specifies the format of the key\n    'iv': iv,            // Specifies the Initialisation Vector\n    'iv_format': 'hex',  // Specifies the format of the IV\n    'format': 'hex',     // Specifies the desired output format\n});\ncs.log(encrypted);",
+                "output": "\"c5e856d41dc50d696dce3ef064446bb30482d78dca1dbbb29d43b6fed99cfad7\""
+              }
+            ]
+          },
+          {
+            "name": "environment",
+            "summary": "Return the name of the environment the code is currently running in",
+            "signature": "cs.environment()",
+            "since": "10.2",
+            "parameters": [],
+            "return_value": {
+              "type": "string",
+              "description": "The name of the environment"
+            },
+            "description": "Whilst this function is still usable, it has been replaced with cs.context().sphere and will be removed in a later version.",
+            "examples": [
+              {
+                "title": "Retrieving the enviroment name",
+                "description": "List of environment names",
+                "code": "let environment = cs.environment();\ncs.log(environment);",
+                "output": "interface = Code is executing from/for an interface page\nwebpage = Code is executing from/for a webpage.\nfile_serve = Code is executing to serve a file (for interface or webpage)\napi = Code is executing during an API request.\nscript = Code is executing during the execution of a background script."
+              }
+            ]
+          },
+          {
+            "name": "error",
+            "summary": "Log an error message to the Detective and exit",
+            "signature": "cs.error(message)",
+            "since": "10.0",
+            "parameters": [
+              {
+                "name": "message",
+                "type": "string",
+                "description": "The error message",
+                "required": true
+              }
+            ],
+            "return_value": {
+              "type": "void",
+              "description": ""
+            },
+            "description": "Stops executing current code and returns given error to calling function, as well as logging an message to the Detective which will be highlighted as an error.",
+            "examples": []
+          },
+          {
+            "name": "event_action",
+            "summary": "Invoke an Event Action",
+            "signature": "cs.event_action(event_action_id, record_id, parameters, run_in_background)",
+            "since": "10.4",
+            "parameters": [
+              {
+                "name": "event_action_id",
+                "type": "string",
+                "description": "The Code Studio Event Action reference",
+                "required": true
+              },
+              {
+                "name": "record_id",
+                "type": "number",
+                "description": "The record ID the action is triggered on. Null value can also be passed instead of a record_id",
+                "required": true
+              },
+              {
+                "name": "parameters",
+                "type": "object",
+                "description": "Additional parameters that will be passed on to the event action",
+                "required": false
+              },
+              {
+                "name": "run_in_background",
+                "type": "boolean",
+                "description": "This parameter allows you to specify whether the event action your are invoking should be running in the foreground or background. Setting this param to 'True' will run the event action in the background.",
+                "required": false,
+                "since": "2022.2"
+              }
+            ],
+            "return_value": {
+              "type": "void",
+              "description": ""
+            },
+            "description": "Invoke an Event Action",
+            "examples": [
+              {
+                "title": "Calling an Event Action",
+                "description": "We might want to call an existing Code Studio Event Action.",
+                "code": "cs.event_action(cs.ref('ExampleEventAction'), 1009, {example_param : 123});",
+                "output": ""
+              }
+            ]
+          },
+          {
+            "name": "context",
+            "summary": "Returns a collection of information about the context within which your Code Studio code is executing in",
+            "signature": "cs.context()",
+            "since": "2020.1",
+            "parameters": [],
+            "return_value": {
+              "type": "object",
+              "description": "Collection of information about the context"
+            },
+            "description": "Returns a collection of information about the context within which your Code Studio code is executing in. This is useful if the context contribute to the logical decision making, for example, if a block of code should only be executed on a particular environment.",
+            "examples": [
+              {
+                "title": "Context method usage",
+                "description": "Here is an example of the return value for context()",
+                "code": "cs.context();",
+                "output": "{\n\t\"application_id\": \"EEAEE\",\n\t\"environment_id\": 2,\n\t\"environment\": \"test\",\n\t\"sphere\": \"interface\",\n\t\"url\": \"https://app-test.oncreate.app/i/admin/?source=portal\",\n\t\"url_path\": \"i/admin/\",\n\t\"url_params\": {\n\t\t\"source\": \"portal\"\n\t}\n}"
+              }
+            ]
+          },
+          {
+            "name": "data_processor",
+            "summary": "Invoke a Data Processor",
+            "signature": "cs.data_processor(data_processor_id, fields)",
+            "since": "10.4",
+            "parameters": [
+              {
+                "name": "data_processor_id",
+                "type": "string",
+                "description": "ID of the Data Processor",
+                "required": true
+              },
+              {
+                "name": "fields",
+                "type": "object",
+                "description": "Field data to be sent to the Data Processor. Will be available in the Data Processor code via the \"fields\" parameter.",
+                "required": true
+              }
+            ],
+            "return_value": {
+              "type": "object",
+              "description": "Returns the processed data"
+            },
+            "description": "Invoke a Data Processor",
+            "examples": [
+              {
+                "title": "Calling a Data Processor",
+                "description": "We might want to keep certain data processing separated out as a single method which could be called from a number of different code studio components.",
+                "code": "let data = [\n\t{\n\t\t'number' : 1\n\t},\n\t{\n\t\t'number' : 2\n\t},\n\t{\n\t\t'number' : 3\n\t}\n];\nlet result = cs.data_processor(cs.ref('TestDataProcessor'), data);\ncs.log(result);",
+                "output": "The return from the Data Processor should have the number key value multiplied."
+              },
+              {
+                "title": "Parsing the search term for a relation type ahead presenter",
+                "description": "We might need to parse the search terms that is typed into a relation type ahead presenter. In this use case we need to replace iOS apostrophes with standard ones so that the results could be searched correctly.",
+                "code": "let search_string = fields['search_string'];\nsearch_string = search_string.replace(\"'\",\"'\").replace(\"'\",\"'\").replace(/[\\u2018\\u2019]/g, \"'\");\nreturn {search_string : search_string}",
+                "output": ""
+              }
+            ]
+          },
+          {
+            "name": "decrypt",
+            "summary": "Decrypt a string of data using a selected algorithm",
+            "signature": "cs.decrypt(data, algorithm, key, options)",
+            "since": "2023.1",
+            "parameters": [
+              {
+                "name": "data",
+                "type": "string",
+                "description": "The data string to be decrypted",
+                "required": true
+              },
+              {
+                "name": "algorithm",
+                "type": "string",
+                "description": "The algorithm to use for the decryption, e.g. 'aes-256-gcm'",
+                "required": true
+              },
+              {
+                "name": "key",
+                "type": "string",
+                "description": "The key to use for decryption",
+                "required": true
+              },
+              {
+                "name": "options",
+                "type": "object",
+                "description": "Additional options for the decryption",
+                "required": false
+              }
+            ],
+            "return_value": {
+              "type": "string",
+              "description": "Decrypted data as a string"
+            },
+            "description": "Decrypt a string of data using a selected algorithm",
+            "examples": []
+          },
+          {
+            "name": "delegate_to_server_function",
+            "summary": "Calls server-side code within Create",
+            "signature": "cs.delegate_to_server_function()",
+            "since": "",
+            "parameters": [],
+            "return_value": {
+              "type": "",
+              "description": ""
+            },
+            "description": "This is used for certain built-in Code Studio Components, and you can ignore this function.",
+            "examples": []
+          },
+          {
+            "name": "delete_multi",
+            "summary": "A performant way of deleting a large number of records",
+            "signature": "cs.delete_multi(object_ref, record_ids)",
+            "since": "2024.1",
+            "parameters": [
+              {
+                "name": "object_ref",
+                "type": "string",
+                "description": "Reference of base object",
+                "required": true
+              },
+              {
+                "name": "record_ids",
+                "type": "array",
+                "description": "An array of record IDs that you would like to delete",
+                "required": true
+              }
+            ],
+            "return_value": {
+              "type": "any",
+              "description": ""
+            },
+            "description": "A performant way of deleting a large number of records",
+            "examples": [
+              {
+                "title": "Batch deleting multiple records",
+                "description": "In this example, we want to search for any record within the object which contains a true value within a property.",
+                "code": "// Search for a list of records where the boolean value is 1\nlet records = cs.search({\n\t'base_object_id': cs.ref('object_case'),\n\t'selects': [':id'],\n\t'filters': [{ 'field_path': cs.ref('property_boolean'), 'comparator': 'contains', 'value': 1 }],\n\t'return': 'column'\n});\n\n// Batch delete those records\ncs.delete_multi(cs.ref('object_case'), records )",
+                "output": ""
+              }
+            ]
+          },
+          {
+            "name": "displayable",
+            "summary": "Fetch a displayable value for a given field path and value",
+            "signature": "cs.displayable(reference, value)",
+            "since": "10.0",
+            "parameters": [
+              {
+                "name": "reference",
+                "type": "string",
+                "description": "Field path reference",
+                "required": true
+              },
+              {
+                "name": "value",
+                "type": "mixed",
+                "description": "The raw value, returned from cs.search() for example, usually a string.",
+                "required": true
+              }
+            ],
+            "return_value": {
+              "type": "any",
+              "description": "The displayable value"
+            },
+            "description": "Fetch a displayable value for a given field path and value",
+            "examples": [
+              {
+                "title": "Displayable method usage",
+                "description": "Displaying our raw value to a displayable decimal value",
+                "code": "let displayable = cs.displayable('UserDecimalFieldPath', 1); \ncs.log(displayable);",
+                "output": "1,00"
+              }
+            ]
+          },
+          {
+            "name": "editable",
+            "summary": "Fetch an edtiable value for a given field path and value",
+            "signature": "cs.editable(reference, value)",
+            "since": "10.0",
+            "parameters": [
+              {
+                "name": "reference",
+                "type": "string",
+                "description": "Field path reference",
+                "required": true
+              },
+              {
+                "name": "value",
+                "type": "any",
+                "description": "The raw value, returned from cs.search() for example, usually a string.",
+                "required": true
+              }
+            ],
+            "return_value": {
+              "type": "any",
+              "description": "The editable value"
+            },
+            "description": "Fetch an edtiable value for a given field path and value",
+            "examples": [
+              {
+                "title": "Editable method usage",
+                "description": "Displaying our raw value to a editable decimal value",
+                "code": "let editable= cs.editable('UserDecimalFieldPath', '123.000000'); \ncs.log(editable);",
+                "output": "123,00"
+              }
+            ]
+          },
+          {
+            "name": "encrypt",
+            "summary": "Encrypt a string of data using a selected algorithm",
+            "signature": "cs.encrypt(data, algorithm, key, options)",
+            "since": "2021.3",
+            "parameters": [
+              {
+                "name": "data",
+                "type": "string",
+                "description": "The data string to be encrypted",
+                "required": true
+              },
+              {
+                "name": "algorithm",
+                "type": "string",
+                "description": "The algorithm to use for the encryption, e.g. 'aes-256-gcm'",
+                "required": true
+              },
+              {
+                "name": "key",
+                "type": "string",
+                "description": "The key to use for encryption",
+                "required": true
+              },
+              {
+                "name": "options",
+                "type": "object",
+                "description": "Additional options for the encryption",
+                "required": false
+              }
+            ],
+            "return_value": {
+              "type": "string",
+              "description": "Encrypted data as an encoded string"
+            },
+            "description": "Encrypt a string of data using a selected algorithm",
+            "examples": [
+              {
+                "title": "Simple encryption",
+                "description": "A simple example of AES-256 encryption with minimal options. The result is returned as base64 encoded string.",
+                "code": "let encrypted = cs.encrypt('Example data to be encrypted', 'aes-256-cbc', 'my_secret_key');\ncs.log(encrypted);",
+                "output": "\"rgUPaXVW1Xh9IIXFUU4eRcmn56X2032bD7/z85kp+zU=\""
+              },
+              {
+                "title": "Encryption with more options",
+                "description": "A more detailed example of AES-256 encryption with more options specified. The result is returned as hexadecimal string.",
+                "code": "let key = 'my_secret_key'; // Should be a randomly generated secure key\nlet data = 'Example data to be encrypted';\n\nlet iv = cs.random_bytes(16, 'hex'); // Generate a random IV value as a hexadecimal string\n\nlet encrypted = cs.encrypt(data, 'aes-256-cbc', key, {\n    'key_format': 'hex', // Specifies the format of the key\n    'iv': iv,            // Specifies the Initialisation Vector\n    'iv_format': 'hex',  // Specifies the format of the IV\n    'format': 'hex',     // Specifies the desired output format\n});\ncs.log(encrypted);",
+                "output": "\"c5e856d41dc50d696dce3ef064446bb30482d78dca1dbbb29d43b6fed99cfad7\""
+              }
+            ]
+          },
+          {
+            "name": "environment",
+            "summary": "Return the name of the environment the code is currently running in",
+            "signature": "cs.environment()",
+            "since": "10.2",
+            "parameters": [],
+            "return_value": {
+              "type": "string",
+              "description": "The name of the environment"
+            },
+            "description": "Whilst this function is still usable, it has been replaced with cs.context().sphere and will be removed in a later version.",
+            "examples": [
+              {
+                "title": "Retrieving the enviroment name",
+                "description": "List of environment names",
+                "code": "let environment = cs.environment();\ncs.log(environment);",
+                "output": "interface = Code is executing from/for an interface page\nwebpage = Code is executing from/for a webpage.\nfile_serve = Code is executing to serve a file (for interface or webpage)\napi = Code is executing during an API request.\nscript = Code is executing during the execution of a background script."
+              }
+            ]
+          },
+          {
+            "name": "error",
+            "summary": "Log an error message to the Detective and exit",
+            "signature": "cs.error(message)",
+            "since": "10.0",
+            "parameters": [
+              {
+                "name": "message",
+                "type": "string",
+                "description": "The error message",
+                "required": true
+              }
+            ],
+            "return_value": {
+              "type": "void",
+              "description": ""
+            },
+            "description": "Stops executing current code and returns given error to calling function, as well as logging an message to the Detective which will be highlighted as an error.",
+            "examples": []
+          },
+          {
+            "name": "event_action",
+            "summary": "Invoke an Event Action",
+            "signature": "cs.event_action(event_action_id, record_id, parameters, run_in_background)",
+            "since": "10.4",
+            "parameters": [
+              {
+                "name": "event_action_id",
+                "type": "string",
+                "description": "The Code Studio Event Action reference",
+                "required": true
+              },
+              {
+                "name": "record_id",
+                "type": "number",
+                "description": "The record ID the action is triggered on. Null value can also be passed instead of a record_id",
+                "required": true
+              },
+              {
+                "name": "parameters",
+                "type": "object",
+                "description": "Additional parameters that will be passed on to the event action",
+                "required": false
+              },
+              {
+                "name": "run_in_background",
+                "type": "boolean",
+                "description": "This parameter allows you to specify whether the event action your are invoking should be running in the foreground or background. Setting this param to 'True' will run the event action in the background.",
+                "required": false,
+                "since": "2022.2"
+              }
+            ],
+            "return_value": {
+              "type": "void",
+              "description": ""
+            },
+            "description": "Invoke an Event Action",
+            "examples": [
+              {
+                "title": "Calling an Event Action",
+                "description": "We might want to call an existing Code Studio Event Action.",
+                "code": "cs.event_action(cs.ref('ExampleEventAction'), 1009, {example_param : 123});",
+                "output": ""
+              }
+            ]
+          },
+          {
+            "name": "field_processor",
+            "summary": "Invoke a Field Processor",
+            "signature": "cs.field_processor(field_processor_id, value, params)",
+            "since": "10.2",
+            "parameters": [
+              {
+                "name": "field_processor_id",
+                "type": "string",
+                "description": "ID of the Field Processor",
+                "required": true
+              },
+              {
+                "name": "value",
+                "type": "string",
+                "description": "The value to pass to be processed. Will be available in the Field Processor code via the \"input\" parameter.",
+                "required": true
+              },
+              {
+                "name": "params",
+                "type": "object",
+                "description": "Any additional data to be passed which the Field Processor may need to process the value. Will be available in the Field Processor code via the \"params\" parameter.",
+                "required": false
+              }
+            ],
+            "return_value": {
+              "type": "string",
+              "description": "Returns the processed value"
+            },
+            "description": "Invoke a Field Processor",
+            "examples": [
+              {
+                "title": "Calling a Field Processor",
+                "description": "We might want to call an existing Code Studio Field Processor.",
+                "code": "let result = cs.field_processor(cs.ref('TestFieldProcessor'), 123, {example_param : 123});\ncs.log(result);",
+                "output": ""
+              }
+            ]
+          },
+          {
+            "name": "file_size",
+            "summary": "Get a file's size in bytes",
+            "signature": "cs.file_size(id, file_path)",
+            "since": "2023.1",
+            "parameters": [
+              {
+                "name": "id",
+                "type": "record object",
+                "description": "This parameter is used as a way of identifying either the record ID or file ID. The context of this parameter depends on how you want to identify your file. If you want to identify a file by the File ID, then this parameter is all that's needed. However, if you want to identify a file using a combination of record ID and file path, then this parameter will expect a record ID, and you will need to specify the file field path in the second parameter.",
+                "required": true
+              },
+              {
+                "name": "file_path",
+                "type": "string",
+                "description": "This parameter is only necessary if the first parameter is a record ID.",
+                "required": false
+              }
+            ],
+            "return_value": {
+              "type": "number",
+              "description": "Returns the file size in bytes as an integer"
+            },
+            "description": "This function provides you with the ability to find out what a file's file size is, in bytes.",
+            "examples": [
+              {
+                "title": "Identifying a file by Record ID and file field path",
+                "description": "If you want to identify your file using a combination of a record ID and file path, you will need to utilise two parameters to achieve this.",
+                "code": "// Identify the necessary data needed\nlet record = cs.record(123);\nlet file_path = cs.ref('file_path');\n\n// Trigger the function and get the record's file size in bytes\nlet size = cs.file_size(record, file_path);\ncs.log(size);",
+                "output": ""
+              },
+              {
+                "title": "Identifying a file by file ID only",
+                "description": "If you want to identify your file with simply a file ID, you can do so in a single parameter.",
+                "code": "// Identify the necessary data needed\nlet file_id = '123';\n\n// Trigger the function and get the file's size in bytes\nlet size = cs.file_size(file_id)\ncs.log(size)",
+                "output": ""
+              }
+            ]
+          },
+          {
+            "name": "fire_event",
+            "summary": "Will manually fire an event; Triggers a custom Event on the record",
+            "signature": "cs.fire_event(event_id)",
+            "since": "10.0",
+            "parameters": [
+              {
+                "name": "event_id",
+                "type": "string",
+                "description": "Reference of the event",
+                "required": true
+              }
+            ],
+            "return_value": {
+              "type": "void",
+              "description": ""
+            },
+            "description": "Will manually fire an event",
+            "examples": [
+              {
+                "title": "Trigering an event from a Code Studio Event Action",
+                "description": "It is possible to fire an event from a Code Studio Event Action.",
+                "code": "cs.fire_event(cs.ref('TestEvent'))",
+                "output": ""
+              }
+            ]
+          },
+          {
+            "name": "get_applications",
+            "summary": "Get a list of applications based on the given ID list, with the SSO link and indexed by application ID",
+            "signature": "cs.get_applications(id_list)",
+            "since": "2020.1",
+            "parameters": [
+              {
+                "name": "id_list",
+                "type": "array",
+                "description": "List of application IDs on the same controller.",
+                "required": false,
+                "since": "10.2"
+              }
+            ],
+            "return_value": {
+              "type": "object",
+              "description": "List of applications with valid SSO links, indexed by application ID."
+            },
+            "description": "Get a list of applications based on the given ID list, with the SSO link and indexed by application ID",
+            "examples": [
+              {
+                "title": "Return a list of applications on the same controller",
+                "description": "",
+                "code": "cs.get_applications(['EFACE']);\nlet applications = cs.get_applications();\ncs.log(applications);",
+                "output": "Array\n(\n        [EFACE] => Array\n        (\n            [name] => CS Upgrade\n            [link] => https://example-build.oncreate.app/?sso_id=EFCAE\n        )\n)"
+              }
+            ]
+          },
+          {
+            "name": "get_choices",
+            "summary": "Fetch the choices for a given data type ID",
+            "signature": "cs.get_choices(data_type_id_or_field)",
+            "since": "2020.2",
+            "parameters": [
+              {
+                "name": "data_type_id_or_field",
+                "type": "string",
+                "description": "Data type MUID or a field path that resolves to a property",
+                "required": true
+              }
+            ],
+            "return_value": {
+              "type": "object",
+              "description": "Choice data arrays, keyed by choice ID"
+            },
+            "description": "Fetch the choices for a given data type ID",
+            "examples": [
+              {
+                "title": "Get a list of data type choices",
+                "description": "In Data Store > Data Types create a new type with the base format 'Choice' and add some choice values.",
+                "code": "let choices = cs.get_choices(cs.ref('letters')); \ncs.log(choices);",
+                "output": "Array\n(\n    [DTC0000061EFCAE1] => Array\n        (\n            [id] => DTC0000061EFCAE1\n            [data_type_id] => DTP0000085EFCAE1\n            [name] => A\n            [display_name] => A\n            [order] => 0\n        )\n    [DTC0000062EFCAE1] => Array\n        (\n            [id] => DTC0000062EFCAE1\n            [data_type_id] => DTP0000085EFCAE1\n            [name] => B\n            [display_name] => B\n            [order] => 1\n        )\n    [DTC0000063EFCAE1] => Array\n        (\n            [id] => DTC0000063EFCAE1\n            [data_type_id] => DTP0000085EFCAE1\n            [name] => C\n            [display_name] => C\n            [order] => 2\n        )\n)"
+              }
+            ]
+          },
+          {
+            "name": "get_color_choices",
+            "summary": "Returns a list of available colour choices",
+            "signature": "cs.get_color_choices()",
+            "since": "2020.1",
+            "parameters": [],
+            "return_value": {
+              "type": "object",
+              "description": "An array of valid colour choices the platform offers."
+            },
+            "description": "Alias of cd.get_colour_choices(). To be used in settings for selecting a colour.",
+            "examples": [
+              {
+                "title": "Get a list of available colour choices",
+                "description": "",
+                "code": "let colors = cs.get_color_choices();\ncs.log(colors);",
+                "output": "Array\n(\n    [0] => Array\n        (\n            [optgroup_label] => Standard colours\n            [choices] => Array\n                (\n                    [0] => Array\n                        (\n                            [name] => Blue\n                            [value] => blue\n                        )\n                    [1] => Array\n                        (\n                            [name] => Cyan\n                            [value] => cyan\n                        )\n                    // ... more colors\n                )\n        )\n    [1] => Array\n        (\n            [optgroup_label] => Theme branding\n            [choices] => Array\n                (\n                    [0] => Array\n                        (\n                            [name] => Primary\n                            [value] => primary\n                        )\n                    // ... more theme colors\n                )\n        )\n)"
+              }
+            ]
+          },
+          {
+            "name": "get_component",
+            "summary": "Returns details of a Data Store component",
+            "signature": "cs.get_component(component_id)",
+            "since": "2023.1",
+            "parameters": [
+              {
+                "name": "component_id",
+                "type": "string",
+                "description": "The string ID of the Data Store component (e.g. 'OBJ0000018GBMCB9' for an Object). It is best practice to use a Reference to obtain the ID of the desired component, instead of hard coding it in the code.",
+                "required": true
+              }
+            ],
+            "return_value": {
+              "type": "component object",
+              "description": "Details of the component"
+            },
+            "description": "The returned Component object will contain information about the requested Data Store component, or File Store. The exact properties returned will differ based on the component type.\n\nSupports the following component types:\n• Objects\n• Properties\n• Relationships\n• Attributes\n• Data Types\n• Data Type Choices\n• Subsets\n• Composites\n• Variables\n• Special Records\n• Record Groups\n\n• File Stores (from 24.1+)\n\nThe Component object also contains additional methods to further explore the details of the returned component, such as get_properties() to return the list of Properties for an Object. See the help for the \"Component\" class for more information.\n\nNote: In some cases, you may be returned data which is a recordset, such as a choice data type which has a recordset of choice options. In these cases, you would need to loop through or match a choice option to extract a certain choice option(s)",
+            "examples": [
+              {
+                "title": "Get an Object",
+                "description": "Returns details of an Object, in this example a Case Object.",
+                "code": "let object_details = cs.get_component(cs.ref('case_object'));\ncs.log(object_details);",
+                "output": "Array\n(\n    [id] => OBJ0000013GBMCB1\n    [original_id] => OBJ0000003EEAFF1\n    [name] => Case\n    [display_name] => Case\n    [description] => \n    [type] => case\n    [status] => active\n    [create_stamp] => 1601639088\n    [modify_stamp] => 1703161469\n    [create_user_id] => 214\n    [model] => {\"width\":100,\"height\":60,\"top\":5359,\"left\":5119,\"color\":\"#ffffff\"}\n    [settings] => Array\n        (\n            [page] => p/7GBMCB1/18GBMCB1/38GBMCB1/187GBMCB1|INT0000001GBMCB9\n            [search_history_name_field] => :PRO0000166GBMCB1\n            [searchable_fields] => Array\n                (\n                    [0] => Array\n                        (\n                            [field_path] => :PRO0000216GBMCB1\n                        )\n\n                )\n\n            [multitenancy] => Array\n                (\n                )\n\n        )\n\n    [access_control] => role\n    [default_permission] => role_default\n    [read_privilege_id] => \n    [write_privilege_id] => \n    [source] => local\n    [object_connection_id] => \n    [data_retention_settings] => Array\n        (\n        )\n\n)"
+              }
+            ]
+          },
+          {
+            "name": "get_component_id",
+            "summary": "Returns the ID of the current Code Studio component",
+            "signature": "cs.get_component_id()",
+            "since": "2020.1",
+            "parameters": [],
+            "return_value": {
+              "type": "string",
+              "description": "The ID of the component"
+            },
+            "description": "The string ID of the Code Studio component in which the code is running (e.g. 'CSC0000141GBMCB1').",
+            "examples": []
+          },
+          {
+            "name": "get_components",
+            "summary": "Returns a list of Data Store components",
+            "signature": "cs.get_components(type, options)",
+            "since": "2023.1",
+            "parameters": [
+              {
+                "name": "type",
+                "type": "string",
+                "description": "Supports the following Data Store Component types, or File Stores:\n  \"object\"\n  \"property\"\n  \"attribute\"\n  \"data_type\"\n  \"subset\"\n  \"composite\"\n  \"variable\"\n  \"special_record\"\n  \"record_group\"\n  \"file_store\" (24.1+)",
+                "required": true
+              },
+              {
+                "name": "options",
+                "type": "object",
+                "description": "An object of optional parameters which can affect the output for certain type of Component.",
+                "required": false,
+                "default": "{}"
+              }
+            ],
+            "return_value": {
+              "type": "object",
+              "description": "List of components"
+            },
+            "description": "The returned object will contain a Component object for each matching component, referenced by their IDs, and containing basic details such as name and display name.\n\nSupports the following component types:\n• Objects\n• Properties\n• Relationships\n• Attributes\n• Data Types\n• Data Type Choices\n• Subsets\n• Composites\n• Variables\n• Special Records\n• Record Groups\n\n• File Stores (from 24.1+)",
+            "examples": []
+          },
+          {
+            "name": "get_data_type",
+            "summary": "returns the data type information for a given data_type_id; returns the presenter's data type information",
+            "signature": "cs.get_data_type(data_type_id)",
+            "since": "2020.1",
+            "parameters": [
+              {
+                "name": "data_type_id",
+                "type": "string",
+                "description": "Data type id",
+                "required": true
+              }
+            ],
+            "return_value": {
+              "type": "object",
+              "description": "data_type"
+            },
+            "description": "returns the data type information for a give data_type_id",
+            "examples": [
+              {
+                "title": "Getting information about a data type",
+                "description": "First we will need to create a reference to the data type in References page.",
+                "code": "let data_type = cs.get_data_type(cs.ref('IntegerDataType'));\ncs.log(data_type);",
+                "output": "Array\n(\n    [id] => DTP0000036EFCAE9\n    [name] => Integer\n    [settings] => Array\n        (\n            [thousand_separator_when_displaying] => 1\n            [thousand_separator_when_editing] => never\n        )\n\n    [base_format] => integer\n)"
+              }
+            ]
+          },
+          {
+            "name": "context",
+            "summary": "Returns a collection of information about the context within which your Code Studio code is executing in",
+            "signature": "cs.context()",
+            "since": "2020.1",
+            "parameters": [],
+            "return_value": {
+              "type": "object",
+              "description": "Collection of information about the context"
+            },
+            "description": "Returns a collection of information about the context within which your Code Studio code is executing in. This is useful if the context contribute to the logical decision making, for example, if a block of code should only be executed on a particular environment.",
+            "examples": [
+              {
+                "title": "Context method usage",
+                "description": "Here is an example of the return value for context()",
+                "code": "cs.context();",
+                "output": "{\n\t\"application_id\": \"EEAEE\",\n\t\"environment_id\": 2,\n\t\"environment\": \"test\",\n\t\"sphere\": \"interface\",\n\t\"url\": \"https://app-test.oncreate.app/i/admin/?source=portal\",\n\t\"url_path\": \"i/admin/\",\n\t\"url_params\": {\n\t\t\"source\": \"portal\"\n\t}\n}"
+              }
+            ]
+          },
+          {
+            "name": "data_processor",
+            "summary": "Invoke a Data Processor",
+            "signature": "cs.data_processor(data_processor_id, fields)",
+            "since": "10.4",
+            "parameters": [
+              {
+                "name": "data_processor_id",
+                "type": "string",
+                "description": "ID of the Data Processor",
+                "required": true
+              },
+              {
+                "name": "fields",
+                "type": "object",
+                "description": "Field data to be sent to the Data Processor. Will be available in the Data Processor code via the \"fields\" parameter.",
+                "required": true
+              }
+            ],
+            "return_value": {
+              "type": "object",
+              "description": "Returns the processed data"
+            },
+            "description": "Invoke a Data Processor",
+            "examples": [
+              {
+                "title": "Calling a Data Processor",
+                "description": "We might want to keep certain data processing separated out as a single method which could be called from a number of different code studio components.",
+                "code": "let data = [\n\t{\n\t\t'number' : 1\n\t},\n\t{\n\t\t'number' : 2\n\t},\n\t{\n\t\t'number' : 3\n\t}\n];\nlet result = cs.data_processor(cs.ref('TestDataProcessor'), data);\ncs.log(result);",
+                "output": "The return from the Data Processor should have the number key value multiplied."
+              },
+              {
+                "title": "Parsing the search term for a relation type ahead presenter",
+                "description": "We might need to parse the search terms that is typed into a relation type ahead presenter. In this use case we need to replace iOS apostrophes with standard ones so that the results could be searched correctly.",
+                "code": "let search_string = fields['search_string'];\nsearch_string = search_string.replace(\"'\",\"'\").replace(\"'\",\"'\").replace(/[\\u2018\\u2019]/g, \"'\");\nreturn {search_string : search_string}",
+                "output": ""
+              }
+            ]
+          },
+          {
+            "name": "decrypt",
+            "summary": "Decrypt a string of data using a selected algorithm",
+            "signature": "cs.decrypt(data, algorithm, key, options)",
+            "since": "2023.1",
+            "parameters": [
+              {
+                "name": "data",
+                "type": "string",
+                "description": "The data string to be decrypted",
+                "required": true
+              },
+              {
+                "name": "algorithm",
+                "type": "string",
+                "description": "The algorithm to use for the decryption, e.g. 'aes-256-gcm'",
+                "required": true
+              },
+              {
+                "name": "key",
+                "type": "string",
+                "description": "The key to use for decryption",
+                "required": true
+              },
+              {
+                "name": "options",
+                "type": "object",
+                "description": "Additional options for the decryption",
+                "required": false
+              }
+            ],
+            "return_value": {
+              "type": "string",
+              "description": "Decrypted data as a string"
+            },
+            "description": "Decrypt a string of data using a selected algorithm",
+            "examples": []
+          },
+          {
+            "name": "delegate_to_server_function",
+            "summary": "Calls server-side code within Create",
+            "signature": "cs.delegate_to_server_function()",
+            "since": "",
+            "parameters": [],
+            "return_value": {
+              "type": "",
+              "description": ""
+            },
+            "description": "This is used for certain built-in Code Studio Components, and you can ignore this function.",
+            "examples": []
+          },
+          {
+            "name": "delete_multi",
+            "summary": "A performant way of deleting a large number of records",
+            "signature": "cs.delete_multi(object_ref, record_ids)",
+            "since": "2024.1",
+            "parameters": [
+              {
+                "name": "object_ref",
+                "type": "string",
+                "description": "Reference of base object",
+                "required": true
+              },
+              {
+                "name": "record_ids",
+                "type": "array",
+                "description": "An array of record IDs that you would like to delete",
+                "required": true
+              }
+            ],
+            "return_value": {
+              "type": "any",
+              "description": ""
+            },
+            "description": "A performant way of deleting a large number of records",
+            "examples": [
+              {
+                "title": "Batch deleting multiple records",
+                "description": "In this example, we want to search for any record within the object which contains a true value within a property.",
+                "code": "// Search for a list of records where the boolean value is 1\nlet records = cs.search({\n\t'base_object_id': cs.ref('object_case'),\n\t'selects': [':id'],\n\t'filters': [{ 'field_path': cs.ref('property_boolean'), 'comparator': 'contains', 'value': 1 }],\n\t'return': 'column'\n});\n\n// Batch delete those records\ncs.delete_multi(cs.ref('object_case'), records )",
+                "output": ""
+              }
+            ]
+          },
+          {
+            "name": "displayable",
+            "summary": "Fetch a displayable value for a given field path and value",
+            "signature": "cs.displayable(reference, value)",
+            "since": "10.0",
+            "parameters": [
+              {
+                "name": "reference",
+                "type": "string",
+                "description": "Field path reference",
+                "required": true
+              },
+              {
+                "name": "value",
+                "type": "mixed",
+                "description": "The raw value, returned from cs.search() for example, usually a string.",
+                "required": true
+              }
+            ],
+            "return_value": {
+              "type": "any",
+              "description": "The displayable value"
+            },
+            "description": "Fetch a displayable value for a given field path and value",
+            "examples": [
+              {
+                "title": "Displayable method usage",
+                "description": "Displaying our raw value to a displayable decimal value",
+                "code": "let displayable = cs.displayable('UserDecimalFieldPath', 1); \ncs.log(displayable);",
+                "output": "1,00"
+              }
+            ]
+          },
+          {
+            "name": "editable",
+            "summary": "Fetch an edtiable value for a given field path and value",
+            "signature": "cs.editable(reference, value)",
+            "since": "10.0",
+            "parameters": [
+              {
+                "name": "reference",
+                "type": "string",
+                "description": "Field path reference",
+                "required": true
+              },
+              {
+                "name": "value",
+                "type": "any",
+                "description": "The raw value, returned from cs.search() for example, usually a string.",
+                "required": true
+              }
+            ],
+            "return_value": {
+              "type": "any",
+              "description": "The editable value"
+            },
+            "description": "Fetch an edtiable value for a given field path and value",
+            "examples": [
+              {
+                "title": "Editable method usage",
+                "description": "Displaying our raw value to a editable decimal value",
+                "code": "let editable= cs.editable('UserDecimalFieldPath', '123.000000'); \ncs.log(editable);",
+                "output": "123,00"
+              }
+            ]
+          },
+          {
+            "name": "encrypt",
+            "summary": "Encrypt a string of data using a selected algorithm",
+            "signature": "cs.encrypt(data, algorithm, key, options)",
+            "since": "2021.3",
+            "parameters": [
+              {
+                "name": "data",
+                "type": "string",
+                "description": "The data string to be encrypted",
+                "required": true
+              },
+              {
+                "name": "algorithm",
+                "type": "string",
+                "description": "The algorithm to use for the encryption, e.g. 'aes-256-gcm'",
+                "required": true
+              },
+              {
+                "name": "key",
+                "type": "string",
+                "description": "The key to use for encryption",
+                "required": true
+              },
+              {
+                "name": "options",
+                "type": "object",
+                "description": "Additional options for the encryption",
+                "required": false
+              }
+            ],
+            "return_value": {
+              "type": "string",
+              "description": "Encrypted data as an encoded string"
+            },
+            "description": "Encrypt a string of data using a selected algorithm",
+            "examples": [
+              {
+                "title": "Simple encryption",
+                "description": "A simple example of AES-256 encryption with minimal options. The result is returned as base64 encoded string.",
+                "code": "let encrypted = cs.encrypt('Example data to be encrypted', 'aes-256-cbc', 'my_secret_key');\ncs.log(encrypted);",
+                "output": "\"rgUPaXVW1Xh9IIXFUU4eRcmn56X2032bD7/z85kp+zU=\""
+              },
+              {
+                "title": "Encryption with more options",
+                "description": "A more detailed example of AES-256 encryption with more options specified. The result is returned as hexadecimal string.",
+                "code": "let key = 'my_secret_key'; // Should be a randomly generated secure key\nlet data = 'Example data to be encrypted';\n\nlet iv = cs.random_bytes(16, 'hex'); // Generate a random IV value as a hexadecimal string\n\nlet encrypted = cs.encrypt(data, 'aes-256-cbc', key, {\n    'key_format': 'hex', // Specifies the format of the key\n    'iv': iv,            // Specifies the Initialisation Vector\n    'iv_format': 'hex',  // Specifies the format of the IV\n    'format': 'hex',     // Specifies the desired output format\n});\ncs.log(encrypted);",
+                "output": "\"c5e856d41dc50d696dce3ef064446bb30482d78dca1dbbb29d43b6fed99cfad7\""
+              }
+            ]
+          },
+          {
+            "name": "environment",
+            "summary": "Return the name of the environment the code is currently running in",
+            "signature": "cs.environment()",
+            "since": "10.2",
+            "parameters": [],
+            "return_value": {
+              "type": "string",
+              "description": "The name of the environment"
+            },
+            "description": "Whilst this function is still usable, it has been replaced with cs.context().sphere and will be removed in a later version.",
+            "examples": [
+              {
+                "title": "Retrieving the enviroment name",
+                "description": "List of environment names",
+                "code": "let environment = cs.environment();\ncs.log(environment);",
+                "output": "interface = Code is executing from/for an interface page\nwebpage = Code is executing from/for a webpage.\nfile_serve = Code is executing to serve a file (for interface or webpage)\napi = Code is executing during an API request.\nscript = Code is executing during the execution of a background script."
+              }
+            ]
+          },
+          {
+            "name": "error",
+            "summary": "Log an error message to the Detective and exit",
+            "signature": "cs.error(message)",
+            "since": "10.0",
+            "parameters": [
+              {
+                "name": "message",
+                "type": "string",
+                "description": "The error message",
+                "required": true
+              }
+            ],
+            "return_value": {
+              "type": "void",
+              "description": ""
+            },
+            "description": "Stops executing current code and returns given error to calling function, as well as logging an message to the Detective which will be highlighted as an error.",
+            "examples": []
+          },
+          {
+            "name": "event_action",
+            "summary": "Invoke an Event Action",
+            "signature": "cs.event_action(event_action_id, record_id, parameters, run_in_background)",
+            "since": "10.4",
+            "parameters": [
+              {
+                "name": "event_action_id",
+                "type": "string",
+                "description": "The Code Studio Event Action reference",
+                "required": true
+              },
+              {
+                "name": "record_id",
+                "type": "number",
+                "description": "The record ID the action is triggered on. Null value can also be passed instead of a record_id",
+                "required": true
+              },
+              {
+                "name": "parameters",
+                "type": "object",
+                "description": "Additional parameters that will be passed on to the event action",
+                "required": false
+              },
+              {
+                "name": "run_in_background",
+                "type": "boolean",
+                "description": "This parameter allows you to specify whether the event action your are invoking should be running in the foreground or background. Setting this param to 'True' will run the event action in the background.",
+                "required": false,
+                "since": "2022.2"
+              }
+            ],
+            "return_value": {
+              "type": "void",
+              "description": ""
+            },
+            "description": "Invoke an Event Action",
+            "examples": [
+              {
+                "title": "Calling an Event Action",
+                "description": "We might want to call an existing Code Studio Event Action.",
+                "code": "cs.event_action(cs.ref('ExampleEventAction'), 1009, {example_param : 123});",
+                "output": ""
+              }
+            ]
+          },
+          {
+            "name": "field_processor",
+            "summary": "Invoke a Field Processor",
+            "signature": "cs.field_processor(field_processor_id, value, params)",
+            "since": "10.2",
+            "parameters": [
+              {
+                "name": "field_processor_id",
+                "type": "string",
+                "description": "ID of the Field Processor",
+                "required": true
+              },
+              {
+                "name": "value",
+                "type": "string",
+                "description": "The value to pass to be processed. Will be available in the Field Processor code via the \"input\" parameter.",
+                "required": true
+              },
+              {
+                "name": "params",
+                "type": "object",
+                "description": "Any additional data to be passed which the Field Processor may need to process the value. Will be available in the Field Processor code via the \"params\" parameter.",
+                "required": false
+              }
+            ],
+            "return_value": {
+              "type": "string",
+              "description": "Returns the processed value"
+            },
+            "description": "Invoke a Field Processor",
+            "examples": [
+              {
+                "title": "Calling a Field Processor",
+                "description": "We might want to call an existing Code Studio Field Processor.",
+                "code": "let result = cs.field_processor(cs.ref('TestFieldProcessor'), 123, {example_param : 123});\ncs.log(result);",
+                "output": ""
+              }
+            ]
+          },
+          {
+            "name": "file_size",
+            "summary": "Get a file's size in bytes",
+            "signature": "cs.file_size(id, file_path)",
+            "since": "2023.1",
+            "parameters": [
+              {
+                "name": "id",
+                "type": "record object",
+                "description": "This parameter is used as a way of identifying either the record ID or file ID. The context of this parameter depends on how you want to identify your file. If you want to identify a file by the File ID, then this parameter is all that's needed. However, if you want to identify a file using a combination of record ID and file path, then this parameter will expect a record ID, and you will need to specify the file field path in the second parameter.",
+                "required": true
+              },
+              {
+                "name": "file_path",
+                "type": "string",
+                "description": "This parameter is only necessary if the first parameter is a record ID.",
+                "required": false
+              }
+            ],
+            "return_value": {
+              "type": "number",
+              "description": "Returns the file size in bytes as an integer"
+            },
+            "description": "This function provides you with the ability to find out what a file's file size is, in bytes.",
+            "examples": [
+              {
+                "title": "Identifying a file by Record ID and file field path",
+                "description": "If you want to identify your file using a combination of a record ID and file path, you will need to utilise two parameters to achieve this.",
+                "code": "// Identify the necessary data needed\nlet record = cs.record(123);\nlet file_path = cs.ref('file_path');\n\n// Trigger the function and get the record's file size in bytes\nlet size = cs.file_size(record, file_path);\ncs.log(size);",
+                "output": ""
+              },
+              {
+                "title": "Identifying a file by file ID only",
+                "description": "If you want to identify your file with simply a file ID, you can do so in a single parameter.",
+                "code": "// Identify the necessary data needed\nlet file_id = '123';\n\n// Trigger the function and get the file's size in bytes\nlet size = cs.file_size(file_id)\ncs.log(size)",
+                "output": ""
+              }
+            ]
+          },
+          {
+            "name": "fire_event",
+            "summary": "Will manually fire an event; Triggers a custom Event on the record",
+            "signature": "cs.fire_event(event_id)",
+            "since": "10.0",
+            "parameters": [
+              {
+                "name": "event_id",
+                "type": "string",
+                "description": "Reference of the event",
+                "required": true
+              }
+            ],
+            "return_value": {
+              "type": "void",
+              "description": ""
+            },
+            "description": "Will manually fire an event",
+            "examples": [
+              {
+                "title": "Trigering an event from a Code Studio Event Action",
+                "description": "It is possible to fire an event from a Code Studio Event Action.",
+                "code": "cs.fire_event(cs.ref('TestEvent'))",
+                "output": ""
+              }
+            ]
+          },
+          {
+            "name": "get_applications",
+            "summary": "Get a list of applications based on the given ID list, with the SSO link and indexed by application ID",
+            "signature": "cs.get_applications(id_list)",
+            "since": "2020.1",
+            "parameters": [
+              {
+                "name": "id_list",
+                "type": "array",
+                "description": "List of application IDs on the same controller.",
+                "required": false,
+                "since": "10.2"
+              }
+            ],
+            "return_value": {
+              "type": "object",
+              "description": "List of applications with valid SSO links, indexed by application ID."
+            },
+            "description": "Get a list of applications based on the given ID list, with the SSO link and indexed by application ID",
+            "examples": [
+              {
+                "title": "Return a list of applications on the same controller",
+                "description": "",
+                "code": "cs.get_applications(['EFACE']);\nlet applications = cs.get_applications();\ncs.log(applications);",
+                "output": "Array\n(\n        [EFACE] => Array\n        (\n            [name] => CS Upgrade\n            [link] => https://example-build.oncreate.app/?sso_id=EFCAE\n        )\n)"
+              }
+            ]
+          },
+          {
+            "name": "get_choices",
+            "summary": "Fetch the choices for a given data type ID",
+            "signature": "cs.get_choices(data_type_id_or_field)",
+            "since": "2020.2",
+            "parameters": [
+              {
+                "name": "data_type_id_or_field",
+                "type": "string",
+                "description": "Data type MUID or a field path that resolves to a property",
+                "required": true
+              }
+            ],
+            "return_value": {
+              "type": "object",
+              "description": "Choice data arrays, keyed by choice ID"
+            },
+            "description": "Fetch the choices for a given data type ID",
+            "examples": [
+              {
+                "title": "Get a list of data type choices",
+                "description": "In Data Store > Data Types create a new type with the base format 'Choice' and add some choice values.",
+                "code": "let choices = cs.get_choices(cs.ref('letters')); \ncs.log(choices);",
+                "output": "Array\n(\n    [DTC0000061EFCAE1] => Array\n        (\n            [id] => DTC0000061EFCAE1\n            [data_type_id] => DTP0000085EFCAE1\n            [name] => A\n            [display_name] => A\n            [order] => 0\n        )\n    [DTC0000062EFCAE1] => Array\n        (\n            [id] => DTC0000062EFCAE1\n            [data_type_id] => DTP0000085EFCAE1\n            [name] => B\n            [display_name] => B\n            [order] => 1\n        )\n    [DTC0000063EFCAE1] => Array\n        (\n            [id] => DTC0000063EFCAE1\n            [data_type_id] => DTP0000085EFCAE1\n            [name] => C\n            [display_name] => C\n            [order] => 2\n        )\n)"
+              }
+            ]
+          },
+          {
+            "name": "get_color_choices",
+            "summary": "Returns a list of available colour choices",
+            "signature": "cs.get_color_choices()",
+            "since": "2020.1",
+            "parameters": [],
+            "return_value": {
+              "type": "object",
+              "description": "An array of valid colour choices the platform offers."
+            },
+            "description": "Alias of cd.get_colour_choices(). To be used in settings for selecting a colour.",
+            "examples": [
+              {
+                "title": "Get a list of available colour choices",
+                "description": "",
+                "code": "let colors = cs.get_color_choices();\ncs.log(colors);",
+                "output": "Array\n(\n    [0] => Array\n        (\n            [optgroup_label] => Standard colours\n            [choices] => Array\n                (\n                    [0] => Array\n                        (\n                            [name] => Blue\n                            [value] => blue\n                        )\n                    [1] => Array\n                        (\n                            [name] => Cyan\n                            [value] => cyan\n                        )\n                    // ... more colors\n                )\n        )\n    [1] => Array\n        (\n            [optgroup_label] => Theme branding\n            [choices] => Array\n                (\n                    [0] => Array\n                        (\n                            [name] => Primary\n                            [value] => primary\n                        )\n                    // ... more theme colors\n                )\n        )\n)"
+              }
+            ]
+          },
+          {
+            "name": "get_component",
+            "summary": "Returns details of a Data Store component",
+            "signature": "cs.get_component(component_id)",
+            "since": "2023.1",
+            "parameters": [
+              {
+                "name": "component_id",
+                "type": "string",
+                "description": "The string ID of the Data Store component (e.g. 'OBJ0000018GBMCB9' for an Object). It is best practice to use a Reference to obtain the ID of the desired component, instead of hard coding it in the code.",
+                "required": true
+              }
+            ],
+            "return_value": {
+              "type": "component object",
+              "description": "Details of the component"
+            },
+            "description": "The returned Component object will contain information about the requested Data Store component, or File Store. The exact properties returned will differ based on the component type.\n\nSupports the following component types:\n• Objects\n• Properties\n• Relationships\n• Attributes\n• Data Types\n• Data Type Choices\n• Subsets\n• Composites\n• Variables\n• Special Records\n• Record Groups\n\n• File Stores (from 24.1+)\n\nThe Component object also contains additional methods to further explore the details of the returned component, such as get_properties() to return the list of Properties for an Object. See the help for the \"Component\" class for more information.\n\nNote: In some cases, you may be returned data which is a recordset, such as a choice data type which has a recordset of choice options. In these cases, you would need to loop through or match a choice option to extract a certain choice option(s)",
+            "examples": [
+              {
+                "title": "Get an Object",
+                "description": "Returns details of an Object, in this example a Case Object.",
+                "code": "let object_details = cs.get_component(cs.ref('case_object'));\ncs.log(object_details);",
+                "output": "Array\n(\n    [id] => OBJ0000013GBMCB1\n    [original_id] => OBJ0000003EEAFF1\n    [name] => Case\n    [display_name] => Case\n    [description] => \n    [type] => case\n    [status] => active\n    [create_stamp] => 1601639088\n    [modify_stamp] => 1703161469\n    [create_user_id] => 214\n    [model] => {\"width\":100,\"height\":60,\"top\":5359,\"left\":5119,\"color\":\"#ffffff\"}\n    [settings] => Array\n        (\n            [page] => p/7GBMCB1/18GBMCB1/38GBMCB1/187GBMCB1|INT0000001GBMCB9\n            [search_history_name_field] => :PRO0000166GBMCB1\n            [searchable_fields] => Array\n                (\n                    [0] => Array\n                        (\n                            [field_path] => :PRO0000216GBMCB1\n                        )\n\n                )\n\n            [multitenancy] => Array\n                (\n                )\n\n        )\n\n    [access_control] => role\n    [default_permission] => role_default\n    [read_privilege_id] => \n    [write_privilege_id] => \n    [source] => local\n    [object_connection_id] => \n    [data_retention_settings] => Array\n        (\n        )\n\n)"
+              }
+            ]
+          },
+          {
+            "name": "get_component_id",
+            "summary": "Returns the ID of the current Code Studio component",
+            "signature": "cs.get_component_id()",
+            "since": "2020.1",
+            "parameters": [],
+            "return_value": {
+              "type": "string",
+              "description": "The ID of the component"
+            },
+            "description": "The string ID of the Code Studio component in which the code is running (e.g. 'CSC0000141GBMCB1').",
+            "examples": []
+          },
+          {
+            "name": "get_components",
+            "summary": "Returns a list of Data Store components",
+            "signature": "cs.get_components(type, options)",
+            "since": "2023.1",
+            "parameters": [
+              {
+                "name": "type",
+                "type": "string",
+                "description": "Supports the following Data Store Component types, or File Stores:\n  \"object\"\n  \"property\"\n  \"attribute\"\n  \"data_type\"\n  \"subset\"\n  \"composite\"\n  \"variable\"\n  \"special_record\"\n  \"record_group\"\n  \"file_store\" (24.1+)",
+                "required": true
+              },
+              {
+                "name": "options",
+                "type": "object",
+                "description": "An object of optional parameters which can affect the output for certain type of Component.",
+                "required": false,
+                "default": "{}"
+              }
+            ],
+            "return_value": {
+              "type": "object",
+              "description": "List of components"
+            },
+            "description": "The returned object will contain a Component object for each matching component, referenced by their IDs, and containing basic details such as name and display name.\n\nSupports the following component types:\n• Objects\n• Properties\n• Relationships\n• Attributes\n• Data Types\n• Data Type Choices\n• Subsets\n• Composites\n• Variables\n• Special Records\n• Record Groups\n\n• File Stores (from 24.1+)",
+            "examples": []
+          },
+          {
+            "name": "get_data_type",
+            "summary": "returns the data type information for a given data_type_id; returns the presenter's data type information",
+            "signature": "cs.get_data_type(data_type_id)",
+            "since": "2020.1",
+            "parameters": [
+              {
+                "name": "data_type_id",
+                "type": "string",
+                "description": "Data type id",
+                "required": true
+              }
+            ],
+            "return_value": {
+              "type": "object",
+              "description": "data_type"
+            },
+            "description": "returns the data type information for a give data_type_id",
+            "examples": [
+              {
+                "title": "Getting information about a data type",
+                "description": "First we will need to create a reference to the data type in References page.",
+                "code": "let data_type = cs.get_data_type(cs.ref('IntegerDataType'));\ncs.log(data_type);",
+                "output": "Array\n(\n    [id] => DTP0000036EFCAE9\n    [name] => Integer\n    [settings] => Array\n        (\n            [thousand_separator_when_displaying] => 1\n            [thousand_separator_when_editing] => never\n        )\n\n    [base_format] => integer\n)"
+              }
+            ]
+          },
+          {
+            "name": "get_date_formats",
+            "summary": "Returns a list of locale date formats",
+            "signature": "cs.get_date_formats()",
+            "since": "2022.3",
+            "parameters": [],
+            "return_value": {
+              "type": "object",
+              "description": "locale date formats"
+            },
+            "description": "Returns a list of locale date formats",
+            "examples": [
+              {
+                "title": "Usage example",
+                "description": "",
+                "code": "let date_formats = cs.get_date_formats(); \ncs.log(date_formats);",
+                "output": "Array\n(\n    [DFM0000004GBFSX1] => Array\n        (\n            [id] => DFM0000004GBFSX1\n            [name] => Current\n            [date_format] => dd/mm/yyyy\n            [time_format] => HH:MM\n        )\n    [DFM0000003GBFSX1] => Array\n        (\n            [id] => DFM0000003GBFSX1\n            [name] => ISO\n            [date_format] => yyyy-mm-dd\n            [time_format] => HH:MM\n        )\n)"
+              }
+            ]
+          },
+          {
+            "name": "get_formatted_text_file_upload_url",
+            "summary": "Get inline images from a formatted text",
+            "signature": "cs.get_formatted_text_file_upload_url(field_path)",
+            "since": "2024.1",
+            "parameters": [
+              {
+                "name": "field_path",
+                "type": "string",
+                "description": "field_path must point to a 2many related file/image property or attribute.",
+                "required": true
+              }
+            ],
+            "return_value": {
+              "type": "string",
+              "description": "URL for file uploads"
+            },
+            "description": "This function is used for the purpose of getting inline images from a formatted text base format, and processing them, usually for the purpose of a custom TinyMCE editor in your code component. The URL returned by this function can then be used as \"images_upload_url\" for tinymce config:\n\nconfig.images_upload_url = SELF.file_upload_url;\nconfig.paste_data_images = true;\nconfig.automatic_uploads = true;",
+            "examples": [
+              {
+                "title": "Getting the formatted text file",
+                "description": "This is a very basic example of using the the get_formatted_text_file_upload_url method. In this example, we have a widget which asks the builder to specify a mandatory 2many relation path to the file ID - However, you can change this to a file property if you wish.",
+                "code": "return {\n\tget_template_data: function() {\n\t\treturn {\n\t\t\tfile_upload_url: cs.get_formatted_text_file_upload_url(widget.get_setting('file_path')),\n\t\t} \n\t},\n\n\tget_settings: function() {\n\t\treturn {\n\t\t\tfile_path: {\n\t\t\t\tmain_label: \"File ID from 2many relation\",\n\t\t\t\tcsid: \"file_path\",\n\t\t\t\tbase_format: \"field_path\",\n\t\t\t\trelation_type: 'one2many',\n\t\t\t\tfield_format: 'file',\n\t\t\t\trequired: true\n\t\t\t}\n\t\t};\n\t}\n}",
+                "output": ""
+              },
+              {
+                "title": "Using it with a custom TinyMCE instance",
+                "description": "When setting up your TinyMCE instance, the output from get_formatted_text_file_upload_url should be applied within the configuration of your TinyMCE instance. Make sure to declare SELF when referencing the file_upload_url.",
+                "code": "mounted: function(){\n\t\tlet SELF = this;\n\n\t\tlet tiny_instance= class extends mats.system_module_tinymce_utilization_formatted_text {\n\t\t\tconfig() {\n\t\t\t\tlet config = super.config();\n\t\t\t\tconfig.paste_data_images = true;\n\t\t\t\tconfig.automatic_uploads = true;\n\t\t\t\tconfig.images_upload_url = SELF.file_upload_url;\n\t\t\t\treturn config;\n\t\t\t}\n\t\t}\n\n\t\tlet params = {\n\t\t\tsettings: {\n\t\t\t\tshow_text_formatting: true,\n\t\t\t\tshow_text_positioning: true,\n\t\t\t\tshow_links: true,\n\t\t\t\tshow_tables: true,\n\t\t\t\tshow_images: true,\n\t\t\t\tshow_editing_aids: true\n\t\t\t}\n\t\t}\n\t\tnew tiny_instance($('#editor_container'), params);\n}",
+                "output": ""
+              }
+            ]
+          },
+          {
+            "name": "get_paf_addresses",
+            "summary": "Searching Royal Mail's PAF for addresses by postcode",
+            "signature": "cs.get_paf_addresses(postcode)",
+            "since": "2024.2",
+            "parameters": [
+              {
+                "name": "postcode",
+                "type": "string",
+                "description": "Allows searching for full postcodes with or without space separation (e.g. MK41 0AA or MK410AA). However, partial postcodes are not acceptable (e.g. MK41). The availability of data depends on your PAF license. By default, only allows postcodes starting with MK (Milton Keynes regions). For a full/customised PAF license or implementation assistance, please contact your Account Manager.",
+                "required": true
+              }
+            ],
+            "return_value": {
+              "type": "mixed",
+              "description": "Return an array of addresses"
+            },
+            "description": "Provides postcode searches using Royal Mail's PAF (Postcode Address File), which serves as an official postcode finder. The availability of data is subject to your PAF license. By default, Liberty Create allows postcodes starting with MK (Milton Keynes regions). For a full/customised PAF license or implementation assistance, please contact your Account Manager.",
+            "examples": []
+          },
+          {
+            "name": "get_session_ip_address",
+            "summary": "Returns the current session's IP address",
+            "signature": "cs.get_session_ip_address()",
+            "since": "10.4",
+            "parameters": [],
+            "return_value": {
+              "type": "string",
+              "description": "IP address"
+            },
+            "description": "Returns the current session's IP address",
+            "examples": [
+              {
+                "title": "get_session_ip_address usage",
+                "description": "Returns the session's IP address",
+                "code": "let ip_address = cs.get_session_ip_address();\ncs.log(ip_address);",
+                "output": ""
+              }
+            ]
+          },
+          {
+            "name": "get_session_user_id",
+            "summary": "Get the id of the currently logged in user",
+            "signature": "cs.get_session_user_id()",
+            "since": "10.1",
+            "parameters": [],
+            "return_value": {
+              "type": "number",
+              "description": "User ID"
+            },
+            "description": "Get the id of the currently logged in user",
+            "examples": [
+              {
+                "title": "Get current user's data properties",
+                "description": "Loads the current user's record, assembles all the properties and gets their values",
+                "code": "let user_id = cs.get_session_user_id(); \nlet record = cs.record(user_id);\nlet schema = record.schema();\nvar properties = {};\nfor(var key in schema.properties){\n\tproperties[schema.properties[key]] = \":\" + key;\n}\ncs.log(record.get(properties, 'displayable'));",
+                "output": ""
+              }
+            ]
+          },
+          {
+            "name": "get_system_locale",
+            "summary": "Returns details of the system default locale settings",
+            "signature": "cs.get_system_locale()",
+            "since": "10.0",
+            "parameters": [],
+            "return_value": {
+              "type": "object",
+              "description": "Details of the locale settings"
+            },
+            "description": "Contains locale specific details of the system, as defined in Build Studio Locale settings.\n\nIncludes the language (ISO 2 character code), country (ISO 2 character code), locale code, thousands separator, decimal point, and timezone.",
+            "examples": [
+              {
+                "title": "System locale usage",
+                "description": "",
+                "code": "let system_locale = cs.get_system_locale(); \ncs.log(system_locale);",
+                "output": "Array\n(\n    [language] => en\n    [country] => GB\n    [locales] => en_GB\n    [thousands_separator] => ,\n    [decimal_point] => .\n    [timezone] => Europe/London\n)"
+              }
+            ]
+          },
+          {
+            "name": "get_tenant_record_id",
+            "summary": "Get the tenant record id for the logged in user",
+            "signature": "cs.get_tenant_record_id()",
+            "since": "10.1",
+            "parameters": [],
+            "return_value": {
+              "type": "number",
+              "description": "Tenant record ID, or 0 if none found"
+            },
+            "description": "If the logged in user's Role has multitenancy restrictions applied, this method will return the first tenant record ID which the user is related to.\n\nNote that it is possible for a User record to be related to more than one tenant record, but only one will be returned here.",
+            "examples": []
+          },
+          {
+            "name": "get_user_locale",
+            "summary": "Returns details of the logged in user's locale settings",
+            "signature": "cs.get_user_locale()",
+            "since": "10.1",
+            "parameters": [],
+            "return_value": {
+              "type": "string",
+              "description": "Details of the locale settings"
+            },
+            "description": "Contains locale specific details of the logged in user.\n\nIncludes the language (ISO 2 character code), country (ISO 2 character code), locale code, thousands separator, decimal point, and timezone.",
+            "examples": [
+              {
+                "title": "User locale usage",
+                "description": "",
+                "code": "let user_locale = cs.get_user_locale(); \ncs.log(user_locale);",
+                "output": "Array\n(\n    [language] => en\n    [country] => GB\n    [locales] => en_GB\n    [thousands_separator] => ,\n    [decimal_point] => .\n    [timezone] => Europe/London\n)"
+              }
+            ]
+          },
+          {
+            "name": "hash",
+            "summary": "Generate a sha256 hash from an input",
+            "signature": "cs.hash(input, algorithm, hmac_key, hmac_raw, hmac_key_base64)",
+            "since": "10.3",
+            "parameters": [
+              {
+                "name": "input",
+                "type": "string",
+                "description": "The input. Non-scalar values are JSON encoded",
+                "required": true
+              },
+              {
+                "name": "algorithm",
+                "type": "string",
+                "description": "Hashing algorithm. Default value: sha256. Available algorithms: md5, sha1, sha256, sha384, sha512",
+                "required": false
+              },
+              {
+                "name": "hmac_key",
+                "type": "string",
+                "description": "Shared secret key used for generating the HMAC variant of the message digest",
+                "required": false
+              },
+              {
+                "name": "hmac_raw",
+                "type": "boolean",
+                "description": "Specify whether to return raw base64 encoded output. Default value: false",
+                "required": false
+              },
+              {
+                "name": "hmac_key_base64",
+                "type": "boolean",
+                "description": "Specify if the hmac_key is base64 encoded. Default value: false",
+                "required": false
+              }
+            ],
+            "return_value": {
+              "type": "string",
+              "description": "64-character hash"
+            },
+            "description": "Generate a sha256 hash from an input",
+            "examples": [
+              {
+                "title": "hash usage",
+                "description": "",
+                "code": "let hash = cs.hash('test');\ncs.log(hash);",
+                "output": "9f86d081884c7d659a2feaa0c55ad015a3bf4f1b2b0b822cd15d6c15b0f00a08"
+              }
+            ]
+          },
+          {
+            "name": "is_working_day",
+            "summary": "Returns whether the specified date is a working day, as defined in the Calendar",
+            "signature": "cs.is_working_day(date, calendar_id)",
+            "since": "10.2",
+            "parameters": [
+              {
+                "name": "date",
+                "type": "string",
+                "description": "Date to determine",
+                "required": true
+              },
+              {
+                "name": "calendar_id",
+                "type": "string",
+                "description": "Optional calendar id. Falls back to the default calendar",
+                "required": false
+              }
+            ],
+            "return_value": {
+              "type": "boolean",
+              "description": "Whether the date is a working day"
+            },
+            "description": "Returns whether the specified date is a working day, as defined in the Calendar",
+            "examples": [
+              {
+                "title": "Checking if today is a working day",
+                "description": "In Code Studio > References create a reference to a desired calendar",
+                "code": "var date = new Date().toISOString();\nlet is_working_day = cs.is_working_day(date, cs.ref('Calendar')); \n\nif(is_working_day == true){\n\tcs.log('Today is a working day');\n}else{\n\tcs.log('Today is not a working day');\n}",
+                "output": ""
+              }
+            ]
+          },
+          {
+            "name": "is_working_time",
+            "summary": "Returns whether specified datetime is within working hours, as defined in the Calendar",
+            "signature": "cs.is_working_time(date, calendar_id)",
+            "since": "10.2",
+            "parameters": [
+              {
+                "name": "date",
+                "type": "string",
+                "description": "Datetime to determine",
+                "required": true
+              },
+              {
+                "name": "calendar_id",
+                "type": "string",
+                "description": "Optional calendar id. Falls back to the default calendar",
+                "required": false
+              }
+            ],
+            "return_value": {
+              "type": "boolean",
+              "description": "Whether the datetime is in working hours"
+            },
+            "description": "Returns whether specified datetime is within working hours, as defined in the Calendar",
+            "examples": [
+              {
+                "title": "Checking if the current time is within the working time range",
+                "description": "In Code Studio > References create a reference to a desired calendar",
+                "code": "var date = new Date().toISOString();\nlet is_working_time = cs.is_working_time(date, cs.ref('Calendar')); \n\nif(is_working_time == true){\n\tcs.log('Within the working time');\n}else{\n\tcs.log('Outside of the working time');\n}",
+                "output": ""
+              }
+            ]
+          },
+            {
+            "name": "join_files",
+            "summary": "Take the contents of 2 files and append the contents of one to the other",
+            "signature": "cs.join_files(left_record_id, left_file_field_path, right_record_id, right_file_field_path, encoding)",
+            "since": "2021.1",
+            "parameters": [
+                {
+                "name": "left_record_id",
+                "type": "number",
+                "description": "The record id to append the contents to",
+                "required": true
+                },
+                {
+                "name": "left_file_field_path",
+                "type": "string",
+                "description": "The path to the file to append the contents to",
+                "required": true
+                },
+                {
+                "name": "right_record_id",
+                "type": "number",
+                "description": "The record id to source the file contents from",
+                "required": true
+                },
+                {
+                "name": "right_file_field_path",
+                "type": "string",
+                "description": "The path to source the contents from",
+                "required": true
+                },
+                {
+                "name": "encoding",
+                "type": "string",
+                "description": "The encoding to be used on the contents of the right file",
+                "required": false,
+                "default": "none"
+                }
+            ],
+            "return_value": {
+                "type": "boolean",
+                "description": "1/0"
+            },
+            "description": "Take the contents of 2 files and append the contents of one to the other",
+            "examples": [
+                {
+                "title": "Joining two files together",
+                "description": "When appending the contents one one file to another, you would specify the record id, the file field path (via reference) of both files. Although this function will output a boolean to indicate whether the function was successful or not, the appended contents will be added to the right file.",
+                "code": "let source_record = cs.record(123)\nlet source_file = cs.ref('file_field_path_source')\nlet target_record = cs.record(456)\nlet target_file = cs.ref('file_field_path_target')\n\nlet output = cs.join_files(target_record, target_file, source_record, source_file);\ncs.log(output)",
+                "output": null
+                },
+                {
+                "title": "Encoding the contents",
+                "description": "The encoding to be used on the contents of the right/source file. This is optional and defaults to none. Acceptable values: '', 'default', 'base64'",
+                "code": "let source_record = cs.record(123)\nlet source_file = cs.ref('file_field_path_source')\nlet target_record = cs.record(456)\nlet target_file = cs.ref('file_field_path_target')\n\nlet output = cs.join_files(source_record, source_file, target_record, target_file, 'base64');\ncs.log(output)",
+                "output": null
+                }
+            ]
+            },
+            {
+            "name": "jwt_decode",
+            "summary": "Decodes a JWT token string into an Object of data",
+            "signature": "cs.jwt_decode(token, jwks, algorithm, leeway)",
+            "since": "2020.2",
+            "parameters": [
+                {
+                "name": "token",
+                "type": "string",
+                "description": "token is the currently encoded token (string).",
+                "required": true
+                },
+                {
+                "name": "jwks",
+                "type": "string",
+                "description": "jwks is the string key or json string key to use when verifying the hash.",
+                "required": true
+                },
+                {
+                "name": "algorithm",
+                "type": "string",
+                "description": "algorithm is the algorithm to use when verifying the hash, it MUST be one of the same possible values as for cs.jwt_encode (RS256, RS384, RS512, HS256, HS384, HS512)",
+                "required": false,
+                "default": "RS256"
+                },
+                {
+                "name": "leeway",
+                "type": "number",
+                "description": "leeway is a number (integer) of seconds to adjust time base validation by to allow for server clocks being out of align. Min 0 (default), max 300.",
+                "required": false,
+                "default": 0
+                }
+            ],
+            "return_value": {
+                "type": "object",
+                "description": "Object containing the decoded payload data"
+            },
+            "description": "Decodes a JWT token string into an Object of data",
+            "examples": [
+                {
+                "title": "JWT encode and decode usage",
+                "description": "The code example shows a number of algorithms used to encode and decode data.",
+                "code": "var private_key = \"-----BEGIN PRIVATE KEY-----\\n\\MIIJQwIBADANBgkqhkiG9w0BAQEFAASCCS0wggkpAgEAAoICAQDAH2wMHLMV1lyb\\n\\h4DRMonk2BPas9JwwHAGuYNR5w2MytjArfGgWZVlcjkHD9Wud/sK3moqbtLArnhr\\n\\F72ITuKJwHeQ/+HqwBOt6xvr9Srh+mdXOxcHpk+kMEdu6s3RlPdvImYjTcavLo6V\\n\\VWKQCM0Fj/m6GWWyjTzvnrH8x4LGnFnUWP6TB1O9LzN6MuCAiBrpI0ruyaX+/sIK\\n\\6TvgZM2jW3odHWZKLtVjwW64w2dSAzJCuTmj3gq09p1JdKx7ha6u+6xIZHIIdG0v\\n\\1xmOdrLLzlUals1r8lEbuEfXws5GA0cEO6aYievH4QG4quwsHVeFSUMMtSvI2Hrr\\n\\24hoodcoYomRyoe5LuBi3d5SF/qBnrbm7Nf+UOCPNuvAxszALg8wt9oYuoF8qcs8\\n\\FJfH4lMW++l0xvPGhJtxcDiqPvNq1QaUoemwmhjT0p5+njDaq1Yin4sAzx4qWzX7\\n\\rdLCNXDnJgKoRYhMyYuF2QqT1M1b4p9y5lQ5iQTCxS+uri2uwSC6Qs693eKGmb+B\\n\\PRfuV0escF41+iK57vWbWTlxsWqzcvm843hkaWZPL7VNUrNO4G/CMlMWbTA0uiCP\\n\\77nHcSb4DQ0s8LEiiw3xhGzWmkD4tWJR2pSR84fFrvd7OcZFIFOHRsHDz4ZjSHaA\\n\\jHkZjRr/VJ2olTYByukgRTUkQSMqZQIDAQABAoICAQCoFNV6Y0FqQXgTuaDBZO2v\\n\\ADueguQBMNrRh0uURAhevLiVGZjjKHzDnAK4YuoXEXDYOW24YeyQFhPT3Zk7v4gB\\n\\7BivCq6jqheNeLuc24kA2wm+Dzw+vQnAI1zbdSFL0oAHAplJGapRaPHlRCZOzORR\\n\\kXxxi/alF1vQZ45gEEwhZnhQhutxxl9EjB8FMa2nxWuFvBK6hkBrroYk9Zgk4Qvn\\n\\dwiGoEn1bLPT6k7r5khmP9Wg+lurOX80gu1obmLYTkRdYmF/lCEPtIwx5oW9Vatn\\n\\EsTx1i0x23WKQtbXtN6x8fwXf/hoS4G0BO50mVS145XGTioS3A3KUVp5Lj9RCwYo\\n\\Em0snRMtbg9lRz7/Syf9m3gXK4kydXQWpIHNh7C54WlYoPXefTgdpwoW5KoqHMOn\\n\\6W6deELRVqU5c2pSgq/FquRGTUMAh6qeIlpFYLp2wagZ4eLzonMmCH0+AQ42H+/E\\n\\P4zFUKr09zEqfL3jQ1kSSeUkR9A8Qe++Dj0Wfb+B1HsNCyEJCA6YdNBS9FnnhV85\\n\\Lh0aoiPGRw9/iKzLJS/rRtnAKk0tvC18oNrAU6rKBEYYScNC2lITss5fS9UQchVI\\n\\vc2zvRaC3jK5v2gc2kU9pMxGu8oKA2QQnnfN0N+JUIheNlK0Gp7u02OxypU9w6mV\\n\\vZwZH6VxRkStU4n8wZBloQKCAQEA5w0s4SazpvPzc0IUPV2LGl0ZfP0oTw1yJrYc\\n\\q8nrxRBt3hm5/X02V+s1OBuOWoSUbD9yqbMjBtaaoTLK/gjDia+VhT/fg36iE7bG\\n\\rOc17Kmg2XPJnxzfAorSOCJZIPgrC5Syv7T+514+EfDEn+n0JW6qtppzrf5er8Dq\\n\\rEzagcuxd94bQ0C7mKm99dIn02676+aZvFRyo/BAs5jbFE64P+hCHiSJbVivQeEJ\\n\\aM/761EhdZUTzLeeDyEoBjePFWLHYewhXoev44V4wMOfXPDdXp16fNNAL7HR79Ne\\n\\WxJubq0iSmKhXmOl0aRm2vgnsKdPcndQ7bBUQeUstLlQkAPHewKCAQEA1N4pgB2A\\n\\Qb/XuQfey50+zB7/LXyeE6eyQpJb8ifvXl9D9ye1WAJC90rNCY7pT08K80qtrc6d\\n\\l1CJZvSzS+hv9AiEFoOJGh/dmsqJfnyU3fgStrW2ic8I/9sam6zzCTq+P9vYdW3W\\n\\G3F2AgAOSAO0vIzWs7lTeQd2aq43uaCJSmIi8oaHxiPF6rikyfu/ciLihwLOErxG\\n\\LE/xM/MC59smEW8aqvqFd3LrxLgT17FmG3InpktwHgCUpVhEHJFYlL+tR3qxlOb5\\n\\eUBtHDyJ60GkEC3XFIb2w4XaBHhkIHk2q9sfKRaKyjS8dCFo5APatgVYDaXLXjuO\\n\\aDv6maGCaik/nwKCAQBdjncywAIUw0k7zXD2nC8cQMB2XOf6gp5LUIhxgzSlug5S\\n\\1aX7H71mgkYtbvMIchDLeDGMx42SUkmQpkmN7ayHzwJDT2bJDvi/9M2j64dpShJo\\n\\mrr0Y7NliyKuOjJO6E49xTtP5xEkTIPjrdNgUVJb6eDUSdw3gv2COyKLHB+KWRmG\\n\\SPhPFiIgIfNaW3tm4LrVPa3YlXVKLpl0X5uuMGXo8rn7DJ5dGYD1sxKlTzpZwaND\\n\\wlafGWa2B532Tn7wkOvdGck1RsoQ3dXUcCHSd3GbwzZ63utppJ42dycIx4DR7ecp\\n\\qaBf4QeeyOwhFES2AjloRyoM5M5pVEvy7erSNcWLAoIBAFJFHsL+I+DFdWl0yj3l\\n\\oyye2j7JSAsOqA2kpVac6p2NsiXmueau0RTkWwRTsIZPZUsMVL20+iFOJhydfGJd\\n\\Dk/BrtNIuQdYw3wcxTEWky6KvyjQaCEw3CiOlOUP3cp2Yqspm6oe7j4jBtnVDa/1\\n\\hrfMsvo5KTLAmJq4hJ8Ala8i6KDVL8p7bvW9sSrDWoWRR/2oLt781x4vM2jBhiD4\\n\\COl6CFOGiWjWCJs6DakyTeVTpFFYHJfr34db6s8juZmbzyuuFs4Wytp69PCR0TgU\\n\\YYVDQjoTw3Fj3RQXN5N5ZZDcGln19WQbJ662buSZPMFWpWZ46nWcDPjqHXuc+Vtw\\n\\X78CggEBANn/MUpheyxmY2HtywsxspywEDS2qWq3K/ANBsKA5CS+KSNlROonb3GP\\n\\Yds2gGcSaOzwm+4BgQxu+EJAFuxdmXIm+rdWtembcTQnOchYWnQl91I7MjCtX8V4\\n\\UD4nrsNbCturRGTpOmspxF8z+jmdFYEudmcO3RfCAD6XbWgkLS+4CFAAj8Mqr5yJ\\n\\NryDpX2FeI8kPrmXXzozLno/KJffs7yLmA8jgS5K9drt4oz/dFeS7w0az8j2I/vK\\n\\xWcPZHa2Z3xaztMmF9l3zsr3OaQZh05MK8oEbpouOld/seQ1t+cD2y35mHTgqnb5\\n\\NRYy8Y6sYeo/IgJDz/kw814Hk+pDhb4=\\n\\-----END PRIVATE KEY-----\";\n\nvar public_key = \"-----BEGIN PUBLIC KEY-----\\n\\MIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEAwB9sDByzFdZcm4eA0TKJ\\n\\5NgT2rPScMBwBrmDUecNjMrYwK3xoFmVZXI5Bw/Vrnf7Ct5qKm7SwK54axe9iE7i\\n\\icB3kP/h6sATresb6/Uq4fpnVzsXB6ZPpDBHburN0ZT3byJmI03Gry6OlVVikAjN\\n\\BY/5uhllso08756x/MeCxpxZ1Fj+kwdTvS8zejLggIga6SNK7sml/v7CCuk74GTN\\n\\o1t6HR1mSi7VY8FuuMNnUgMyQrk5o94KtPadSXSse4WurvusSGRyCHRtL9cZjnay\\n\\y85VGpbNa/JRG7hH18LORgNHBDummInrx+EBuKrsLB1XhUlDDLUryNh669uIaKHX\\n\\KGKJkcqHuS7gYt3eUhf6gZ625uzX/lDgjzbrwMbMwC4PMLfaGLqBfKnLPBSXx+JT\\n\\FvvpdMbzxoSbcXA4qj7zatUGlKHpsJoY09Kefp4w2qtWIp+LAM8eKls1+63SwjVw\\n\\5yYCqEWITMmLhdkKk9TNW+KfcuZUOYkEwsUvrq4trsEgukLOvd3ihpm/gT0X7ldH\\n\\rHBeNfoiue71m1k5cbFqs3L5vON4ZGlmTy+1TVKzTuBvwjJTFm0wNLogj++5x3Em\\n\\+A0NLPCxIosN8YRs1ppA+LViUdqUkfOHxa73eznGRSBTh0bBw8+GY0h2gIx5GY0a\\n\\/1SdqJU2AcrpIEU1JEEjKmUCAwEAAQ==\\n\\-----END PUBLIC KEY-----\";\n\nvar jwt_encode_array = ['value 1', 'value 2', 'value 3', 'value 4', 'value 5'];\n//RS Encode Start - with private key\nvar token1 = cs.jwt_encode(jwt_encode_array, private_key, 'RS256');\nvar token2 = cs.jwt_encode(jwt_encode_array, private_key, 'RS384');\nvar token3 = cs.jwt_encode(jwt_encode_array, private_key, 'RS512');\ncs.log('Token encoded with RS256:');\ncs.log(token1);\ncs.log('Token encoded with RS384:');\ncs.log(token2);\ncs.log('Token encoded with RS512:');\ncs.log(token3);\n\n//HS Encode Start\ncs.log('----- Encode with HS Algorithms -----');\nvar token4 = cs.jwt_encode(jwt_encode_array, 'a2VyamVrd2gkwqNnOWhlVFRXRHk', 'HS256');\nvar token5 = cs.jwt_encode(jwt_encode_array, 'a2VyamVrd2gkwqNnOWhlVFRXRHk', 'HS384');\nvar token6 = cs.jwt_encode(jwt_encode_array, 'a2VyamVrd2gkwqNnOWhlVFRXRHk', 'HS512');\ncs.log('Token encoded with HS256:');\ncs.log(token4);\ncs.log('Token encoded with HS384:');\ncs.log(token5);\ncs.log('Token encoded with HS512:');\ncs.log(token6);\n\n//RS Decode Start - with public key\ncs.log('----- Decode with RS Algorithms -----');\nvar decoded_token1 = cs.jwt_decode(token1, public_key, 'RS256', 0);\nvar decoded_token2 = cs.jwt_decode(token2, public_key, 'RS384', 35);\nvar decoded_token3 = cs.jwt_decode(token3, public_key, 'RS512', 35);\ncs.log('Original Data decoded with RS256:');\ncs.log(decoded_token1);\ncs.log('Original Data decoded with RS384:');\ncs.log(decoded_token2);\ncs.log('Original Data decoded with RS512:');\ncs.log(decoded_token3);\n\n//HS Decode Start\ncs.log('----- Decode with HS Algorithms -----');\nvar decoded_token4 = cs.jwt_decode(token4, 'a2VyamVrd2gkwqNnOWhlVFRXRHk', 'HS256', 0);\nvar decoded_token5 = cs.jwt_decode(token5, 'a2VyamVrd2gkwqNnOWhlVFRXRHk', 'HS384', 35);\nvar decoded_token6 = cs.jwt_decode(token6, 'a2VyamVrd2gkwqNnOWhlVFRXRHk', 'HS512', 35);\ncs.log('Original Data decoded with HS256:');\ncs.log(decoded_token4);\ncs.log('Original Data decoded with HS384:');\ncs.log(decoded_token5);\ncs.log('Original Data decoded with HS512:');\ncs.log(decoded_token6);",
+                "output": null
+                }
+            ]
+            },
+            {
+                "name": "jwt_encode",
+                "summary": "Encodes the given data into a JWT token string",
+                "signature": "cs.jwt_encode(payload, key, algorithm, headers)",
+                "since": "2020.2",
+                "parameters": [
+                  {
+                    "name": "payload",
+                    "type": "object",
+                    "description": "The data to be encoded. An Object containing the key/value claim pairs that form the JWT payload.",
+                    "required": true,
+                    "since": "2020.1",
+                    "example": "{\n  \"sub\": \"1234567890\",\n  \"name\": \"John Doe\",\n  \"admin\": true\n}"
+                  },
+                  {
+                    "name": "key",
+                    "type": "string",
+                    "description": "String key to use when hashing.",
+                    "required": true,
+                    "since": "2020.1"
+                  },
+                  {
+                    "name": "algorithm",
+                    "type": "string",
+                    "description": "The algorithm to use when hashing, a string with one of these supported values: 'RS256', 'RS384', 'RS512', 'HS256', 'HS384', 'HS512'",
+                    "required": false,
+                    "default": "RS256",
+                    "since": "2020.1"
+                  },
+                  {
+                    "name": "headers",
+                    "type": "object",
+                    "description": "Additional headers to add to the JWT token. An optional Object containing any additional key/value pairs to be added to the header portion of the JWT token. Only scalar values are supported. The key names 'alg' and 'typ' are reserved, and will be ignored if included.",
+                    "required": false,
+                    "example": "{\n    'myid': 'ae137fd'\n}",
+                    "since": "2021.1"
+                  }
+                ],
+                "return_value": {
+                  "type": "string",
+                  "description": "The JWT token string"
+                },
+                "description": "Encodes the given data into a JWT token string",
+                "examples": [
+                  {
+                    "title": "JWT encode and decode usage",
+                    "description": "The code example shows a number of algorithms used to encode and decode data.",
+                    "code": "var private_key = \"-----BEGIN PRIVATE KEY-----\\n\\MIIJQwIBADANBgkqhkiG9w0BAQEFAASCCS0wggkpAgEAAoICAQDAH2wMHLMV1lyb\\n\\h4DRMonk2BPas9JwwHAGuYNR5w2MytjArfGgWZVlcjkHD9Wud/sK3moqbtLArnhr\\n\\F72ITuKJwHeQ/+HqwBOt6xvr9Srh+mdXOxcHpk+kMEdu6s3RlPdvImYjTcavLo6V\\n\\VWKQCM0Fj/m6GWWyjTzvnrH8x4LGnFnUWP6TB1O9LzN6MuCAiBrpI0ruyaX+/sIK\\n\\6TvgZM2jW3odHWZKLtVjwW64w2dSAzJCuTmj3gq09p1JdKx7ha6u+6xIZHIIdG0v\\n\\1xmOdrLLzlUals1r8lEbuEfXws5GA0cEO6aYievH4QG4quwsHVeFSUMMtSvI2Hrr\\n\\24hoodcoYomRyoe5LuBi3d5SF/qBnrbm7Nf+UOCPNuvAxszALg8wt9oYuoF8qcs8\\n\\FJfH4lMW++l0xvPGhJtxcDiqPvNq1QaUoemwmhjT0p5+njDaq1Yin4sAzx4qWzX7\\n\\rdLCNXDnJgKoRYhMyYuF2QqT1M1b4p9y5lQ5iQTCxS+uri2uwSC6Qs693eKGmb+B\\n\\PRfuV0escF41+iK57vWbWTlxsWqzcvm843hkaWZPL7VNUrNO4G/CMlMWbTA0uiCP\\n\\77nHcSb4DQ0s8LEiiw3xhGzWmkD4tWJR2pSR84fFrvd7OcZFIFOHRsHDz4ZjSHaA\\n\\jHkZjRr/VJ2olTYByukgRTUkQSMqZQIDAQABAoICAQCoFNV6Y0FqQXgTuaDBZO2v\\n\\ADueguQBMNrRh0uURAhevLiVGZjjKHzDnAK4YuoXEXDYOW24YeyQFhPT3Zk7v4gB\\n\\7BivCq6jqheNeLuc24kA2wm+Dzw+vQnAI1zbdSFL0oAHAplJGapRaPHlRCZOzORR\\n\\kXxxi/alF1vQZ45gEEwhZnhQhutxxl9EjB8FMa2nxWuFvBK6hkBrroYk9Zgk4Qvn\\n\\dwiGoEn1bLPT6k7r5khmP9Wg+lurOX80gu1obmLYTkRdYmF/lCEPtIwx5oW9Vatn\\n\\EsTx1i0x23WKQtbXtN6x8fwXf/hoS4G0BO50mVS145XGTioS3A3KUVp5Lj9RCwYo\\n\\Em0snRMtbg9lRz7/Syf9m3gXK4kydXQWpIHNh7C54WlYoPXefTgdpwoW5KoqHMOn\\n\\6W6deELRVqU5c2pSgq/FquRGTUMAh6qeIlpFYLp2wagZ4eLzonMmCH0+AQ42H+/E\\n\\P4zFUKr09zEqfL3jQ1kSSeUkR9A8Qe++Dj0Wfb+B1HsNCyEJCA6YdNBS9FnnhV85\\n\\Lh0aoiPGRw9/iKzLJS/rRtnAKk0tvC18oNrAU6rKBEYYScNC2lITss5fS9UQchVI\\n\\vc2zvRaC3jK5v2gc2kU9pMxGu8oKA2QQnnfN0N+JUIheNlK0Gp7u02OxypU9w6mV\\n\\vZwZH6VxRkStU4n8wZBloQKCAQEA5w0s4SazpvPzc0IUPV2LGl0ZfP0oTw1yJrYc\\n\\q8nrxRBt3hm5/X02V+s1OBuOWoSUbD9yqbMjBtaaoTLK/gjDia+VhT/fg36iE7bG\\n\\rOc17Kmg2XPJnxzfAorSOCJZIPgrC5Syv7T+514+EfDEn+n0JW6qtppzrf5er8Dq\\n\\rEzagcuxd94bQ0C7mKm99dIn02676+aZvFRyo/BAs5jbFE64P+hCHiSJbVivQeEJ\\n\\aM/761EhdZUTzLeeDyEoBjePFWLHYewhXoev44V4wMOfXPDdXp16fNNAL7HR79Ne\\n\\WxJubq0iSmKhXmOl0aRm2vgnsKdPcndQ7bBUQeUstLlQkAPHewKCAQEA1N4pgB2A\\n\\Qb/XuQfey50+zB7/LXyeE6eyQpJb8ifvXl9D9ye1WAJC90rNCY7pT08K80qtrc6d\\n\\l1CJZvSzS+hv9AiEFoOJGh/dmsqJfnyU3fgStrW2ic8I/9sam6zzCTq+P9vYdW3W\\n\\G3F2AgAOSAO0vIzWs7lTeQd2aq43uaCJSmIi8oaHxiPF6rikyfu/ciLihwLOErxG\\n\\LE/xM/MC59smEW8aqvqFd3LrxLgT17FmG3InpktwHgCUpVhEHJFYlL+tR3qxlOb5\\n\\eUBtHDyJ60GkEC3XFIb2w4XaBHhkIHk2q9sfKRaKyjS8dCFo5APatgVYDaXLXjuO\\n\\aDv6maGCaik/nwKCAQBdjncywAIUw0k7zXD2nC8cQMB2XOf6gp5LUIhxgzSlug5S\\n\\1aX7H71mgkYtbvMIchDLeDGMx42SUkmQpkmN7ayHzwJDT2bJDvi/9M2j64dpShJo\\n\\mrr0Y7NliyKuOjJO6E49xTtP5xEkTIPjrdNgUVJb6eDUSdw3gv2COyKLHB+KWRmG\\n\\SPhPFiIgIfNaW3tm4LrVPa3YlXVKLpl0X5uuMGXo8rn7DJ5dGYD1sxKlTzpZwaND\\n\\wlafGWa2B532Tn7wkOvdGck1RsoQ3dXUcCHSd3GbwzZ63utppJ42dycIx4DR7ecp\\n\\qaBf4QeeyOwhFES2AjloRyoM5M5pVEvy7erSNcWLAoIBAFJFHsL+I+DFdWl0yj3l\\n\\oyye2j7JSAsOqA2kpVac6p2NsiXmueau0RTkWwRTsIZPZUsMVL20+iFOJhydfGJd\\n\\Dk/BrtNIuQdYw3wcxTEWky6KvyjQaCEw3CiOlOUP3cp2Yqspm6oe7j4jBtnVDa/1\\n\\hrfMsvo5KTLAmJq4hJ8Ala8i6KDVL8p7bvW9sSrDWoWRR/2oLt781x4vM2jBhiD4\\n\\COl6CFOGiWjWCJs6DakyTeVTpFFYHJfr34db6s8juZmbzyuuFs4Wytp69PCR0TgU\\n\\YYVDQjoTw3Fj3RQXN5N5ZZDcGln19WQbJ662buSZPMFWpWZ46nWcDPjqHXuc+Vtw\\n\\X78CggEBANn/MUpheyxmY2HtywsxspywEDS2qWq3K/ANBsKA5CS+KSNlROonb3GP\\n\\Yds2gGcSaOzwm+4BgQxu+EJAFuxdmXIm+rdWtembcTQnOchYWnQl91I7MjCtX8V4\\n\\UD4nrsNbCturRGTpOmspxF8z+jmdFYEudmcO3RfCAD6XbWgkLS+4CFAAj8Mqr5yJ\\n\\NryDpX2FeI8kPrmXXzozLno/KJffs7yLmA8jgS5K9drt4oz/dFeS7w0az8j2I/vK\\n\\xWcPZHa2Z3xaztMmF9l3zsr3OaQZh05MK8oEbpouOld/seQ1t+cD2y35mHTgqnb5\\n\\NRYy8Y6sYeo/IgJDz/kw814Hk+pDhb4=\\n\\-----END PRIVATE KEY-----\";\n\nvar public_key = \"-----BEGIN PUBLIC KEY-----\\n\\MIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEAwB9sDByzFdZcm4eA0TKJ\\n\\5NgT2rPScMBwBrmDUecNjMrYwK3xoFmVZXI5Bw/Vrnf7Ct5qKm7SwK54axe9iE7i\\n\\icB3kP/h6sATresb6/Uq4fpnVzsXB6ZPpDBHburN0ZT3byJmI03Gry6OlVVikAjN\\n\\BY/5uhllso08756x/MeCxpxZ1Fj+kwdTvS8zejLggIga6SNK7sml/v7CCuk74GTN\\n\\o1t6HR1mSi7VY8FuuMNnUgMyQrk5o94KtPadSXSse4WurvusSGRyCHRtL9cZjnay\\n\\y85VGpbNa/JRG7hH18LORgNHBDummInrx+EBuKrsLB1XhUlDDLUryNh669uIaKHX\\n\\KGKJkcqHuS7gYt3eUhf6gZ625uzX/lDgjzbrwMbMwC4PMLfaGLqBfKnLPBSXx+JT\\n\\FvvpdMbzxoSbcXA4qj7zatUGlKHpsJoY09Kefp4w2qtWIp+LAM8eKls1+63SwjVw\\n\\5yYCqEWITMmLhdkKk9TNW+KfcuZUOYkEwsUvrq4trsEgukLOvd3ihpm/gT0X7ldH\\n\\rHBeNfoiue71m1k5cbFqs3L5vON4ZGlmTy+1TVKzTuBvwjJTFm0wNLogj++5x3Em\\n\\+A0NLPCxIosN8YRs1ppA+LViUdqUkfOHxa73eznGRSBTh0bBw8+GY0h2gIx5GY0a\\n\\/1SdqJU2AcrpIEU1JEEjKmUCAwEAAQ==\\n\\-----END PUBLIC KEY-----\";\n\nvar jwt_encode_array = ['value 1', 'value 2', 'value 3', 'value 4', 'value 5'];\n//RS Encode Start - with private key\nvar token1 = cs.jwt_encode(jwt_encode_array, private_key, 'RS256');\nvar token2 = cs.jwt_encode(jwt_encode_array, private_key, 'RS384');\nvar token3 = cs.jwt_encode(jwt_encode_array, private_key, 'RS512');\ncs.log('Token encoded with RS256:');\ncs.log(token1);\ncs.log('Token encoded with RS384:');\ncs.log(token2);\ncs.log('Token encoded with RS512:');\ncs.log(token3);\n\n//HS Encode Start\ncs.log('----- Encode with HS Algorithms -----');\nvar token4 = cs.jwt_encode(jwt_encode_array, 'a2VyamVrd2gkwqNnOWhlVFRXRHk', 'HS256');\nvar token5 = cs.jwt_encode(jwt_encode_array, 'a2VyamVrd2gkwqNnOWhlVFRXRHk', 'HS384');\nvar token6 = cs.jwt_encode(jwt_encode_array, 'a2VyamVrd2gkwqNnOWhlVFRXRHk', 'HS512');\ncs.log('Token encoded with HS256:');\ncs.log(token4);\ncs.log('Token encoded with HS384:');\ncs.log(token5);\ncs.log('Token encoded with HS512:');\ncs.log(token6);",
+                    "output": null
+                  }
+                ]
+              },
+              {
+                "name": "label",
+                "summary": "Get a translated text label",
+                "signature": "cs.label(label_code_name)",
+                "since": "10.2",
+                "parameters": [
+                  {
+                    "name": "label_code_name",
+                    "type": "string",
+                    "description": "Label code name as defined within certain Code Studio item types",
+                    "required": true
+                  }
+                ],
+                "return_value": {
+                  "type": "string",
+                  "description": "The translated text label"
+                },
+                "description": "Get a translated text label",
+                "examples": []
+              },
+              {
+                "name": "link",
+                "summary": "Returns the URL to a given page with added optional parameters",
+                "signature": "cs.link(url, params)",
+                "since": "10.4",
+                "parameters": [
+                  {
+                    "name": "url",
+                    "type": "string",
+                    "description": "The URL or page path to link to",
+                    "required": true
+                  },
+                  {
+                    "name": "params",
+                    "type": "mixed",
+                    "description": "Parameters to include in the query string of the URL. An object defining key value pairs to be added to the URL as query string parameters. Alternatively, as a short hand, if only an integer is provided it will be added to the URL as the context_record_id query parameter.",
+                    "required": false
+                  }
+                ],
+                "return_value": {
+                  "type": "string",
+                  "description": "The link URL"
+                },
+                "description": "Returns the URL to a given page with added optional parameters",
+                "examples": [
+                  {
+                    "title": "Generating a link with a context record id",
+                    "description": "In Code Studio > References create a page path reference. Copy the code example and replace the cs.ref('PagePath') with your own reference.",
+                    "code": "let link = cs.link(cs.ref('PagePath'), {'context_record_id' : 123});\ncs.log(link);",
+                    "output": null
+                  }
+                ]
+              },
+              {
+                "name": "locale",
+                "summary": "Fetches locale-specific details",
+                "signature": "cs.locale(locale)",
+                "since": "2020.2",
+                "parameters": [
+                  {
+                    "name": "locale",
+                    "type": "string",
+                    "description": "The local to get info on; e.g en_GB",
+                    "required": true
+                  }
+                ],
+                "return_value": {
+                  "type": "object",
+                  "description": "Locale data"
+                },
+                "description": "Fetches locale-specific details. Defaults to the current active locale; user, or system",
+                "examples": [
+                  {
+                    "title": "locale usage",
+                    "description": "Example Output",
+                    "code": "let locale = cs.locale('en_GB');\ncs.log(locale);",
+                    "output": "Array(\n    [language] => en\n    [country] => GB\n    [locales] => en_GB\n    [thousands_separator] => ,\n    [decimal_point] => .\n)"
+                  }
+                ]
+              },
+              {
+                "name": "log",
+                "summary": "Log an information message to the Detective",
+                "signature": "cs.log(message)",
+                "since": "10.0",
+                "parameters": [
+                  {
+                    "name": "message",
+                    "type": "any",
+                    "description": "The data to log to the Detective. This could be a string message, or other JS data to be logged, to aid debugging.",
+                    "required": true
+                  }
+                ],
+                "return_value": {
+                  "type": "void",
+                  "description": ""
+                },
+                "description": "Log an information message to the Detective. As of 2024.2 logging can be turned off per Component in it's Basic tab, so ensure this is enabled if logging is not appearing in Detective. In backend code, the alias console.log() will also do the same. In frontend code console.log will log to the browser's console as normal, not Detective.",
+                "examples": []
+              },
+              {
+                "name": "logout",
+                "summary": "Terminates the session for a specified user",
+                "signature": "cs.logout(user_id)",
+                "since": "2020.1",
+                "parameters": [
+                  {
+                    "name": "user_id",
+                    "type": "string",
+                    "description": "User id that will be logged out",
+                    "required": false
+                  }
+                ],
+                "return_value": {
+                  "type": "mixed",
+                  "description": "Whether there is a current logged in user, or object containing error details if specified user not found"
+                },
+                "description": "Terminates the session for a specified user. If no user ID is specified the current user's session will be terminated. This function is not relevant to webpage usage.",
+                "examples": [
+                  {
+                    "title": "Logging out the current user",
+                    "description": "This could be used as a custom logout button action. Firstly we will logout the current user and redirect to the login page.",
+                    "code": "cs.logout();\ncs.redirect('login');",
+                    "output": null
+                  }
+                ]
+              },
+              {
+                "name": "notify",
+                "summary": "Create a notification banner",
+                "signature": "cs.notify(message)",
+                "since": "10.0",
+                "parameters": [
+                  {
+                    "name": "message",
+                    "type": "mixed",
+                    "description": "The message for the notification. A string, number, or an array of strings and numbers are accepted. If an array, each value will be shown on a new line within the banner.",
+                    "required": true
+                  }
+                ],
+                "return_value": {
+                  "type": "void",
+                  "description": ""
+                },
+                "description": "Create a notification banner",
+                "examples": [
+                  {
+                    "title": "Displaying a notification",
+                    "description": "Notifications can only be triggered via server side code as they need to be passed to the client side for display. Note that notifications will not show up when making an ajax call from the client side to the sever side until the page is reloaded. In this scenario we recommend handling the notifications in the client side with your own code.",
+                    "code": "cs.notify('message');",
+                    "output": null
+                  }
+                ]
+              },
+              {
+                "name": "notify_error",
+                "summary": "Create a notification error banner",
+                "signature": "cs.notify_error(message)",
+                "since": "10.0",
+                "parameters": [
+                  {
+                    "name": "message",
+                    "type": "mixed",
+                    "description": "The message for the error notification. A string, number, or an array of strings and numbers are accepted. If an array, each value will be shown on a new line within the banner.",
+                    "required": true
+                  }
+                ],
+                "return_value": {
+                  "type": "void",
+                  "description": ""
+                },
+                "description": "Create a notification error banner",
+                "examples": [
+                  {
+                    "title": "Displaying a notification",
+                    "description": "Notifications can only be triggered via server side code as they need to be passed to the client side for display. Note that notifications will not show up when making an ajax call from the client side to the sever side until the page is reloaded. In this scenario we recommend handling the notifications in the client side with your own code.",
+                    "code": "cs.notify_error('message');",
+                    "output": null
+                  }
+                ]
+              },
+              {
+                "name": "notify_warning",
+                "summary": "Create a notification warning banner",
+                "signature": "cs.notify_warning(message)",
+                "since": "10.0",
+                "parameters": [
+                  {
+                    "name": "message",
+                    "type": "mixed",
+                    "description": "The message for the warning notification. A string, number, or an array of strings and numbers are accepted. If an array, each value will be shown on a new line within the banner.",
+                    "required": true
+                  }
+                ],
+                "return_value": {
+                  "type": "void",
+                  "description": ""
+                },
+                "description": "Create a notification warning banner",
+                "examples": [
+                  {
+                    "title": "Displaying a notification",
+                    "description": "Notifications can only be triggered via server side code as they need to be passed to the client side for display. Note that notifications will not show up when making an ajax call from the client side to the sever side until the page is reloaded. In this scenario we recommend handling the notifications in the client side with your own code.",
+                    "code": "cs.notify_warning('message');",
+                    "output": null
+                  }
+                ]
+              },
+              {
+                "name": "path_info",
+                "summary": "Provide information for a field or relation path",
+                "signature": "cs.path_info(field_or_relation_path)",
+                "since": "10.2",
+                "parameters": [
+                  {
+                    "name": "field_or_relation_path",
+                    "type": "string",
+                    "description": "Field or relation path to query",
+                    "required": true
+                  }
+                ],
+                "return_value": {
+                  "type": "object",
+                  "description": "Details of the relationship including object, relation names, reverse path, etc."
+                },
+                "description": "Provide information for a field or relation path",
+                "examples": [
+                  {
+                    "title": "Path info usage",
+                    "description": "For this example we will be creating a reference to an object's property. In Code Studio -> References page create a Field Path reference and replace the EmailAddressFieldPath reference in the code",
+                    "code": "let result = cs.path_info(cs.ref('EmailAddressFieldPath') )\ncs.log(result);",
+                    "output": "Array\n(\n    [field] => Array\n        (\n            [id] => PRO0000001EFCAE9\n            [type] => property\n            [name] => Email address\n            [display_name] => Email address\n            [base_format] => email\n            [data_type_id] => DTP0000012EFCAE9\n            [base_object_id] => OBJ0000001EFCAE9\n        )\n)"
+                  }
+                ]
+              },
+              {
+                "name": "r",
+                "summary": "Resolve a reference",
+                "signature": "cs.r(type, reference)",
+                "since": "10.0",
+                "deprecated": "2020.2",
+                "parameters": [
+                  {
+                    "name": "type",
+                    "type": "string",
+                    "description": "The type of reference",
+                    "required": true
+                  },
+                  {
+                    "name": "reference",
+                    "type": "string",
+                    "description": "The reference name",
+                    "required": true
+                  }
+                ],
+                "return_value": {
+                  "type": "string",
+                  "description": "Reference data"
+                },
+                "description": "Resolve a reference. Alias of cs.ref()",
+                "examples": []
+              },
+              {
+                "name": "random_bytes",
+                "summary": "Generate a series of random byte values",
+                "signature": "cs.random_bytes(length, format)",
+                "since": "2021.3",
+                "parameters": [
+                  {
+                    "name": "length",
+                    "type": "number",
+                    "description": "Number of bytes required (positive integer)",
+                    "required": true
+                  },
+                  {
+                    "name": "format",
+                    "type": "string",
+                    "description": "Desired format of returned bytes. Options are 'hex' for a string of hexadecimal values, or 'base64' for a base64 encoded string. Default is 'hex' if not specified.",
+                    "required": false,
+                    "default": "hex"
+                  }
+                ],
+                "return_value": {
+                  "type": "string",
+                  "description": "Random bytes as an encoded string"
+                },
+                "description": "Generate a series of random byte values. Can be used for generating random values for use in cryptography, or other purposes where random data is required.",
+                "examples": [
+                  {
+                    "title": "Generate 16 random bytes",
+                    "description": "Generating 16 bytes of random data, and returning as a hexadecimal string",
+                    "code": "let key = cs.random_bytes(16, 'hex');\ncs.log(key);",
+                    "output": "// Example output: \"377c080d0e448c56cd8356d1aa100767\""
+                  }
+                ]
+              },
+              {
+                "name": "read",
+                "summary": "Fetch a system or environment variable",
+                "signature": "cs.read(config_name)",
+                "since": "10.0",
+                "deprecated": "2020.2",
+                "parameters": [
+                  {
+                    "name": "config_name",
+                    "type": "string",
+                    "description": "Configuration key to fetch. Available options include: APPLICATION_ID, ENVIRONMENT_ID, PLATFORM_VERSION, PLATFORM_CODE_VERSION, SYSTEM_URL_DOMAIN, SYSTEM_URL_PATH, SYSTEM_URL, WEBPAGE_URL, API_URL, CONTROLLER_URL, SYSTEM_USER_ID",
+                    "required": true
+                  }
+                ],
+                "return_value": {
+                  "type": "any",
+                  "description": "The configuration value"
+                },
+                "description": "Fetch a system or environment variable. Alias for cs.config(). Whilst this function is still usable, it has been replaced with cs.config() and will be removed in a later version.",
+                "examples": []
+              },
+              {
+                "name": "read_file",
+                "summary": "Read the contents of a record's file into a text string",
+                "signature": "cs.read_file(record_id, file_field_path, encoding)",
+                "since": "2020.1",
+                "parameters": [
+                  {
+                    "name": "record_id",
+                    "type": "number",
+                    "description": "The record id to find for the file from",
+                    "required": true
+                  },
+                  {
+                    "name": "file_field_path",
+                    "type": "string",
+                    "description": "The path to the file field, relative to the provided record id",
+                    "required": true
+                  },
+                  {
+                    "name": "encoding",
+                    "type": "string",
+                    "description": "Encodes the content of the file before it is passed back to CS",
+                    "required": false,
+                    "default": "default"
+                  }
+                ],
+                "return_value": {
+                  "type": "string",
+                  "description": "Returns file contents on success, returns null if file does not exists"
+                },
+                "description": "Use this function to read the content of a text file saved in a record. This is most likely to prove useful in the context of exchanging data with another application that provide/receive data in files. An exception will be thrown if the parameters are invalid OR the user does not have a read privilege. Note that this function is designed to read files containing text only. Note that this function is designed to handle small files, less than 50Mb in size.",
+                "examples": [
+                  {
+                    "title": "Creating a custom csv file",
+                    "description": "We need to build an atypical csv export, where a header line has many fields about an overall order. And all subsequent lines will describe items within the order. We can easily build them as two separate csv files using the standard export features but once those export files are created, we need to glue them together into one file.",
+                    "code": "var order_record_id = params.record_id;\n\n// read the contents of the two input file\nvar head_file_contents = cs.read_file(order_record_id, cs.ref(\"head_file\"));\nvar item_file_contents = cs.read_file(order_record_id, cs.ref(\"item_file\"));\n\n//stick the contents together\nvar merged_content = head_file_contents + item_file_contents;\nvar merged_filename = cs.search({'record_id': params.record_id, 'selects': [cs.ref('order_reference')], 'return': 'value'}) + '.csv';\n\n// write the contents to the merged file\nvar write_result = cs.write_file(order_record_id, cs.ref(\"merge_file\"), merged_filename, merged_content);",
+                    "output": null
+                  },
+                  {
+                    "title": "Encoding",
+                    "description": "It is possible to read files using a specified encoding method. The third parameter (optional) within the read_file function allows you to specify between two encoding methods; default and base64. If you do not specify any encoding method, the default will be used when processing the file.",
+                    "code": "// no encoding, but still uses default encoding\nvar file = cs.read_file(record_id, cs.ref(\"head_file\"));\n\n// default encoding\nvar file = cs.read_file(record_id, cs.ref(\"head_file\"), 'default');\n\n// base64 encoding\nvar file = cs.read_file(record_id, cs.ref(\"head_file\"), 'base64');",
+                    "output": null
+                  }
+                ]
+              },
+              {
+                "name": "record",
+                "summary": "Fetch a data record",
+                "signature": "cs.record(record_id)",
+                "since": "10.0",
+                "parameters": [
+                  {
+                    "name": "record_id",
+                    "type": "number",
+                    "description": "The record ID. When using the record method, the parameter passed to cs.record must strictly be a numeric value that must be the ID of a valid, active record. If not, you will experience a runtime error in your console and detective advising that the record has not been initialised correctly.",
+                    "required": true
+                  }
+                ],
+                "return_value": {
+                  "type": "record object",
+                  "description": "The record object"
+                },
+                "description": "Fetch a data record",
+                "examples": [
+                  {
+                    "title": "Getting record data",
+                    "description": "Let's use the record method to initialise a record, then get a user's email address. In this example, we have created a reference that is a field path to the necessary field we want to extract.",
+                    "code": "let record = cs.record(123);\nlet email = record.get(cs.ref('user_email_address'), 'displayable');\ncs.log(email)",
+                    "output": null
+                  },
+                  {
+                    "title": "Retrieving all the properties for a record id",
+                    "description": "We might want to get all the data for a given record id and then perform some logic. Replace the 123 record with your own to see an output.",
+                    "code": "let record = cs.record(123);\nlet schema = record.schema();\n\nlet properties = [];\nObject.keys(schema.properties).map(function(key, index) {\n\tproperties[schema.properties[key]] = \"\" + key;\n});\n\nlet record_data = record.get(properties, 'displayable');\n\ncs.log(record_data);",
+                    "output": null
+                  },
+                  {
+                    "title": "Initialising records correctly",
+                    "description": "When using the record method, the parameter passed to cs.record must strictly be a numeric value that must be the ID of a valid, active record. If not, you will experience a runtime error in your console and detective advising that the record has not been initialised correctly. The below example provides a good practise method for handling and gracefully failing where the correct conditions for the method are not met.",
+                    "code": "const record_id = widget.get_base_record_id();\n\nif (!if (!Number.isNaN(record_id)) {\n     const record = cs.record(record_id)\n     // your record-based logic\n} else {\n     // handle gracefully\n}",
+                    "output": null
+                  }
+                ]
+              },
+              {
+                "name": "record_field_file_url",
+                "summary": "Resolve a record field file ID for a URL",
+                "signature": "cs.record_field_file_url(record_field_file_id)",
+                "since": "10.2",
+                "parameters": [
+                  {
+                    "name": "record_field_file_id",
+                    "type": "number",
+                    "description": "The file ID to resolve. A numeric value typically retrieved from the file/image property after a record search.",
+                    "required": true
+                  }
+                ],
+                "return_value": {
+                  "type": "string",
+                  "description": "The URL for the file or image"
+                },
+                "description": "Resolve a record field file ID for a URL",
+                "examples": [
+                  {
+                    "title": "Simple image retrieval",
+                    "description": "In this example we will be retrieving an image url stored within a user's record. Create a field path reference in Code Studio -> References page that will point to an image or a file property.",
+                    "code": "let session_user_record = cs.record(cs.get_session_user_id());\nlet image_id = session_user_record.get(cs.ref('UserImage'));\n\nlet user_image_url = cs.record_field_file_url(image_id);\ncs.log(user_image_url);",
+                    "output": null
+                  }
+                ]
+              },
+              {
+                "name": "record_search_filters_processor",
+                "summary": "Invoke a Record Search Filters processor",
+                "signature": "cs.record_search_filters_processor(record_search_filter_id, params)",
+                "since": "2021.1",
+                "parameters": [
+                  {
+                    "name": "record_search_filter_id",
+                    "type": "string",
+                    "description": "ID of the Record Search Filters processor",
+                    "required": true
+                  },
+                  {
+                    "name": "params",
+                    "type": "object",
+                    "description": "Extra data params to send to the Record Search Filters processor. Any additional data to be passed which the Record Search Filters processor may need to determine the filters to be returned. Will be available in the Record Search Filters processor code via the \"params\" parameter.",
+                    "required": false,
+                    "default": "{}"
+                  }
+                ],
+                "return_value": {
+                  "type": "object",
+                  "description": "Returns a list of filters"
+                },
+                "description": "Invoke a Record Search Filters processor",
+                "examples": []
+              },
+              {
+                "name": "record_selector",
+                "summary": "Invoke a record selector",
+                "signature": "cs.record_selector(record_selector_id, parameters)",
+                "since": "10.4",
+                "parameters": [
+                  {
+                    "name": "record_selector_id",
+                    "type": "string",
+                    "description": "Reference of the record selector",
+                    "required": true
+                  },
+                  {
+                    "name": "parameters",
+                    "type": "object",
+                    "description": "Additional parameters that will be passed on to the record selector",
+                    "required": false
+                  }
+                ],
+                "return_value": {
+                  "type": "number",
+                  "description": "Chosen record ID"
+                },
+                "description": "Invoke a record selector",
+                "examples": [
+                  {
+                    "title": "Calling a Record Selector",
+                    "description": "We might want to call an existing Code Studio Record Selector. First we will need to create a reference to it in References page. The Second optional variable is parameters, here you can pass anything that the Record Selector may require.",
+                    "code": "let result = cs.record_selector( cs.ref('TestRecordSelector'), 123, {example_param : 123} );\ncs.log(result);",
+                    "output": null
+                  }
+                ]
+              },
+              {
+                "name": "redirect",
+                "summary": "Redirect to a URL or page path",
+                "signature": "cs.redirect(url_or_path)",
+                "since": "10.2",
+                "parameters": [
+                  {
+                    "name": "url_or_path",
+                    "type": "string",
+                    "description": "URL or page path to redirect to",
+                    "required": true
+                  }
+                ],
+                "return_value": {
+                  "type": "void",
+                  "description": ""
+                },
+                "description": "Redirect to a URL or page path",
+                "examples": [
+                  {
+                    "title": "Logout and redirect",
+                    "description": "This could be used as a custom logout button action. Firstly we will logout the current user and redirect to the login page.",
+                    "code": "cs.logout();\ncs.redirect('login');",
+                    "output": null
+                  },
+                  {
+                    "title": "Redirecting to a specific page",
+                    "description": "In Code Studio > References create a page path reference. Copy the code example and replace the cs.ref('PagePath') with your own reference.",
+                    "code": "cs.redirect(cs.ref('PagePath'))",
+                    "output": null
+                  }
+                ]
+              },
+              {
+                "name": "ref",
+                "summary": "Resolve a reference",
+                "signature": "cs.ref(reference)",
+                "since": "10.2",
+                "parameters": [
+                  {
+                    "name": "reference",
+                    "type": "string",
+                    "description": "The reference name",
+                    "required": true
+                  }
+                ],
+                "return_value": {
+                  "type": "string",
+                  "description": "Reference data"
+                },
+                "description": "Resolve a reference",
+                "examples": [
+                  {
+                    "title": "ref usage",
+                    "description": "In Code Studio > References page create any type of reference and make a note of the reference name. In this example we have created a reference to a page path.",
+                    "code": "cs.log(cs.ref('PagePath'));",
+                    "output": "Example Output\np/1EFCAE9/8EFCAE9/8EFCAE9/2EFCAE9|INT0000001EFCAE9"
+                  }
+                ]
+              },
+              {
+                "name": "save",
+                "summary": "Create or update a record",
+                "signature": "cs.save(object_id, data, multi_addition, mode)",
+                "since": "10.0",
+                "parameters": [
+                  {
+                    "name": "object_id",
+                    "type": "string",
+                    "description": "Object ID to save into",
+                    "required": true
+                  },
+                  {
+                    "name": "data",
+                    "type": "object",
+                    "description": "Data to save. More detailed description can be found in our dedicated Help Portal look under Code Studio -> Detailed Reference For cs.save()",
+                    "required": true
+                  },
+                  {
+                    "name": "multi_addition",
+                    "type": "object",
+                    "description": "Array of related records keyed by the relationship ID. More detailed description can be found in our dedicated Help Portal look under Code Studio -> Detailed Reference For cs.save()",
+                    "required": true
+                  },
+                  {
+                    "name": "mode",
+                    "type": "string",
+                    "description": "Which format to save the data in. This allows you to specify which format you would like to save your data in, and you have two formats you can choose from; \"editable\" or \"saveable\".",
+                    "required": false,
+                    "default": "editable",
+                    "since": "2022.3"
+                  }
+                ],
+                "return_value": {
+                  "type": "void",
+                  "description": ""
+                },
+                "description": "Create or update a record",
+                "examples": [
+                  {
+                    "title": "Updating an existing record",
+                    "description": "In Code Studio > References page create a reference to the users object. In Code Studio > References page create a field path reference to the users object's data type. In this example we will be updating a record 123 and setting a decimal value to 1",
+                    "code": "let users_object_id = cs.ref('Users');\nlet data = {};\ndata[':id'] = 123;\ndata[cs.ref('UserDecimalFieldPath')] = 1;\n\nlet result = cs.save(users_object_id, data)\ncs.log(result);",
+                    "output": "Example Output\nArray\n(\n    [status] => 1\n    [records] => Array\n        (\n            [base] => Array\n                (\n                    [record_id] => 123\n                    [action] => modified\n                    [fields] => Array\n                        (\n                            [:PRO0000124EFCAE1] => Array\n                                (\n                                    [old] => 2.000000\n                                    [new] => 1.000000\n                                )\n                        )\n                )\n        )\n    [subset_review] =>\n)"
+                  },
+                  {
+                    "title": "Alternative format",
+                    "description": "Alternatively, you can condense your save function as stated in the below example, which allows you to write similar code in fewer lines. In this example, we're going to save the same data as above, in the alternative format.",
+                    "code": "let result = cs.save(cs.ref('Users'), {\n\t[':id'] : 123,\n\t[cs.ref('UserDecimalFieldPath')] : 1\n})\ncs.log(result);",
+                    "output": null
+                  },
+                  {
+                    "title": "Mode",
+                    "description": "This allows you to specify which format you would like to save your data in, and you have two formats you can choose from; Editable or Saveable. In the below example, we save the same data above in the Editable format.",
+                    "code": "let result = cs.save(cs.ref('Users'), {\n\t\t[':id'] : 123,\n\t\t[cs.ref('UserDecimalFieldPath')] : 1\n\t}, {}, {'mode':'editable'})\ncs.log(result)",
+                    "output": null
+                  }
+                ]
+              },
+              {
+                "name": "save_multi",
+                "summary": "A performant way of creating a large number of records",
+                "signature": "cs.save_multi(object_ref, field_refs, data)",
+                "since": "2024.1",
+                "parameters": [
+                  {
+                    "name": "object_ref",
+                    "type": "string",
+                    "description": "Reference of base object",
+                    "required": true
+                  },
+                  {
+                    "name": "field_refs",
+                    "type": "array",
+                    "description": "An array of field paths that will be saved. This will be an array of field paths that you will save. For example: [':PRO0000123ABCDE1', ':PRO0000456ABCDE1']",
+                    "required": true
+                  },
+                  {
+                    "name": "data",
+                    "type": "object",
+                    "description": "This is the data that will be saved, mapped to the field paths specified in the field refs array",
+                    "required": true,
+                    "example": "[\n\t{':PRO0000001ABCDE1': 'John', ':PRO0000002ABCDE1' : 'Doe', ':PRO0000003ABCDE1' : 'Marketing' },\n\t{':PRO0000001ABCDE1': 'Jane', ':PRO0000002ABCDE1' : 'Doe', ':PRO0000003ABCDE1' : 'Sales' },\n\t{':PRO0000001ABCDE1': 'Foo', ':PRO0000002ABCDE1' : 'Bar', ':PRO0000003ABCDE1' : 'Development' },\n]"
+                  }
+                ],
+                "return_value": {
+                  "type": "unknown",
+                  "description": ""
+                },
+                "description": "A performant way of creating a large number of records",
+                "examples": [
+                  {
+                    "title": "Batch creating multiple records",
+                    "description": "In this example, we want to batch create records based on fixed data.",
+                    "code": "// The field paths the data will be mapped to\nlet field_refs = [ ':PRO0000001ABCDE1', ':PRO0000002ABCDE1', ':PRO0000003ABCDE1']\n\n// The data to create\nlet data = [\n\t{':PRO0000001ABCDE1': 'John', ':PRO0000002ABCDE1' : 'Doe', ':PRO0000003ABCDE1' : 'Marketing' },\n\t{':PRO0000001ABCDE1': 'Jane', ':PRO0000002ABCDE1' : 'Doe', ':PRO0000003ABCDE1' : 'Sales' },\n\t{':PRO0000001ABCDE1': 'Foo', ':PRO0000002ABCDE1' : 'Bar', ':PRO0000003ABCDE1' : 'Development' },\n]\n\n// Batch created the data\ncs.save_multi(cs.ref('object_case'), field_refs, data)",
+                    "output": null
+                  }
+                ]
+              },
+              {
+                "name": "saveable",
+                "summary": "Convert an editable value to a saveable one",
+                "signature": "cs.saveable(reference, value)",
+                "since": "10.0",
+                "parameters": [
+                  {
+                    "name": "reference",
+                    "type": "string",
+                    "description": "Field path reference",
+                    "required": true
+                  },
+                  {
+                    "name": "value",
+                    "type": "mixed",
+                    "description": "Value to convert",
+                    "required": true
+                  }
+                ],
+                "return_value": {
+                  "type": "any",
+                  "description": "Saveable value"
+                },
+                "description": "Convert an editable value to a saveable one",
+                "examples": [
+                  {
+                    "title": "Saveable method usage",
+                    "description": "Converting our displayable value to a savable. First we will need to create a reference to a field path in References page.",
+                    "code": "let saveable = cs.saveable('UserDecimalFieldPath', '123,00'); \ncs.log(saveable);",
+                    "output": "Example Output\n123.000000"
+                  }
+                ]
+              },
+              {
+                "name": "script_log",
+                "summary": "Log data to the server logs",
+                "signature": "cs.script_log(message)",
+                "since": "10.0",
+                "parameters": [
+                  {
+                    "name": "message",
+                    "type": "any",
+                    "description": "The data to send to the server logs",
+                    "required": true
+                  }
+                ],
+                "return_value": {
+                  "type": "void",
+                  "description": ""
+                },
+                "description": "Log data to the server logs",
+                "examples": []
+              },
+              {
+                "name": "search",
+                "summary": "Performs a record search",
+                "signature": "cs.search(params)",
+                "since": "10.0",
+                "parameters": [
+                  {
+                    "name": "params",
+                    "type": "object",
+                    "description": "Parameters for the search. More detailed description can be found in our dedicated Help Portal look under Code Studio -> Detailed Reference For cs.search()",
+                    "required": true
+                  }
+                ],
+                "return_value": {
+                  "type": "mixed",
+                  "description": "Records matching the search criteria"
+                },
+                "description": "Performs a record search. Matching records will be returned in a format according to the 'return' option speficied in the 'params' object. By default this will be an iterable recordset object.",
+                "examples": [
+                  {
+                    "title": "Searching with filters and ordering",
+                    "description": "In this example we will be searching for users that have a greater than two value in one of the property fields. If not present please add a decimal property to the user object in Data Store -> Objects page and populate some values. Create a subset in Data Store -> Subsets page based on the User object. In the predefined filters sections choose the decimal property field and set the comparator to 'greater than' with a value of two. Create the bellow references in Code Studio -> References page Object reference - Users Field path - SampleSubset Field path - UserDecimalFieldPath Field path - SurnameFieldPath",
+                    "code": "// Prepare the filters and ordering\nlet filters = [];\nlet order = [];\n\nfilters.push({'field_path': cs.ref('SampleSubset'), 'value': \"1\"});\norder.push({'field_path': cs.ref('UserDecimalFieldPath'), 'direction': 'DESC'});\n\n// Commence the search\nlet r = cs.search({\n\t'base_object_id': cs.ref('Users'),\n\t'filters': filters,\n\t\"order\" : order\n});\n\n// Define the data to pull from the search\nlet select = {\n\tid : ':id',\n\tsurname : cs.ref('SurnameFieldPath'),\n\tdecimal : cs.ref('UserDecimalFieldPath'),\n};\n\n// Loop through the results and get the defined data in displayable format\nlet items = [];\nwhile (rec = r.next_row()) {\n\tvar item = rec.get(select, 'displayable');\n\titems.push(item);\n}\ncs.log(items);",
+                    "output": "Example Output Ordered by the largest number\n Array\n(\n    [0] => Array\n        (\n            [id] => 1019\n            [surname] => Smith\n            [decimal] => 50,00\n        )\n    [1] => Array\n        (\n            [id] => 1009\n            [surname] => Johnson\n            [decimal] => 5,00\n        )\n)"
+                  },
+                  {
+                    "title": "Alternative format",
+                    "description": "Alternatively, you can condense your search function as stated in the below example, which allows you to write similar code in fewer lines. In this example, we're going to search through the user object for users containing \"@example.com\" in their username. You have 2 different formats of returning selects; simple and configurable. Simple returns only the value for each field - Useful for quickly returning a single/few values, or if your return is 'Column'. Configurable allows you to specify a field title/label, providing context to the values that are being returned.",
+                    "code": "let search = cs.search({\n\t'base_object_id': cs.ref('obj_user'),\n\t'selects': [':id', cs.ref('user_forename'), cs.ref('user_surname')],     // simple value return\n\t'selects': { id: ':id', forename: cs.ref('user_forename'), surname: cs.ref('user_surname') },     // configurable value return\n\t'filters': [{ 'field_path': cs.ref('username'), 'comparator': 'contains', 'value': '@example.com' }],\n\t'order': [{ 'field_path': cs.ref('user_fullname'), 'direction': 'ASC' }],\n\t'return': 'data'\n});\ncs.log(search)",
+                    "output": null
+                  },
+                  {
+                    "title": "Data modes",
+                    "description": "It is possible to return the search data in a specific formattable mode (e.g. Displayable) and this can be specified within the search functions parameters. However, if no mode is specified, then this function will return the data in Saveable format by default. In the example below, we are returning all the data found in the 'Displayable' format.",
+                    "code": "let search = cs.search({\n\t'base_object_id': cs.ref('obj_user'),\n\t'selects': { id: ':id', forename: cs.ref('user_forename'), surname: cs.ref('user_surname') },\n\t'filters': [{ 'field_path': cs.ref('username'), 'comparator': 'contains', 'value': '@example.com' }],\n\t'order': [{ 'field_path': cs.ref('user_fullname'), 'direction': 'ASC' }],\n\t'mode' : 'displayable',\n\t'return': 'data'\n});\ncs.log(search)",
+                    "output": null
+                  }
+                ]
+              },
+              {
+                "name": "special_record_id",
+                "summary": "Resolve a special record to a data record id",
+                "signature": "cs.special_record_id(special_record_id)",
+                "since": "10.2",
+                "parameters": [
+                  {
+                    "name": "special_record_id",
+                    "type": "string",
+                    "description": "The ID of the special record",
+                    "required": true
+                  }
+                ],
+                "return_value": {
+                  "type": "number",
+                  "description": "The data record id"
+                },
+                "description": "Resolve a special record to a data record id",
+                "examples": []
+              },
+              {
+                "name": "theme_setting",
+                "summary": "Return the value of a setting, as set by the builder in the Theme",
+                "signature": "cs.theme_setting(setting_name, theme_id)",
+                "since": "10.4",
+                "parameters": [
+                  {
+                    "name": "setting_name",
+                    "type": "string",
+                    "description": "The name of the Theme property",
+                    "required": false
+                  },
+                  {
+                    "name": "theme_id",
+                    "type": "string",
+                    "description": "Theme id",
+                    "required": false
+                  }
+                ],
+                "return_value": {
+                  "type": "any",
+                  "description": "Setting value"
+                },
+                "description": "Return the value of a setting, as set by the builder in the Theme",
+                "examples": [
+                  {
+                    "title": "Theme setting usage",
+                    "description": "In Code Studio > References page create a reference to a desired theme. By default, invoking the method without any parameters will return all the settings for the current theme. Upon inspecting all the settings we can select the desired key and use that.",
+                    "code": "let setting = cs.theme_setting('theme-colors-primary', cs.ref('theme'));\ncs.log(setting);",
+                    "output": "Example Output of all the settings\nArray\n(\n    [id] => THM0000044EFCAE1\n    [name] => Test\n    [description] =>\n    [theme-colors-primary] => #78bdd6\n    [theme-colors-secondary] => #d3dbe0\n    [theme-colors-success] => #21e866\n    [theme-colors-info] => #34c2ed\n    [theme-colors-warning] => #ffea75\n    [theme-colors-danger] => #f73131\n    [logo_asset_image_id] => AST0000005AAAAA9\n    [login_page_logo_asset_image_id] => AST0000004AAAAA9\n    [favicon_asset_image_id] => AST0000006AAAAA9\n    [spacing] => compact\n    [menu-position] => left\n    [navbar-bg] => #212b31\n    [sidebar-bg] => #29363d\n    [late_style_sheet] => CSC0000181EFCAE1\n    [headings-font-family] => Muli\n    [font-family-base] => Muli\n    [headings-color] => #333333\n    [sidebar_heading_color] => #ffffff\n    [sidebar_text_color] => #ffffff\n    [sidebar_heading_icon_color] => #ffffff\n)"
+                  }
+                ]
+              },
+              {
+                "name": "theme_settings",
+                "summary": "Fetch all settings for a given theme defaulting to the current",
+                "signature": "cs.theme_settings(theme_id)",
+                "since": "10.4",
+                "parameters": [
+                  {
+                    "name": "theme_id",
+                    "type": "string",
+                    "description": "Theme id",
+                    "required": false
+                  }
+                ],
+                "return_value": {
+                  "type": "object",
+                  "description": "Full settings for the theme"
+                },
+                "description": "Fetch all settings for a given theme defaulting to the current. The data returned by the function can be highly variable and therefore cannot be documented in full. The meaning of some of the data returned may not always be intuitive or self-explanatory. Nevertheless, the data is exposed to empower coders.",
+                "examples": [
+                  {
+                    "title": "Theme settings usage",
+                    "description": "In Code Studio > References page create a reference to a desired theme. By default, invoking the method without any parameters will return all the settings for the current theme.",
+                    "code": "let settings = cs.theme_settings(cs.ref('theme'));\ncs.log(settings);",
+                    "output": "Example Output\nArray\n(\n    [id] => THM0000044EFCAE1\n    [name] => Test\n    [description] =>\n    [theme-colors-primary] => #78bdd6\n    [theme-colors-secondary] => #d3dbe0\n    [theme-colors-success] => #21e866\n    [theme-colors-info] => #34c2ed\n    [theme-colors-warning] => #ffea75\n    [theme-colors-danger] => #f73131\n    [logo_asset_image_id] => AST0000005AAAAA9\n    [login_page_logo_asset_image_id] => AST0000004AAAAA9\n    [favicon_asset_image_id] => AST0000006AAAAA9\n    [spacing] => compact\n    [menu-position] => left\n    [navbar-bg] => #212b31\n    [sidebar-bg] => #29363d\n    [late_style_sheet] => CSC0000181EFCAE1\n    [headings-font-family] => Muli\n    [font-family-base] => Muli\n    [headings-color] => #333333\n    [sidebar_heading_color] => #ffffff\n    [sidebar_text_color] => #ffffff\n    [sidebar_heading_icon_color] => #ffffff\n)"
+                  }
+                ]
+              },
+              {
+                "name": "url_param",
+                "summary": "Fetch a URL parameter by name",
+                "signature": "cs.url_param(name, default)",
+                "since": "10.2",
+                "parameters": [
+                  {
+                    "name": "name",
+                    "type": "string",
+                    "description": "The name of the GET parameter to fetch",
+                    "required": true
+                  },
+                  {
+                    "name": "default",
+                    "type": "string",
+                    "description": "The value to return if the GET parameter is not set.",
+                    "required": false
+                  }
+                ],
+                "return_value": {
+                  "type": "string",
+                  "description": "The value of the GET parameter"
+                },
+                "description": "Fetch a URL parameter by name",
+                "examples": [
+                  {
+                    "title": "url_param usage",
+                    "description": "Getting the current context_record_id value with a default value if the context_record_id is not present.",
+                    "code": "let context_record_id = cs.url_param('context_record_id', 123);\ncs.log(context_record_id);",
+                    "output": null
+                  }
+                ]
+              },
+              {
+                "name": "variable",
+                "summary": "Return or set the value of a Variable",
+                "signature": "cs.variable(variable_id, value)",
+                "since": "10.2",
+                "parameters": [
+                  {
+                    "name": "variable_id",
+                    "type": "string",
+                    "description": "Reference of the variable to get/set",
+                    "required": true
+                  },
+                  {
+                    "name": "value",
+                    "type": "string",
+                    "description": "The new value. A variable must be set 'Editable in Application' otherwise will throw an error when trying to set a value.",
+                    "required": false
+                  }
+                ],
+                "return_value": {
+                  "type": "any",
+                  "description": "The value of the Variable"
+                },
+                "description": "Return or set the value of a Variable",
+                "examples": [
+                  {
+                    "title": "Reading and writing to a variable",
+                    "description": "In this example we will be reading and writing to a Text, single line variable. Create a variable in Data Store -> Variables and tick the \"Editable in Application'. In Code Studio > References page create a reference to the variable and replace the code example accordingly.",
+                    "code": "// Reading the variable value \nlet variable = cs.variable(cs.ref('variable'));\ncs.log(variable);\n\n// Writing to the variable \nvariable = cs.variable(cs.ref('variable'), 2);\ncs.log(variable);",
+                    "output": null
+                  }
+                ]
+              },
+              {
+                "name": "warn",
+                "summary": "Log a warning message to the Detective",
+                "signature": "cs.warn(message)",
+                "since": "10.0",
+                "parameters": [
+                  {
+                    "name": "message",
+                    "type": "string",
+                    "description": "The message to describe the warning.",
+                    "required": true
+                  }
+                ],
+                "return_value": {
+                  "type": "void",
+                  "description": ""
+                },
+                "description": "Log a warning message to the Detective. Similar to cs.log(), but will be highlighted as a warning in Detective instead of information.",
+                "examples": []
+              },
+              {
+                "name": "write_file",
+                "summary": "Write a text string into a record's file, replacing its existing contents",
+                "signature": "cs.write_file(record_id, file_field_path, filename, content, options)",
+                "since": "2020.1",
+                "parameters": [
+                  {
+                    "name": "record_id",
+                    "type": "number",
+                    "description": "The record id to write the file to",
+                    "required": true
+                  },
+                  {
+                    "name": "file_field_path",
+                    "type": "string",
+                    "description": "The path to file field to write to",
+                    "required": true
+                  },
+                  {
+                    "name": "filename",
+                    "type": "string",
+                    "description": "The name of the saved file",
+                    "required": true
+                  },
+                  {
+                    "name": "content",
+                    "type": "string",
+                    "description": "The content for the saved file",
+                    "required": true
+                  },
+                  {
+                    "name": "options",
+                    "type": "object",
+                    "description": "Optional params which affect the functionality. An object of optional parameters which can affect the functionality. Supports the following options: \"base64\" boolean - Indicates the content provided is base64 encoded, and should be decoded before saving.",
+                    "required": false,
+                    "since": "2024.2"
+                  }
+                ],
+                "return_value": {
+                  "type": "boolean",
+                  "description": "Returns true on success, throws exception on failure"
+                },
+                "description": "Write a text string into a record's file, replacing its existing contents",
+                "examples": [
+                  {
+                    "title": "Creating a custom csv file",
+                    "description": "We need to build an atypical csv export, where a header line has many fields about an overall order. And all subsequent lines will describe items within the order. We can easily build them as two separate csv files using the standard export features but once those export files are created, we need to glue them together into one file. The following code was used in an event action to achieve this.",
+                    "code": "var order_record_id = params.record_id;\n\n// read the contents of the two input file\nvar head_file_contents = cs.read_file(order_record_id, cs.ref(\"head_file\"));\nvar item_file_contents = cs.read_file(order_record_id, cs.ref(\"item_file\"));\n\n//stick the contents together\nvar merged_content = head_file_contents + item_file_contents;\nvar merged_filename = cs.search({'record_id': params.record_id, 'selects': [cs.ref('order_reference')], 'return': 'value'}) + '.csv';\n\n// write the contents to the merged file\nvar write_result = cs.write_file(order_record_id, cs.ref(\"merge_file\"), merged_filename, merged_content);",
+                    "output": null
+                  }
+                ]
+              },
+              {
+                "name": "xml_to_json",
+                "summary": "Converts XML into JSON object",
+                "signature": "cs.xml_to_json(input)",
+                "since": "2020.1",
+                "parameters": [
+                  {
+                    "name": "input",
+                    "type": "string",
+                    "description": "The xml to convert",
+                    "required": true
+                  }
+                ],
+                "return_value": {
+                  "type": "string",
+                  "description": "JSON object"
+                },
+                "description": "Converts XML into JSON object",
+                "examples": [
+                  {
+                    "title": "XML to JSON Usage",
+                    "description": "Converting XML into JSON object.",
+                    "code": "let xml = `<?xml version=\"1.0\" encoding=\"utf-8\"?>\n    <customer>\n        <address>\n            <firstname>Marry</firstname>\n            <lastname>Poppins</lastname>\n            <street>17 Cherry Tree Lane</street>\n            <city>London</city>\n            <postoce>EN6 2QG</postoce>\n        </address>\n    </customer>`;\nlet json = cs.xml_to_json(xml);\ncs.log(json);",
+                    "output": "{\n  \"address\": {\n    \"city\": \"London\",\n    \"firstname\": \"Marry\",\n    \"lastname\": \"Poppins\",\n    \"postoce\": \"EN6 2QG\",\n    \"street\": \"17 Cherry Tree Lane\"\n  }\n}"
+                  }
+                ]
+              }
+            ]
+        }
+      ]
+    }

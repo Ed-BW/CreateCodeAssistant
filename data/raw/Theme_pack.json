@@ -1,0 +1,163 @@
+{
+    "category": "COMPONENT CLASSES",
+    "classes": [
+      {
+        "name": "theme_pack",
+        "description": "Represents a Theme Pack instance",
+        "methods": [
+          {
+            "name": "asset_url",
+            "summary": "Return the URL for theme pack files",
+            "signature": "theme_pack.asset_url(local_path) or theme_pack.asset_url(local_path, options)",
+            "since": "2020.1",
+            "parameters": [
+              {
+                "name": "local_path",
+                "type": "string",
+                "description": "Local path of file",
+                "required": true
+              },
+              {
+                "name": "options",
+                "type": "object",
+                "description": "Additional options. Options include 'append_time' which adds the file creation/modification time to the URL.",
+                "required": false
+              }
+            ],
+            "return_value": {
+              "type": "string",
+              "description": "The fully resolved URL"
+            },
+            "description": "Returns the URL for theme pack files, with optional parameters to control the URL format.",
+            "examples": [
+              {
+                "title": "Displaying an asset image from a component's files",
+                "description": "This example is for a standard component (Non-static). We might want to display an image that is stored within the component. In the component's files section click the plus icon and upload an image into the frontend folder.",
+                "code": "// Theme packs have multiple components packed inside, place the example code in the desired get_template_data_***** method.\n// main.js \n\nlet asset = theme_pack.asset_url('logo.png');\nreturn {\n\timage : asset\n}\n\n// Now the asset's url is available as a variable image in the frontend\n// Lets use this in our component's <template></template> code section\n\n// <img :src=\"image\" />",
+                "output": ""
+              }
+            ]
+          },
+          {
+            "name": "get_setting",
+            "summary": "Return the value of a setting, as set by the builder in the Theme Pack",
+            "signature": "theme_pack.get_setting(setting_name, default)",
+            "since": "2020.1",
+            "parameters": [
+              {
+                "name": "setting_name",
+                "type": "string",
+                "description": "Setting name",
+                "required": true
+              },
+              {
+                "name": "default",
+                "type": "any",
+                "description": "Uses the default value when setting is not set",
+                "required": true
+              }
+            ],
+            "return_value": {
+              "type": "any",
+              "description": "The setting value"
+            },
+            "description": "Returns the value of a specific setting from the Theme Pack, with a fallback default value.",
+            "examples": []
+          },
+          {
+            "name": "get_settings",
+            "summary": "Returns the settings for this Theme Pack",
+            "signature": "theme_pack.get_settings()",
+            "since": "2020.1",
+            "parameters": [],
+            "return_value": {
+              "type": "object",
+              "description": "The Theme Pack's settings"
+            },
+            "description": "Returns all settings for the Theme Pack. The data returned by the function can be highly variable and therefore cannot be documented in full. The meaning of some of the data returned may not always be intuitive or self-explanatory. Nevertheless, the data is exposed to empower coders.",
+            "examples": []
+          },
+          {
+            "name": "interface_toolbar_icons",
+            "summary": "Returns a list of interfaces toolbar icons",
+            "signature": "theme_pack.interface_toolbar_icons()",
+            "since": "2021.1",
+            "parameters": [],
+            "return_value": {
+              "type": "object",
+              "description": "An array of interfaces toolbar icons"
+            },
+            "description": "Returns a list of interface toolbar icons available to the current user.",
+            "examples": [
+              {
+                "title": "interface_toolbar_icons usage",
+                "description": "",
+                "code": "let toolbar_icons = theme_pack.interface_toolbar_icons();\ncs.log(toolbar_icons);",
+                "output": "Array\n(\n    [0] => Array\n        (\n            [id] => TBI0000001FEDBA1\n            [name] => Test 1\n            [display_name] => Test 1\n            [icon] => far fa-user-circle\n            [badge] => none\n            [update_frequency] => 30\n            [click_behavior] => none\n            [link_attributes] => Array\n                (\n                    [href] => /\n                    [title] => Test 1\n                    [data-original-title] => Test 1\n                    [data-toggle] => tooltip\n                    [class] => nav-link\n                )\n\n            [badge_count] => 25\n        )\n    [1] => Array\n        (\n            [id] => TBI0000002FEDBA1\n            [name] => Test 2\n            [display_name] => Test 2\n            [icon] => fas fa-copy\n            [badge] => count\n            [update_frequency] => 30\n            [click_behavior] => link\n            [link_attributes] => Array\n                (\n                    [href] => /i/default/p/1FEDBA9/8FEDBA9/8FEDBA9/2FEDBA9\n                    [title] => Test 2\n                    [data-original-title] => Test 2\n                    [data-toggle] => tooltip\n                    [class] => nav-link\n                )\n\n            [badge_count] => 1\n        )\n    [2] => Array\n        (\n            [id] => TBI0000003FEDBA1\n            [name] => Test 3\n            [display_name] => Test 3\n            [icon] => far fa-file\n            [badge] => dot\n            [update_frequency] => 30\n            [click_behavior] => popover\n            [link_attributes] => Array\n                (\n                    [href] => /popup/144FEDBA1\n                    [title] => Test 3\n                    [data-original-title] => Test 3\n                    [data-toggle] => tooltip\n                    [data-subpage_id] => PAG0000144FEDBA1\n                    [class] => nav-link  no_history action_link modal_subpage\n                )\n\n            [badge_count] => 1\n        )\n)"
+              }
+            ]
+          },
+          {
+            "name": "interface_top_search_settings",
+            "summary": "Return interface top search settings",
+            "signature": "theme_pack.interface_top_search_settings()",
+            "since": "2020.1",
+            "parameters": [],
+            "return_value": {
+              "type": "object",
+              "description": "An array of interface top search settings"
+            },
+            "description": "Returns the configuration settings for the interface's top search functionality.",
+            "examples": [
+              {
+                "title": "interface_top_search_settings usage",
+                "description": "",
+                "code": "let interface_top_search_settings = theme_pack.interface_top_search_settings();\ncs.log(interface_top_search_settings);",
+                "output": "Array\n(\n    [results_page] => /i/default/p/1FCDDC9/1FCDDC9/1FCDDC9/1FCDDC9\n    [from_page] => /i/default/p/1FCDDC9/1FCDDC9/1FCDDC9/1FCDDC9\n    [searchable_fields] => Array\n        (\n            [0] => Array\n                (\n                    [object_display_name] => User\n                    [fields] => Array\n                        (\n                            [0] => Array\n                                (\n                                    [input_name] => top_search_fields[OBJ0000001FCDDC9][:PRO0000113FCDDC9]\n                                    [include_in_search] =>\n                                    [field_name] => Forename\n                                )\n                            [1] => Array\n                                (\n                                    [input_name] => top_search_fields[OBJ0000001FCDDC9][:PRO0000114FCDDC9]\n                                    [include_in_search] =>\n                                    [field_name] => Surname\n                                )\n                            [2] => Array\n                                (\n                                    [input_name] => top_search_fields[OBJ0000001FCDDC9][:username]\n                                    [include_in_search] => 1\n                                    [field_name] => Username\n                                )\n                        )\n                )\n        )\n)"
+              }
+            ]
+          },
+          {
+            "name": "permitted_interfaces",
+            "summary": "Returns a list of Interfaces a user can access",
+            "signature": "theme_pack.permitted_interfaces()",
+            "since": "2020.1",
+            "parameters": [],
+            "return_value": {
+              "type": "object",
+              "description": "List of Interfaces"
+            },
+            "description": "Returns a list of all interfaces that the current user has permission to access.",
+            "examples": [
+              {
+                "title": "permitted_interfaces usage",
+                "description": "",
+                "code": "let interfaces = theme_pack.permitted_interfaces();\ncs.log(interfaces);",
+                "output": "Array\n(\n    [0] => Array\n        (\n            [display_name] => Default Interface\n            [url] => https://core-test-build.oncreate.app/i/default\n        )\n    [1] => Array\n        (\n            [display_name] => Build Studio\n            [url] => https://core-test-build.oncreate.app/b/objects\n        )\n    [2] => Array\n        (\n            [display_name] => Code Studio\n            [url] => https://core-test-build.oncreate.app/c/code_event_actions\n        )\n    [3] => Array\n        (\n            [display_name] => Test Studio\n            [url] => https://core-test-build.oncreate.app/t/test_tests\n        )\n)"
+              }
+            ]
+          },
+          {
+            "name": "permitted_top_tabs",
+            "summary": "Returns a list of Top Tabs a user can access",
+            "signature": "theme_pack.permitted_top_tabs()",
+            "since": "2020.1",
+            "parameters": [],
+            "return_value": {
+              "type": "object",
+              "description": "List of Top Tabs"
+            },
+            "description": "Returns a list of all top tabs that the current user has permission to access.",
+            "examples": [
+              {
+                "title": "permitted_top_tabs usage",
+                "description": "",
+                "code": "let top_tabs = theme_pack.permitted_top_tabs();\ncs.log(top_tabs);",
+                "output": "Array\n(\n    [0] => Array\n        (\n            [display_name] => Admin\n            [url] => https://core-test-build.oncreate.app/i/default/p/1EFCAE9/1EFCAE9/1EFCAE9/1EFCAE9\n            [icon] => fas fa-user-cog\n\t\t\t[options] => Array\n\t\t\t(\n\t\t\t\t[visible] => 1\n\t\t\t\t[default] => 1\n\t\t\t)\n        )\n)"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }

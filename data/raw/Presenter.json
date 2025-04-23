@@ -1,0 +1,309 @@
+{
+    "category": "COMPONENT CLASSES",
+    "classes": [
+      {
+        "name": "presenter",
+        "description": "Represents a Presenter instance",
+        "methods": [
+          {
+            "name": "asset_url",
+            "summary": "Return a full URL to a specified asset",
+            "signature": "presenter.asset_url(local_path, options)",
+            "since": "10.2",
+            "parameters": [
+              {
+                "name": "local_path",
+                "type": "string",
+                "description": "Local path of file",
+                "required": true
+              },
+              {
+                "name": "options",
+                "type": "object",
+                "description": "Additional options",
+                "required": false,
+                "default": null
+              }
+            ],
+            "return_value": {
+              "type": "string",
+              "description": "A valid URL for the given asset."
+            },
+            "description": "Return a full URL to a specified asset; Return the URL for theme pack files; Return the URL for widget files; Returns the URL to a specified Asset. Options description: append_time - Includes the time when the file was created\\modified as part of the url",
+            "examples": [
+              {
+                "title": "Displaying an asset image from a component's files",
+                "description": "This example is for a standard component (Non-static). We might want to display an image that is stored within the component. In the component's files section click the plus icon and upload an image into the frontend folder.",
+                "code": "// main.js inside get_template_data()\n\nlet asset = presenter.asset_url('logo.png');\nreturn {\n\timage : asset\n}\n\n// Now the asset's url is available as a variable image in the frontend\n// Lets use this in our template file main.htm\n\n// <img :src=\"image\" />",
+                "output": null
+              }
+            ]
+          },
+          {
+            "name": "get_base_object_id",
+            "summary": "Return the base object MUID the fragment relates to",
+            "signature": "presenter.get_base_object_id()",
+            "since": "10.2",
+            "parameters": [],
+            "return_value": {
+              "type": "string",
+              "description": "The base object MUID"
+            },
+            "description": "Return the base object MUID the fragment relates to; For widget: The widget's base object ID; For wrapper: Get the wrapper's base object ID",
+            "examples": [
+              {
+                "title": "Getting total items for the base object",
+                "description": "Simple usage of the get_base_object_id() method",
+                "code": "let items = cs.search({\n\t'base_object_id': presenter.get_base_object_id(),\n});\ncs.log(items.length);",
+                "output": null
+              }
+            ]
+          },
+          {
+            "name": "get_editable_value",
+            "summary": "Fetch the editable value",
+            "signature": "presenter.get_editable_value()",
+            "since": "10.2",
+            "parameters": [],
+            "return_value": {
+              "type": "string",
+              "description": "The fragment's value in editable format. Used for populating form inputs"
+            },
+            "description": "Fetch/Returns the editable value",
+            "examples": []
+          },
+          {
+            "name": "get_field_path",
+            "summary": "Fetch the full field path for the fragment",
+            "signature": "presenter.get_field_path()",
+            "since": "2020.1",
+            "parameters": [],
+            "return_value": {
+              "type": "string",
+              "description": "Full field path from the base, in the format relation_path:field_id"
+            },
+            "description": "Fetch the full field path for the fragment",
+            "examples": []
+          },
+          {
+            "name": "get_filters",
+            "summary": "Returns an array of filters applicable to the widget of this fragment",
+            "signature": "presenter.get_filters()",
+            "since": "2020.1",
+            "parameters": [],
+            "return_value": {
+              "type": "object",
+              "description": "Returns an array of filters that were used in a separate search widget"
+            },
+            "description": "Returns an array of filters applicable to the widget/fragment",
+            "examples": [
+              {
+                "title": "get_filters usage",
+                "description": "Returns filter data when the component invoking the method is placed within the same group as the search widget.",
+                "code": "let filters = presenter.get_filters();\ncs.log(filters);",
+                "output": "Array\n(\n    [0] => Array\n        (\n            [field_path] => :CMP0000011EFCAE9\n            [comparison_operator] => 1\n            [value] => Johnson\n        )\n\n    [1] => Array\n        (\n            [field_path] => :user_role_id\n            [comparison_operator] => 4\n            [value] => URL0000001AAAAA9\n        )\n)"
+              }
+            ]
+          },
+          {
+            "name": "get_focus_object_id",
+            "summary": "Returns the focus Object ID for this Presenter",
+            "signature": "presenter.get_focus_object_id()",
+            "since": "2023.1",
+            "parameters": [],
+            "return_value": {
+              "type": "string",
+              "description": "The focus Object ID"
+            },
+            "description": "Returns the focus Object ID for this Presenter/Widget",
+            "examples": []
+          },
+          {
+            "name": "get_focus_record_id",
+            "summary": "Returns the focus record ID for this Presenter",
+            "signature": "presenter.get_focus_record_id()",
+            "since": "2023.1",
+            "parameters": [],
+            "return_value": {
+              "type": "number",
+              "description": "The focus record ID"
+            },
+            "description": "Returns the focus record ID for this Presenter/Widget",
+            "examples": []
+          },
+          {
+            "name": "get_fragment_object_id",
+            "summary": "Return the object MUID the fragment relates to",
+            "signature": "presenter.get_fragment_object_id()",
+            "since": "2023.1",
+            "parameters": [],
+            "return_value": {
+              "type": "number",
+              "description": "The fragment record ID or an array of record ids"
+            },
+            "description": "Return the object MUID the fragment relates to",
+            "examples": []
+          },
+          {
+            "name": "get_fragment_record_id",
+            "summary": "The fragment record ID(s)",
+            "signature": "presenter.get_fragment_record_id()",
+            "since": "2023.1",
+            "parameters": [],
+            "return_value": {
+              "type": "number",
+              "description": "The fragment record ID or an array of record ids"
+            },
+            "description": "The fragment record ID(s)",
+            "examples": []
+          },
+          {
+            "name": "get_fragment_settings",
+            "summary": "Returns the settings for this Presenter",
+            "signature": "presenter.get_fragment_settings()",
+            "since": "10.3",
+            "parameters": [],
+            "return_value": {
+              "type": "object",
+              "description": "The Presenter's settings"
+            },
+            "description": "Returns the settings for this Presenter. The data returned by the function can be highly variable and therefore cannot be documented in full. The meaning of some of the data returned may not always be intuitive or self-explanatory. Nevertheless, the data is exposed to empower coders.",
+            "examples": [
+              {
+                "title": "get_fragment_settings usage",
+                "description": "Example Output",
+                "code": "let fragment_settings = presenter.get_fragment_settings();\ncs.log(fragment_settings);",
+                "output": "Array\n(\n    [message_offline_mode_unique_lookup] =>\n    [wrapper] => 6\n    [presenter] => 103\n    [code_presenter_id] => CSC0000195EFCAE1\n    [label] => \n    [hint] =>\n    [required] => 1\n    [nonautoinput] => 0\n    [omit_if_blank] => 0\n    [display_on_small_devices] => 1\n    [display_on_medium_devices] => 1\n    [display_on_large_devices] => 1\n    [message_offline_mode_callback] =>\n)"
+              }
+            ]
+          },
+          {
+            "name": "get_html_displayable_value",
+            "summary": "Returns the HTML version of the displayable value",
+            "signature": "presenter.get_html_displayable_value()",
+            "since": "10.2",
+            "parameters": [],
+            "return_value": {
+              "type": "string",
+              "description": "The HTML version of the displayable value"
+            },
+            "description": "Returns the HTML version of the displayable value",
+            "examples": []
+          },
+          {
+            "name": "get_input_attributes",
+            "summary": "Fetch the attributes that are required to be added to the form input",
+            "signature": "presenter.get_input_attributes()",
+            "since": "10.2",
+            "parameters": [],
+            "return_value": {
+              "type": "string",
+              "description": "The attributes to add to the form element as an attribute string"
+            },
+            "description": "Fetch the attributes that are required to be added to the form input",
+            "examples": [
+              {
+                "title": "get_input_attributes usage",
+                "description": "Example Output",
+                "code": "let input_attributes = presenter.get_input_attributes();\ncs.log(input_attributes);",
+                "output": "Array\n(\n    [class] => col-form-value required col-form-value valid_string valid_max_length form-control\n    [data-max_length] => 255\n    [name] => payload[PAG0000002EFCAE9][PWG0000004EFCAE9][PCL0000507EFCAE9][formtable][C_5fe35f7ce2076][PCF0000753EFCAE9]\n    [id] => payload[PAG0000002EFCAE9][PWG0000004EFCAE9][PCL0000507EFCAE9][formtable][C_5fe35f7ce2076][PCF0000753EFCAE9]\n    [aria-describedby] => label_payload[PAG0000002EFCAE9][PWG0000004EFCAE9][PCL0000507EFCAE9][formtable][C_5fe35f7ce2076][PCF0000753EFCAE9]\n    [for] => payload[PAG0000002EFCAE9][PWG0000004EFCAE9][PCL0000507EFCAE9][formtable][C_5fe35f7ce2076][PCF0000753EFCAE9]\n)"
+              }
+            ]
+          },
+          {
+            "name": "get_input_name",
+            "summary": "Get the name that is required for the input element",
+            "signature": "presenter.get_input_name()",
+            "since": "10.2",
+            "parameters": [],
+            "return_value": {
+              "type": "string",
+              "description": "The name for the 'name' input attribute"
+            },
+            "description": "Get the name that is required for the input element",
+            "examples": []
+          },
+          {
+            "name": "get_relation_path",
+            "summary": "Fetch the relation path for the fragment",
+            "signature": "presenter.get_relation_path()",
+            "since": "2020.1",
+            "parameters": [],
+            "return_value": {
+              "type": "string",
+              "description": "Relationship path to the fragment from the base"
+            },
+            "description": "Fetch/Return the relation path for the fragment/Widget",
+            "examples": []
+          },
+          {
+            "name": "get_root_object_id",
+            "summary": "Returns the root Object ID for this Presenter",
+            "signature": "presenter.get_root_object_id()",
+            "since": "2023.1",
+            "parameters": [],
+            "return_value": {
+              "type": "string",
+              "description": "The root Object ID"
+            },
+            "description": "Returns the root Object ID for this Presenter/Widget",
+            "examples": []
+          },
+          {
+            "name": "get_setting",
+            "summary": "Return the value of a setting, as set by the builder in the Presenter",
+            "signature": "presenter.get_setting(setting_name, default)",
+            "since": "10.2",
+            "parameters": [
+              {
+                "name": "setting_name",
+                "type": "string",
+                "description": "The key in the array returned by get_settings() in main.js",
+                "required": true
+              },
+              {
+                "name": "default",
+                "type": "any",
+                "description": "Explicit value to be returned by this function call if no value has been set in the widget by the builder",
+                "required": false,
+                "default": null
+              }
+            ],
+            "return_value": {
+              "type": "any",
+              "description": "The setting value"
+            },
+            "description": "Return the value of a setting, as set by the builder in the Presenter/Theme Pack/Widget/Wrapper",
+            "examples": [
+              {
+                "title": "Retrieve a specific setting",
+                "description": "Code studio components can have configurable settings defined within the component's code. These configurations will be hooked into the page builder when placing a component onto a page the builder will have the ability to set them up.",
+                "code": "get_settings: function () {\n\treturn {\n\t\texample_field: {\n\t\t\tmain_label: \"Example Field\",\n\t\t\tbase_format: \"string\"\n\t\t},\n\t\texample_number: {\n\t\t\tmain_label: \"Example Number\",\n\t\t\tbase_format: \"integer\"\n\t\t}\n\t};\n}\n\n\nlet setting = presenter.get_setting('example_number', '123');\ncs.log(setting);",
+                "output": null
+              }
+            ]
+          },
+          {
+            "name": "get_settings",
+            "summary": "Returns a list of the settings for this Presenter",
+            "signature": "presenter.get_settings()",
+            "since": "10.2",
+            "parameters": [],
+            "return_value": {
+              "type": "object",
+              "description": "The full settings for this presenter"
+            },
+            "description": "The data returned by the function can be highly variable and therefore cannot be documented in full. The meaning of some of the data returned may not always be intuitive or self-explanatory. Nevertheless, the data is exposed to empower coders.",
+            "examples": [
+              {
+                "title": "Retrieving settings",
+                "description": "Code studio components can have configurable settings defined within the component's code. These configurations will be hooked into the page builder when placing a component onto a page the builder will have the ability to set them up.",
+                "code": "get_settings: function () {\n\treturn {\n\t\texample_field: {\n\t\t\tmain_label: \"Example Field\",\n\t\t\tbase_format: \"string\"\n\t\t},\n\t\texample_number: {\n\t\t\tmain_label: \"Example Number\",\n\t\t\tbase_format: \"integer\"\n\t\t}\n\t};\n}\n\n\nlet settings = presenter.get_settings();\ncs.log(settings);",
+                "output": "Array\n(\n    [example_field] => Example value\n    [example_number] => 123\n)"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }

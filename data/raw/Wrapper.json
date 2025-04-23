@@ -1,0 +1,222 @@
+{
+    "category": "COMPONENT CLASSES",
+    "classes": [
+      {
+        "name": "wrapper",
+        "description": "Represents a Wrapper instance",
+        "methods": [
+          {
+            "name": "asset_url",
+            "summary": "Returns the URL to a specified Asset",
+            "signature": "wrapper.asset_url(local_path, options)",
+            "since": "10.2",
+            "parameters": [
+              {
+                "name": "local_path",
+                "type": "string",
+                "description": "Local path of file",
+                "required": true
+              },
+              {
+                "name": "options",
+                "type": "object",
+                "description": "Additional options",
+                "required": false,
+                "default": null
+              }
+            ],
+            "return_value": {
+              "type": "string",
+              "description": "The URL for the specified Asset"
+            },
+            "description": "Returns the URL to a specified Asset. Options can include 'append_time' which includes the time when the file was created/modified as part of the url.",
+            "examples": [
+              {
+                "title": "Displaying an asset image from a component's files",
+                "description": "This example is for a standard component (Non-static). We might want to display an image that is stored within the component. In the component's files section click the plus icon and upload an image into the frontend folder.",
+                "code": "// main.js inside get_template_data()\n\nlet asset = wrapper.asset_url('logo.png');\nreturn {\n\timage : asset\n}\n\n// Now the asset's url is available as a variable image in the frontend\n// Lets use this in our template file main.htm\n\n// <img :src=\"image\" />",
+                "output": null
+              }
+            ]
+          },
+          {
+            "name": "get_base_object_id",
+            "summary": "Get the wrapper's base object ID",
+            "signature": "wrapper.get_base_object_id()",
+            "since": "10.2",
+            "parameters": [],
+            "return_value": {
+              "type": "string",
+              "description": "The base object ID for the wrapper."
+            },
+            "description": "Get the wrapper's base object ID",
+            "examples": [
+              {
+                "title": "Getting total items for the base object",
+                "description": "Simple usage of the get_base_object_id() method",
+                "code": "let items = cs.search({\n\t'base_object_id': wrapper.get_base_object_id(),\n});\ncs.log(items.length);",
+                "output": null
+              }
+            ]
+          },
+          {
+            "name": "get_base_record_id",
+            "summary": "Returns the base record ID for this Wrapper",
+            "signature": "wrapper.get_base_record_id()",
+            "since": "10.2",
+            "parameters": [],
+            "return_value": {
+              "type": "string",
+              "description": "The base record ID for the wrapper."
+            },
+            "description": "Returns the base record ID for this Wrapper",
+            "examples": []
+          },
+          {
+            "name": "get_displayable_value",
+            "summary": "Returns the displayable version of the value",
+            "signature": "wrapper.get_displayable_value()",
+            "since": "10.2",
+            "parameters": [],
+            "return_value": {
+              "type": "string",
+              "description": "The displayable value"
+            },
+            "description": "Returns the displayable version of the value",
+            "examples": []
+          },
+          {
+            "name": "get_editable_value",
+            "summary": "Returns the editable version of the value",
+            "signature": "wrapper.get_editable_value()",
+            "since": "10.2",
+            "parameters": [],
+            "return_value": {
+              "type": "string",
+              "description": "The editable value"
+            },
+            "description": "Returns the editable version of the value",
+            "examples": []
+          },
+          {
+            "name": "get_filters",
+            "summary": "Returns an array of filters applicable to the widget of this fragment",
+            "signature": "wrapper.get_filters()",
+            "since": "2020.1",
+            "parameters": [],
+            "return_value": {
+              "type": "object",
+              "description": "Returns an array of filters that were used in a separate search widget"
+            },
+            "description": "Returns an array of filters applicable to the widget of this fragment",
+            "examples": [
+              {
+                "title": "get_filters usage",
+                "description": "Returns filter data when the component invoking the method is placed within the same group as the search widget.",
+                "code": "let filters = wrapper.get_filters();\ncs.log(filters);",
+                "output": "Array\n(\n    [0] => Array\n        (\n            [field_path] => :CMP0000011EFCAE9\n            [comparison_operator] => 1\n            [value] => Johnson\n        )\n\n    [1] => Array\n        (\n            [field_path] => :user_role_id\n            [comparison_operator] => 4\n            [value] => URL0000001AAAAA9\n        )\n)"
+              }
+            ]
+          },
+          {
+            "name": "get_html_displayable_value",
+            "summary": "Returns the HTML version of the displayable value",
+            "signature": "wrapper.get_html_displayable_value()",
+            "since": "10.2",
+            "parameters": [],
+            "return_value": {
+              "type": "string",
+              "description": "The HTML version of the displayable value"
+            },
+            "description": "Returns the HTML version of the displayable value",
+            "examples": []
+          },
+          {
+            "name": "get_input_name",
+            "summary": "Returns the input name for the Wrapper's Presenter",
+            "signature": "wrapper.get_input_name()",
+            "since": "10.2",
+            "parameters": [],
+            "return_value": {
+              "type": "string",
+              "description": "The name of the input"
+            },
+            "description": "Returns the input name for the Wrapper's Presenter",
+            "examples": []
+          },
+          {
+            "name": "get_setting",
+            "summary": "Return the value of a setting, as set by the builder in the Wrapper",
+            "signature": "wrapper.get_setting(setting_name, default)",
+            "since": "10.2",
+            "parameters": [
+              {
+                "name": "setting_name",
+                "type": "string",
+                "description": "Setting name",
+                "required": true
+              },
+              {
+                "name": "default",
+                "type": "any",
+                "description": "Uses the default value when setting is not set",
+                "required": true
+              }
+            ],
+            "return_value": {
+              "type": "any",
+              "description": "The setting value"
+            },
+            "description": "Return the value of a setting, as set by the builder in the Wrapper",
+            "examples": []
+          },
+          {
+            "name": "get_settings",
+            "summary": "Returns the settings for this Wrapper",
+            "signature": "wrapper.get_settings()",
+            "since": "10.2",
+            "parameters": [],
+            "return_value": {
+              "type": "object",
+              "description": "The Wrapper's settings"
+            },
+            "description": "Returns the settings for this Wrapper",
+            "examples": []
+          },
+          {
+            "name": "get_side_label",
+            "summary": "Returns the side label for the Wrapper's Presenter",
+            "signature": "wrapper.get_side_label()",
+            "since": "10.2",
+            "parameters": [],
+            "return_value": {
+              "type": "string",
+              "description": "The side label for the Presenter"
+            },
+            "description": "Returns the side label for the Wrapper's Presenter",
+            "examples": []
+          },
+          {
+            "name": "input_attributes",
+            "summary": "Returns a list of the input attributes for the Presenter",
+            "signature": "wrapper.input_attributes()",
+            "since": "10.2",
+            "parameters": [],
+            "return_value": {
+              "type": "object",
+              "description": "List of the input attributes"
+            },
+            "description": "Returns a list of the input attributes for the Presenter",
+            "examples": [
+              {
+                "title": "input_attributes usage",
+                "description": "Example Output",
+                "code": "let input_attributes = wrapper.input_attributes();\ncs.log(input_attributes);",
+                "output": "Array\n(\n    [class] => required col-form-value valid_string valid_max_length form-control\n    [data-max_length] => 255\n)"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }

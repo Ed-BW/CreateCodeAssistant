@@ -1,0 +1,449 @@
+{
+    "category": "COMPONENT CLASSES",
+    "classes": [
+      {
+        "name": "recordset",
+        "description": "Represents a set of records returned from a search",
+        "methods": [
+          {
+            "name": "count",
+            "summary": "Returns the count from the recordset object",
+            "signature": "recordset.count()",
+            "since": "10.2",
+            "parameters": [],
+            "return_value": {
+              "type": "number",
+              "description": "Count of records"
+            },
+            "description": "Returns the count from the recordset object",
+            "examples": [
+              {
+                "title": "count usage",
+                "description": "Create the bellow references in Code Studio -> References page Object reference - Users",
+                "code": "let r = cs.search({\n\t'base_object_id': cs.ref('Users')\n});\n\nlet select = {\n\tid : ':id'\n};\n\nlet count = r.count();\ncs.log(count);",
+                "output": null
+              }
+            ]
+          },
+          {
+            "name": "next_row",
+            "summary": "Fetch the next record object",
+            "signature": "recordset.next_row()",
+            "since": "10.2",
+            "parameters": [],
+            "return_value": {
+              "type": "object",
+              "description": "The next row of the record set"
+            },
+            "description": "The recordset class is provided in response to a mats.search() when the return type is not explicitly provided, and gives you a flexible way of retrieving and handling the returned data. next_row() returns a record instance and increments the pointer, making it useful for use with while loops.",
+            "examples": [
+              {
+                "title": "next_row usage",
+                "description": "In this example we will be searching for all the users. Create the bellow references in Code Studio -> References page Object reference - Users Field path - SurnameFieldPath",
+                "code": "let r = cs.search({\n\t'base_object_id': cs.ref('Users')\n});\n\nlet select = {\n\tid : ':id',\n\tsurname : cs.ref('SurnameFieldPath')\n};\n\nlet items = [];\nwhile (rec = r.next_row()) {\n\tvar item = rec.get(select, 'displayable');\n\n\titems.push(item);\n}\ncs.log(items);",
+                "output": "Example Output Ordered by the largest number\n Array\n(\n    [0] => Array\n        (\n            [id] => 1019\n            [surname] => Smith\n        )\n    [1] => Array\n        (\n            [id] => 1009\n            [surname] => Johnson\n        )\n)"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "name": "fragment_presenter",
+        "description": "Fragment presenter object",
+        "methods": [
+          {
+            "name": "add_class",
+            "summary": "Adds a class to the Presenter's container element",
+            "signature": "fragment_presenter.add_class(classname)",
+            "since": "10.2",
+            "parameters": [
+              {
+                "name": "classname",
+                "type": "string",
+                "description": "CSS class to be added",
+                "required": true
+              }
+            ],
+            "return_value": {
+              "type": "void",
+              "description": ""
+            },
+            "description": "Adds a class to the Presenter's container element. Not available in Fragment Validators.",
+            "examples": [
+              {
+                "title": "Applying a custom style class to the fragment's container on page load",
+                "description": "We may want to apply a custom style class depending on a condition when the page is first loaded. The custom style class would have to be defined in a stylesheet and used in a theme. Create a Fragment Callback and select it in the fragment's advanced section of the settings.",
+                "code": "let value = fragment_presenter.get_value();\nif(parseFloat(value) > 1.5){\n\tfragment_presenter.add_class('custom_style');\n}",
+                "output": null
+              }
+            ]
+          },
+          {
+            "name": "add_input_class",
+            "summary": "Adds a class to the Presenter's input element",
+            "signature": "fragment_presenter.add_input_class(classname)",
+            "since": "10.2",
+            "parameters": [
+              {
+                "name": "classname",
+                "type": "string",
+                "description": "CSS class to be added",
+                "required": true
+              }
+            ],
+            "return_value": {
+              "type": "void",
+              "description": ""
+            },
+            "description": "Adds a class to the Presenter's input element. Not available in Fragment Validators.",
+            "examples": [
+              {
+                "title": "Applying a custom style class to the fragment's input on page load",
+                "description": "We may want to apply a custom style class depending on a condition when the page is first loaded. The custom style class would have to be defined in a stylesheet and used in a theme. Create a Fragment Callback and select it in the fragment's advanced section of the settings.",
+                "code": "let value = fragment_presenter.get_value();\nif(parseFloat(value) > 1.5){\n\tfragment_presenter.add_input_class('custom_style');\n}",
+                "output": null
+              }
+            ]
+          },
+          {
+            "name": "get_all_settings",
+            "summary": "Returns a list of all the fragments with their settings that are within the same group as the fragment that initiated the method call",
+            "signature": "fragment_presenter.get_all_settings()",
+            "since": "10.0",
+            "parameters": [],
+            "return_value": {
+              "type": "object",
+              "description": "Fragment settings"
+            },
+            "description": "Returns a list of all the fragments with their settings that are within the same group as the fragment that initiated the method call. The data returned by the function can be highly variable and therefore cannot be documented in full. The meaning of some of the data returned may not always be intuitive or self-explanatory. Nevertheless, the data is exposed to empower coders.",
+            "examples": [
+              {
+                "title": "get_all_settings usage",
+                "description": "Example Output",
+                "code": "let settings = fragment_presenter.get_all_settings();\ncs.log(settings)",
+                "output": "Array\n(\n    [PCF0000774EFCAE1] => Array\n        (\n            [message_offline_mode_unique_lookup] =>\n            [wrapper] => 6\n            [presenter] => 2\n            [label] => \n            [hint] =>\n            [required] => 0\n            [nonautoinput] => 0\n            [omit_if_blank] => 0\n            [display_on_small_devices] => 1\n            [display_on_medium_devices] => 1\n            [display_on_large_devices] => 1\n            [message_offline_mode_callback] =>\n        )\n    [PCF0000772EFCAE1] => Array\n        (\n            [message_offline_mode_unique_lookup] =>\n            [wrapper] => 6\n            [presenter] => 1\n            [label] => \n            [hint] =>\n            [required] => 0\n            [nonautoinput] => 0\n            [omit_if_blank] => 0\n            [display_on_small_devices] => 1\n            [display_on_medium_devices] => 1\n            [display_on_large_devices] => 1\n            [message_offline_mode_callback] =>\n        )\n    [PCF0000791EFCAE1] => Array\n        (\n            [message_offline_mode_unique_lookup] =>\n            [wrapper] => 5\n            [presenter] => 38\n            [text] => \n            [action] => trigger_event\n            [add_text] => Add to context\n            [remove_text] => Remove from context\n            [event_to_trigger] => EVE0001002EFCAE1\n            [prompt_confirm_text] => Are you sure you want to continue?\n            [secondary_prompt_confirm_text] => Are you sure you want to continue?\n            [maintain_scroll_position] => top_page\n            [presenter_settings] => Array\n                (\n                    [presentation] => button\n                    [button] => Array\n                        (\n                            [size] => btn-medium\n                            [color] => pink\n                        )\n                )\n            [display_on_small_devices] => 1\n            [display_on_medium_devices] => 1\n            [display_on_large_devices] => 1\n            [message_offline_mode_callback] =>\n        )\n    [PCF0000010EFCAE9] => Array\n        (\n            [message_offline_mode_unique_lookup] =>\n            [wrapper] => 6\n            [presenter] => 10\n            [text] => \n            [maintain_scroll_position] => top_page\n            [display_on_small_devices] => 1\n            [display_on_medium_devices] => 1\n            [display_on_large_devices] => 1\n            [button] => Array\n                (\n                    [size] => btn-large\n                    [color] => purple\n                )\n            [show_live_result_count_text] => See [total] results\n            [reset_button] => Array\n                (\n                    [size] => btn-medium\n                    [color] => light\n                )\n            [alignment] => right\n            [independent_submission_settings] => Array\n                (\n                    [redirect_with_id] => 1\n                )\n            [message_offline_mode_callback] =>\n        )\n)"
+              }
+            ]
+          },
+          {
+            "name": "get_base_record_id",
+            "summary": "Returns the base record ID from the context the fragment is being rendered in",
+            "signature": "fragment_presenter.get_base_record_id()",
+            "since": "10.0",
+            "parameters": [],
+            "return_value": {
+              "type": "number",
+              "description": "The record ID"
+            },
+            "description": "Returns the base record ID from the context the fragment is being rendered in",
+            "examples": [
+              {
+                "title": "Retrieving all the properties of a base record",
+                "description": "We might want to get all the data of the base record and then perform some logic.",
+                "code": "let base_record_id = fragment_presenter.get_base_record_id();\nlet record = cs.record(base_record_id);\nlet schema = record.schema();\n\nlet properties = [];\nObject.keys(schema.properties).map(function(key, index) {\n\tproperties[schema.properties[key]] = \":\" + key;\n});\n\nlet record_data = record.get(properties, 'displayable');\n\ncs.log(record_data);",
+                "output": null
+              }
+            ]
+          },
+          {
+            "name": "get_context_record_id",
+            "summary": "Returns the context record id",
+            "signature": "fragment_presenter.get_context_record_id()",
+            "since": "10.1",
+            "parameters": [],
+            "return_value": {
+              "type": "number",
+              "description": "context record id"
+            },
+            "description": "Returns the context record id",
+            "examples": []
+          },
+          {
+            "name": "get_displayable_value",
+            "summary": "Returns the displayable version of the value",
+            "signature": "fragment_presenter.get_displayable_value()",
+            "since": "10.0",
+            "parameters": [],
+            "return_value": {
+              "type": "string",
+              "description": "The displayable value"
+            },
+            "description": "Returns the displayable version of the value",
+            "examples": []
+          },
+          {
+            "name": "get_settings",
+            "summary": "Returns a list of the settings for this Fragment",
+            "signature": "fragment_presenter.get_settings()",
+            "since": "10.0",
+            "parameters": [],
+            "return_value": {
+              "type": "object",
+              "description": "Fragment settings"
+            },
+            "description": "Returns a list of the settings for this Fragment. The data returned by the function can be highly variable and therefore cannot be documented in full. The meaning of some of the data returned may not always be intuitive or self-explanatory. Nevertheless, the data is exposed to empower coders.",
+            "examples": [
+              {
+                "title": "get_settings usage",
+                "description": "Example Output",
+                "code": "let settings = fragment_presenter.get_settings();\ncs.log(settings)",
+                "output": "Array\n(\n    [message_offline_mode_unique_lookup] =>\n    [wrapper] => 6\n    [presenter] => 3\n    [label] => \n    [hint] =>\n    [required] => 0\n    [nonautoinput] => 0\n    [omit_if_blank] => 0\n    [nothing_selected_option] => 1\n    [nothing_selected_text] => ...\n    [display_on_small_devices] => 1\n    [display_on_medium_devices] => 1\n    [display_on_large_devices] => 1\n    [callback] => CSC0000184EFCAE1\n    [message_offline_mode_callback] =>\n)"
+              }
+            ]
+          },
+          {
+            "name": "get_template_data",
+            "summary": "Returns fragment presenter's template data",
+            "signature": "fragment_presenter.get_template_data(key)",
+            "since": "2020.1",
+            "parameters": [
+              {
+                "name": "key",
+                "type": "string",
+                "description": "Template key reference. When no key is passed in all the available template data will be returned.",
+                "required": false
+              }
+            ],
+            "return_value": {
+              "type": "object",
+              "description": "Template data"
+            },
+            "description": "Returns fragment presenter's template data. The data returned by the function can be highly variable and therefore cannot be documented in full. The meaning of some of the data returned may not always be intuitive or self-explanatory. Nevertheless, the data is exposed to empower coders.",
+            "examples": [
+              {
+                "title": "Modifying choices of a dropdown in a fragment callback",
+                "description": "In this example we will be retrieving the list of choices, modifying each display_name property and then setting the modified choices to be used. Create a Fragment Callback and select it in the fragment's advanced section of the settings.",
+                "code": "let choices = fragment_presenter.get_template_data('choices');\n\nfor (i = 0; i < choices.length; i++) { \n\tchoices[i]['display_name'] = choices[i]['display_name'] + \" \" + i;\n}\n\nfragment_presenter.set_template_data('choices', choices);",
+                "output": "Example Output of the fragment_presenter.get_template_data('choices') call\n Array(\n    [0] => Array\n        (\n            [id] => DTC0000061EFCAE1\n            [original_id] => DTC0000061EFCAE1\n            [data_type_id] => DTP0000085EFCAE1\n            [name] => A\n            [display_name] => A\n            [subset_1] =>\n            [subset_2] =>\n            [subset_3] =>\n            [subset_4] =>\n            [subset_5] =>\n            [source] => local\n            [status] => active\n            [in_order] => 0\n            [value] => DTC0000061EFCAE1\n        )\n    [1] => Array\n        (\n            [id] => DTC0000062EFCAE1\n            [original_id] => DTC0000062EFCAE1\n            [data_type_id] => DTP0000085EFCAE1\n            [name] => B\n            [display_name] => B\n            [subset_1] =>\n            [subset_2] =>\n            [subset_3] =>\n            [subset_4] =>\n            [subset_5] =>\n            [source] => local\n            [status] => active\n            [in_order] => 1\n            [value] => DTC0000062EFCAE1\n        )\n    [2] => Array\n        (\n            [id] => DTC0000063EFCAE1\n            [original_id] => DTC0000063EFCAE1\n            [data_type_id] => DTP0000085EFCAE1\n            [name] => C\n            [display_name] => C\n            [subset_1] =>\n            [subset_2] =>\n            [subset_3] =>\n            [subset_4] =>\n            [subset_5] =>\n            [source] => local\n            [status] => active\n            [in_order] => 2\n            [value] => DTC0000063EFCAE1\n        )\n)"
+              }
+            ]
+          },
+          {
+            "name": "get_value",
+            "summary": "Returns the currently input value for this Fragment",
+            "signature": "fragment_presenter.get_value()",
+            "since": "10.0",
+            "parameters": [],
+            "return_value": {
+              "type": "any",
+              "description": "The value of the fragment"
+            },
+            "description": "Returns the currently input value for this Fragment",
+            "examples": []
+          },
+          {
+            "name": "get_values",
+            "summary": "Returns a list of the current input values in the form",
+            "signature": "fragment_presenter.get_values(format)",
+            "since": "10.0",
+            "parameters": [
+              {
+                "name": "format",
+                "type": "object",
+                "description": "Extended format for grabbing listing data within the same widget group. When you need to retrieve the form value from your widget group, it may include a listing from which you want to capture data. In this case, the method offers an 'extended' option that enables you to capture an array of listing data as well. For example: const form_values = fragment_presenter.get_values({format: 'extended'});",
+                "required": false,
+                "since": "2023.3"
+              }
+            ],
+            "return_value": {
+              "type": "object",
+              "description": "List of input values from the form"
+            },
+            "description": "Returns a list of the current input values in the form",
+            "examples": [
+              {
+                "title": "Get form values",
+                "description": "This method is excellent for retrieving values from an entire form, and it can also extend to other forms within the same widget group. This method provides a way to gather data from any user form. The code snippet below demonstrates how to capture user data from a form specifically designed for adding or editing a user. Top Tip: Use cs.log() to output the full contents of form_values() to the console, allowing you to see which form inputs and values are being captured.",
+                "code": "const form_values = fragment_presenter.get_values();\n\nconst context = form_values[cs.ref('user_id')];\nconst forename = form_values[cs.ref('user_forename')];\nconst surname = form_values[cs.ref('user_surname')];",
+                "output": null
+              },
+              {
+                "title": "Get extended values",
+                "description": "When you need to retrieve the form value from your widget group, it may include a listing from which you want to capture data. In this case, the method offers an 'extended' option that enables you to capture an array of listing data as well.",
+                "code": "const extended_form_values = fragment_presenter.get_values({format: 'extended'});",
+                "output": null
+              }
+            ]
+          },
+          {
+            "name": "set_attribute",
+            "summary": "Sets the value of an attribute for fragment Presenter's container element",
+            "signature": "fragment_presenter.set_attribute(attribute_key, attribute_value)",
+            "since": "10.2",
+            "parameters": [
+              {
+                "name": "attribute_key",
+                "type": "string",
+                "description": "Key of an attribute to be added",
+                "required": true
+              },
+              {
+                "name": "attribute_value",
+                "type": "string",
+                "description": "Value of an attribute to be added",
+                "required": true
+              }
+            ],
+            "return_value": {
+              "type": "void",
+              "description": ""
+            },
+            "description": "Sets the value of an attribute for fragment Presenter's container element. Not available in Fragment Validators.",
+            "examples": [
+              {
+                "title": "Applying a custom attribute to the fragment's container on page load",
+                "description": "We may want to apply a custom attribute depending on a condition when the page is first loaded. Create a Fragment Callback and select it in the fragment's advanced section of the settings.",
+                "code": "let value = fragment_presenter.get_value();\nif(parseFloat(value) > 1.5){\n\tfragment_presenter.set_attribute('custom_attribute', 'custom_attribute_value');\n}",
+                "output": null
+              }
+            ]
+          },
+          {
+            "name": "set_displayable_value",
+            "summary": "Set the value for this fragment and prevent it from being converted later to a displayable format",
+            "signature": "fragment_presenter.set_displayable_value(displayable_value)",
+            "since": "10.0",
+            "parameters": [
+              {
+                "name": "displayable_value",
+                "type": "string",
+                "description": "New value",
+                "required": true
+              }
+            ],
+            "return_value": {
+              "type": "void",
+              "description": ""
+            },
+            "description": "Set the value for this fragment and prevent it from being converted later to a displayable format. Not available in Fragment Validators.",
+            "examples": []
+          },
+          {
+            "name": "set_input_attribute",
+            "summary": "Sets an attribute for fragment's input element",
+            "signature": "fragment_presenter.set_input_attribute(attribute_value, attribute_key)",
+            "since": "10.2",
+            "parameters": [
+              {
+                "name": "attribute_value",
+                "type": "string",
+                "description": "Value of an attribute to be added",
+                "required": true
+              },
+              {
+                "name": "attribute_key",
+                "type": "string",
+                "description": "Key of an attribute to be added",
+                "required": true
+              }
+            ],
+            "return_value": {
+              "type": "void",
+              "description": ""
+            },
+            "description": "Sets an attribute for fragment's input element. Not available in Fragment Validators.",
+            "examples": [
+              {
+                "title": "Applying a custom attribute to the fragment's input on page load",
+                "description": "We may want to apply a custom attribute depending on a condition when the page is first loaded. Create a Fragment Callback and select it in the fragment's advanced section of the settings.",
+                "code": "let value = fragment_presenter.get_value();\nif(parseFloat(value) > 1.5){\n\tfragment_presenter.set_input_attribute('disabled', 'disabled');\n}",
+                "output": null
+              }
+            ]
+          },
+          {
+            "name": "set_setting",
+            "summary": "Set the value of a setting for the fragment to change its appearance or behaviour in the page",
+            "signature": "fragment_presenter.set_setting(setting_name, setting_value)",
+            "since": "10.0",
+            "parameters": [
+              {
+                "name": "setting_name",
+                "type": "string",
+                "description": "Setting to change. Note that fragments may have different settings available, check what is available by invoking cs.log(fragment_presenter.get_settings()); method call and inspecting the return in detective.",
+                "required": true
+              },
+              {
+                "name": "setting_value",
+                "type": "string",
+                "description": "New value",
+                "required": true
+              }
+            ],
+            "return_value": {
+              "type": "void",
+              "description": ""
+            },
+            "description": "Set the value of a setting for the fragment to change its appearance or behaviour in the page",
+            "examples": [
+              {
+                "title": "Making the fragment's input a mandatory field",
+                "description": "Programmatically changing the input's required setting. Note that fragments may have different settings, check what is available by invoking cs.log(fragment_presenter.get_settings()); method call and inspecting the return in detective.",
+                "code": "fragment_presenter.set_setting('required', true);",
+                "output": null
+              },
+              {
+                "title": "Changing a nested fragment setting",
+                "description": "Some of the fragment's settings may contain nested arrays of further settings. These can be modified by replacing the whole array from the top level.",
+                "code": "let fragment_settings = fragment_presenter.get_settings();\n\nfragment_settings.presenter_settings.max_year = 2026;\nfragment_presenter.set_setting('presenter_settings', fragment_settings.presenter_settings);",
+                "output": null
+              }
+            ]
+          },
+          {
+            "name": "set_template_data",
+            "summary": "Used for setting a fragment presenter's template data",
+            "signature": "fragment_presenter.set_template_data(key, data)",
+            "since": "2020.1",
+            "parameters": [
+              {
+                "name": "key",
+                "type": "string",
+                "description": "Template key reference",
+                "required": true
+              },
+              {
+                "name": "data",
+                "type": "any",
+                "description": "Template property data",
+                "required": true
+              }
+            ],
+            "return_value": {
+              "type": "void",
+              "description": ""
+            },
+            "description": "Used for setting a fragment presenter's template data",
+            "examples": [
+              {
+                "title": "Modifying choices of a dropdown in a fragment callback",
+                "description": "In this example we will be retrieving the list of choices, modifying each display_name property and then setting the modified choices to be used. Create a Fragment Callback and select it in the fragment's advanced section of the settings.",
+                "code": "let choices = fragment_presenter.get_template_data('choices');\n\nfor (i = 0; i < choices.length; i++) { \n\tchoices[i]['display_name'] = choices[i]['display_name'] + \" \" + i;\n}\n\nfragment_presenter.set_template_data('choices', choices);",
+                "output": "Example Output of the fragment_presenter.get_template_data('choices') call\n Array(\n    [0] => Array\n        (\n            [id] => DTC0000061EFCAE1\n            [original_id] => DTC0000061EFCAE1\n            [data_type_id] => DTP0000085EFCAE1\n            [name] => A\n            [display_name] => A\n            [subset_1] =>\n            [subset_2] =>\n            [subset_3] =>\n            [subset_4] =>\n            [subset_5] =>\n            [source] => local\n            [status] => active\n            [in_order] => 0\n            [value] => DTC0000061EFCAE1\n        )\n    [1] => Array\n        (\n            [id] => DTC0000062EFCAE1\n            [original_id] => DTC0000062EFCAE1\n            [data_type_id] => DTP0000085EFCAE1\n            [name] => B\n            [display_name] => B\n            [subset_1] =>\n            [subset_2] =>\n            [subset_3] =>\n            [subset_4] =>\n            [subset_5] =>\n            [source] => local\n            [status] => active\n            [in_order] => 1\n            [value] => DTC0000062EFCAE1\n        )\n    [2] => Array\n        (\n            [id] => DTC0000063EFCAE1\n            [original_id] => DTC0000063EFCAE1\n            [data_type_id] => DTP0000085EFCAE1\n            [name] => C\n            [display_name] => C\n            [subset_1] =>\n            [subset_2] =>\n            [subset_3] =>\n            [subset_4] =>\n            [subset_5] =>\n            [source] => local\n            [status] => active\n            [in_order] => 2\n            [value] => DTC0000063EFCAE1\n        )\n)"
+              }
+            ]
+          },
+          {
+            "name": "set_value",
+            "summary": "Set the value for this fragment",
+            "signature": "fragment_presenter.set_value(value)",
+            "since": "10.0",
+            "parameters": [
+              {
+                "name": "value",
+                "type": "string",
+                "description": "New value",
+                "required": true
+              }
+            ],
+            "return_value": {
+              "type": "void",
+              "description": ""
+            },
+            "description": "Set the value for this fragment",
+            "examples": []
+          }
+        ]
+      }
+    ]
+  }

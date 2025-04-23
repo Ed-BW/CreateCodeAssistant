@@ -1,0 +1,643 @@
+{
+    "category": "BACKEND CLASSES",
+    "classes": [
+      {
+        "name": "record",
+        "description": "Represents an individual data record",
+        "methods": [
+          {
+            "name": "add_relationships",
+            "summary": "Adds a relationship to a record or multiple records given a relationship path",
+            "signature": "record.add_relationships(relation_path, record_ids)",
+            "since": "10.3",
+            "parameters": [
+              {
+                "name": "relation_path",
+                "type": "string",
+                "description": "Path of relationship",
+                "required": true
+              },
+              {
+                "name": "record_ids",
+                "type": "mixed",
+                "description": "Record ID or an array of record ID's to relate to.",
+                "required": true
+              }
+            ],
+            "return_value": {
+              "type": "object",
+              "description": "Returns a list of record ID's which were related"
+            },
+            "description": "Adds a relationship to a record or multiple records given a relationship path",
+            "examples": [
+              {
+                "title": "add_relationships usage",
+                "description": "In this example we will be adding some related records from one record to another. We will need the bellow before we start. Create a file type Object. Create a one-to-many relationship in User Object (user - many files). Upload some files against a user so that we can use this in our example. Lastly In Code Studio > References page create a relation path reference to the users -> files object.",
+                "code": "let related_records = cs.record(123).get_related(cs.ref('UserFiles'));\n\nlet select = {\n\tid : ':id'\n};\n\nlet items = [];\nwhile (rec = related_records.next_row()) {\n\tvar item = rec.get(select, 'displayable');\n\titems.push(item['id']);\n}\n\nlet added_records = cs.record(124).add_relationships(cs.ref('UserFiles'),items);\ncs.log(added_records);",
+                "output": "Array\n(\n    [0] => 1021\n    [1] => 1023\n    [2] => 1025\n)"
+              }
+            ]
+          },
+          {
+            "name": "add_to_subset",
+            "summary": "Add current record to an event-based subset",
+            "signature": "record.add_to_subset(subset_id, suppress_events)",
+            "since": "10.4",
+            "parameters": [
+              {
+                "name": "subset_id",
+                "type": "string",
+                "description": "The subset ID.",
+                "required": true
+              },
+              {
+                "name": "suppress_events",
+                "type": "boolean",
+                "description": "Whether to suppress events or not.",
+                "required": false
+              }
+            ],
+            "return_value": {
+              "type": "boolean",
+              "description": "Status of the add function."
+            },
+            "description": "Add current record to an event-based subset",
+            "examples": [
+              {
+                "title": "Adding a record to an event-based subset",
+                "description": "Adding a record and checking if it has been added. Create a subset in Data Store -> Subsets page based on the User object. In Code Studio > References page create a subset reference.",
+                "code": "let record = cs.record(123); \n\nlet added = record.add_to_subset(cs.ref('SpecialUsers'));\nif(added){\n\tcs.log('record added to subset');\n}\n\nlet in_subset = record.in_subset(cs.ref('SpecialUsers'))\nif(in_subset){\n\tcs.log('record in subset');\n}else{\n\tcs.log('record not in subset');\n}",
+                "output": null
+              }
+            ]
+          },
+          {
+            "name": "clear_relationships",
+            "summary": "Removes all relationships to records for a given relation path",
+            "signature": "record.clear_relationships(relation_path)",
+            "since": "10.3",
+            "parameters": [
+              {
+                "name": "relation_path",
+                "type": "string",
+                "description": "Relation path to clear relationships from",
+                "required": true
+              }
+            ],
+            "return_value": {
+              "type": "object",
+              "description": "List of record ID's that were unrelated"
+            },
+            "description": "Removes all relationships to records for a given relation path",
+            "examples": [
+              {
+                "title": "clear_relationships usage",
+                "description": "In this example we will be removing all the related records from a user. We will need the bellow before we start. Create a file type Object. Create a one-to-many relationship in User Object (user - many files). Upload some files against a user so that we can use this in our example. Lastly In Code Studio > References page create a relation path reference to the users -> files object.",
+                "code": "let record = cs.record(123); \nlet items = record.clear_relationships(cs.ref('UserFiles'))\ncs.log(items);",
+                "output": "Array\n(\n    [0] => 1021\n    [1] => 1023\n    [2] => 1025\n)"
+              }
+            ]
+          },
+          {
+            "name": "delete",
+            "summary": "Delete the loaded record",
+            "signature": "record.delete()",
+            "since": "10.2",
+            "parameters": [],
+            "return_value": {
+              "type": "void",
+              "description": ""
+            },
+            "description": "Delete the loaded record",
+            "examples": [
+              {
+                "title": "delete usage",
+                "description": "Simple example how to delete a record.",
+                "code": "let record = cs.record(123); \nrecord.delete();",
+                "output": null
+              }
+            ]
+          },
+          {
+            "name": "exists",
+            "summary": "Check if the currently prepped record exists",
+            "signature": "record.exists()",
+            "since": "10.4",
+            "parameters": [],
+            "return_value": {
+              "type": "boolean",
+              "description": "Whether the record exists or not."
+            },
+            "description": "Check if the currently prepped record exists",
+            "examples": [
+              {
+                "title": "exists usage",
+                "description": "Checking if a record exists.",
+                "code": "let record = cs.record(123); \nif(record.exists()){\n\tcs.log('record exists');\n}else{\n\tcs.log('record does not exist');\n}",
+                "output": null
+              }
+            ]
+          },
+          {
+            "name": "expire_webpage_tokens",
+            "summary": "Expire time-limited webpage tokens",
+            "signature": "record.expire_webpage_tokens(webpage_id)",
+            "since": "2020.1",
+            "parameters": [
+              {
+                "name": "webpage_id",
+                "type": "string",
+                "description": "Only expire tokens for this webpage, otherwise all webpages.",
+                "required": false
+              }
+            ],
+            "return_value": {
+              "type": "boolean",
+              "description": "true"
+            },
+            "description": "Forcefully expire any outstanding authenticated webpage links for this record, for those webpages which have an expiry time limit set. Optionally specify the webpage_id parameter to only apply to links to that authenticated webpage",
+            "examples": [
+              {
+                "title": "Expire all webpage tokens for a given record",
+                "description": "This will expire any tokens issued for the context record ID for authenticated webpages which have an expiry time limit set. This may be used, for example, where a Case has been completed and therefore any time-limited links that have been sent out need to be invalidated, even if still within the original expiry time.",
+                "code": "var myrecord = cs.record(12345);\nmyrecord.expire_webpage_tokens();",
+                "output": null
+              },
+              {
+                "title": "Expire tokens for a given record and specific webpage",
+                "description": "This will expire any tokens issued for the context record ID for the specified authenticated webpage ID only (assuming that page has an expiry time limit set).",
+                "code": "var myrecord = cs.record(12345);\nmyrecord.expire_webpage_tokens(cs.ref('case_edit_webpage')); // Where the reference 'case_edit_webpage' specifies an authenticated webpage",
+                "output": null
+              }
+            ]
+          },
+          {
+            "name": "get",
+            "summary": "Fetch field value(s) from the loaded record",
+            "signature": "record.get(fields, mode)",
+            "since": "10.0",
+            "parameters": [
+              {
+                "name": "fields",
+                "type": "string",
+                "description": "Fields to fetch",
+                "required": true
+              },
+              {
+                "name": "mode",
+                "type": "string",
+                "description": "Which format to retrieve the data in. This allows you to specify which format you would like to retrieve your data in, and you have three formats you can choose from; \"editable\", \"displayable\", \"saveable\".",
+                "required": false
+              }
+            ],
+            "return_value": {
+              "type": "object",
+              "description": "Array of field values"
+            },
+            "description": "Fetch field value(s) from the loaded record",
+            "examples": [
+              {
+                "title": "get usage",
+                "description": "Simple example how to use the get method. We will be loading a record, looking at the object's schema, looping over all the object's properties and outputting their editable and displayable values.",
+                "code": "let record = cs.record(1009);\nlet schema = record.schema();\n\nObject.keys(schema.properties).map(function (key, index) {\n\tlet temp = [];\n\ttemp['id'] = key;\n\ttemp['name'] = schema.properties[key];\n\ttemp['editable_value'] = record.get(\":\" + key, 'editable');\n\ttemp['displayable_value'] = record.get(\":\" + key, 'displayable');\n\n\tcs.log(temp);\n})",
+                "output": "Array\n(\n    [id] => PRO0000124EFCAE1\n    [name] => Decimal\n    [editable_value] => 5\n    [displayable_value] => 5,00\n)"
+              }
+            ]
+          },
+          {
+            "name": "get_object_id",
+            "summary": "Fetch the object id for the loaded record",
+            "signature": "record.get_object_id()",
+            "since": "10.1",
+            "parameters": [],
+            "return_value": {
+              "type": "string",
+              "description": "Object ID"
+            },
+            "description": "Fetch the object id for the loaded record",
+            "examples": []
+          },
+          {
+            "name": "get_related",
+            "summary": "Get related records down a specified relationship path",
+            "signature": "record.get_related(relation_path, additional_filters, options)",
+            "since": "10.2",
+            "parameters": [
+              {
+                "name": "relation_path",
+                "type": "string",
+                "description": "Relationship to fetch records from",
+                "required": true
+              },
+              {
+                "name": "additional_filters",
+                "type": "array",
+                "description": "Additional search filters to apply. Refer to our dedicated Help Portal look under Code Studio -> Detailed Reference For cs.search() to find more information about search filters.",
+                "required": false
+              },
+              {
+                "name": "options",
+                "type": "object",
+                "description": "Additional parameters. limit - by default returns a 100 records",
+                "required": false,
+                "since": "10.3"
+              }
+            ],
+            "return_value": {
+              "type": "recordset object",
+              "description": "Recordset of related records"
+            },
+            "description": "Get related records down a specified relationship path",
+            "examples": [
+              {
+                "title": "Retrieving related files and their locations",
+                "description": "In this example we will be loading a user record and fetching some related files with their locations. We will need the bellow before we start. Create a file type Object. Create a one-to-many relationship in User Object (user - many files). Upload some files against a user so that we can use this in our example. Lastly In Code Studio > References page create a relation path reference to the users -> files object.",
+                "code": "let record = cs.record(123); \nlet related_records = record.get_related(cs.ref('user_files'));\n\nlet select = {\n\tid : ':id',\n\tfile_id : ':file_id'\n};\n\nlet items = [];\nwhile (rec = related_records.next_row()) {\n\tvar item = rec.get(select, 'displayable');\n\n\titem['file_location']  = cs.record_field_file_url(item['file_id']);\n\titems.push(item);\n}\ncs.log(items);",
+                "output": "Array\n(\n    [0] => Array\n        (\n            [id] => 1021\n            [file_id] => 9\n            [file_location] => /file/record_field_file/1021/file_id/Logo_Create.tiff\n        )\n    [1] => Array\n        (\n            [id] => 1023\n            [file_id] => 11\n            [file_location] => /file/record_field_file/1023/file_id/Screenshot.png\n        )\n)"
+              },
+              {
+                "title": "Filtering related records",
+                "description": "When get related records, it possible that you may need to filter the related records. In the below example, we've added a filter to only retrieve the user's related files if the extension is equal to PNG.",
+                "code": "let record = cs.record(123); \nlet related_records = record.get_related(cs.ref('UserFiles'), [{\"field_path\": cs.ref('user_files_extension'), \"value\" : \"png\", \"comparator\":\"equal_to\"}]} );",
+                "output": null
+              },
+              {
+                "title": "Limiting the related records",
+                "description": "Following on from the above examples, let's say that the user has hundreds of png files, but we would only like to retrieve 10 of those files, you could add a 3rd param which takes an integer up to 100 and return those limited number of related records.",
+                "code": "let record = cs.record(123); \nlet related_records = record.get_related(cs.ref('UserFiles'), [{\"field_path\": cs.ref('user_files_extension'), \"value\" : \"png\", \"comparator\":\"equal_to\"}]}, 10 );",
+                "output": null
+              }
+            ]
+          },
+          {
+            "name": "get_tenancy_restriction_record_id",
+            "summary": "Get the tenant record ID which the current record is restriced by",
+            "signature": "record.get_tenancy_restriction_record_id()",
+            "since": "2023.1",
+            "parameters": [],
+            "return_value": {
+              "type": "number",
+              "description": "Tenant record ID, or 0 if none found"
+            },
+            "description": "If the current record's Object has multitenancy restrictions applied, this method will return the first tenant record ID which it is restriced by. Note that it is possible for a record to be restricted by more than one tenant record, but only one will be returned here.",
+            "examples": []
+          },
+          {
+            "name": "get_uploaded_files",
+            "summary": "Fetch a list of files uploaded in the POST request",
+            "signature": "record.get_uploaded_files()",
+            "since": "10.2",
+            "parameters": [],
+            "return_value": {
+              "type": "object",
+              "description": "List of uploaded files awaiting processing, for information purposes. Use record.save_uploaded_files() to process and save them."
+            },
+            "description": "Fetch a list of files uploaded in the POST request",
+            "examples": [
+              {
+                "title": "Uploading a file in a custom widget",
+                "description": "In this example we will be looking at how we can create an upload form in the frontend, post a file to the backend, save the uploaded file against a file object and return back the saved file data. We will need the bellow before we start. Create a file type Object. Create a one-to-many relationship in User Object (user - many files). Create a relation path reference in Code Studio > References page mapping to user -> file object.",
+                "code": "/* frontend JS */\nexport default {\n\tmounted: function(){\n\t\tlet SELF = this;\n\t\tlet container = document.createElement('div');\n\n\t\tlet file_input = document.createElement('input');\n\t\tfile_input.className = 'file_upload';\n\t\tfile_input.setAttribute(\"type\",\"file\");\n\t\tcontainer.appendChild(file_input);\n\n\t\tlet file_upload = document.createElement('button');\n\t\tfile_upload.innerHTML = \"Upload\";\n\t\tfile_upload.addEventListener(\"click\",  function(e){\n\t\t\te.preventDefault();\n\n\t\t\tif(SELF.$el.querySelector('.file_upload').value == ''){\n\t\t\t\treturn;\n\t\t\t}\n\t\t\tlet postData = new FormData();\n\t\t\tif(SELF.$el.querySelector('input[type=file]') != null){\n\t\t\t\tpostData.append('widget_action', 'handle_event');\n\t\t\t\tpostData.append('code_action', 'upload');\n\t\t\t\tpostData.append('action_page_id', SELF.mats.widget.page_id);\n\t\t\t\tpostData.append('action_cell_id', SELF.mats.widget.cell_id);\n\t\t\t\tpostData.append('form_check_ajax', CSRF);\n\t\t\t\tpostData.append('fragment_collection_record_id', CONTEXT_RECORD_ID);\n\t\t\t\tpostData.append('files[]', SELF.$el.querySelector('input[type=file]').files[0]);\n\t\t\t}\n\t\t\tSELF.mats.widget.ajax('upload',{\n\t\t\t\ttype: \"POST\",\n\t\t\t\tdata : postData,\n\t\t\t\tprocessData: false,\n\t\t\t\tcontentType: false,\n\t\t\t\tsuccess: function(rsp){\n\n\t\t\t\t\tif(rsp.response !== undefined){\n\t\t\t\t\t\tconsole.info(rsp);\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t});\n\t\t});\n\t\tcontainer.appendChild(file_upload);\n\t\tthis.$el.append(container);\n\t}\n}\n\n\naction_upload: function() {\n\n\tlet record = cs.record(1009);\n\tlet uploaded_files = record.get_uploaded_files();\n\n\tcs.log(uploaded_files)\n\n\tlet saved = record.save_uploaded_files(cs.ref('UserFiles'));\n\n\tlet temp = {};\n\ttemp['file'] = saved.files[0];\n\ttemp['record_data'] = saved.records[0]['record_data'];\n\ttemp['record_field_file'] = saved.records[0]['record_field_file']['instance']['file_data'];\n\n        cs.log(temp)\n\n\treturn temp;\n}",
+                "output": "Array\n(\n    [file] => Array\n        (\n            [name] => Screenshot(1).png\n            [type] => image/png\n            [tmp_name] => /tmp/phpJWELzt\n            [error] => 0\n            [size] => 3782\n        )\n    [record_data] => Array\n        (\n            [REL0000002EFCAE1:id] => 1009\n            [file_id] => 59\n            [filename] => Screenshot(1).png\n            [size] => 3782\n            [mime_type] => image/png\n            [extension] => png\n            [id] => 1077\n        )\n    [record_field_file] => Array\n        (\n            [id] => 59\n            [record_id] => 1077\n            [field] => file_id\n            [saved_filename] => F000059_20201231_145855\n            [original_filename] => Screenshot(1).png\n            [extension] => png\n            [mime_type] => image/png\n            [status] => active\n            [create_stamp] => 1609426735\n            [destroy_stamp] =>\n            [destroy_reason] =>\n            [preview_file_id] =>\n            [thumbnail_file_id] =>\n            [saved_directory] => record_field_files\n        )\n)"
+              }
+            ]
+          },
+          {
+            "name": "in_subset",
+            "summary": "Returns whether the record is in a specific Subset",
+            "signature": "record.in_subset(subset_id)",
+            "since": "10.4",
+            "parameters": [
+              {
+                "name": "subset_id",
+                "type": "string",
+                "description": "The subset ID.",
+                "required": true
+              }
+            ],
+            "return_value": {
+              "type": "boolean",
+              "description": "Whether the record is in the subset"
+            },
+            "description": "Returns whether the record is in a specific Subset",
+            "examples": [
+              {
+                "title": "in_subset usage",
+                "description": "Checking if a record is in a subset. Create a subset in Data Store -> Subsets page based on the User object. In Code Studio > References page create a subset reference.",
+                "code": "let record = cs.record(123); \nlet in_subset = record.in_subset(cs.ref('SpecialUsers'))\ncs.log(in_subset);",
+                "output": null
+              }
+            ]
+          },
+          {
+            "name": "lock_info",
+            "summary": "Returns details of the lock for this record in a specific Viewport",
+            "signature": "record.lock_info(viewport_id)",
+            "since": "2020.2",
+            "parameters": [
+              {
+                "name": "viewport_id",
+                "type": "string",
+                "description": "ID of the Viewport. If not specified, then the current Viewport will be used.",
+                "required": false,
+                "default": "{current viewport}"
+              }
+            ],
+            "return_value": {
+              "type": "mixed",
+              "description": "Details of the lock as an object, or null if none"
+            },
+            "description": "If a Viewport ID isn't specified, then the current Viewport will be used. The returned data is based upon the configuration of the lock itself and whether it is set to Global, User Role or Subset Queue. The role_id will only return a value if the viewport lock is configured to lock on User Role. The subset_id will only return a value if the Viewport lock is configured to lock on Subset Queue.",
+            "examples": [
+              {
+                "title": "lock_info usage",
+                "description": "Example Output",
+                "code": "let record_id = 1234;\nlet record = cs.record(record_id);\nlet lock = record.lock_info();\ncs.log(lock);",
+                "output": "Array\n(\n\t[record_id] => 1234\n\t[user_id] => 245\n\t[role_id] => URL0000001AAAAA9\n\t[user_name] => Merry Poppins\n\t[last_activity_stamp] => 1609758103\n\t[expiry_stamp] => 1609758163\n\t[expiry_length] => 60\n\t[viewport_id] => VWP0000009EDDCE1\n\t[subset_id] => 0\n)"
+              }
+            ]
+          },
+          {
+            "name": "lock_info_all",
+            "summary": "Returns details of all locks for this record",
+            "signature": "record.lock_info_all(record_id)",
+            "since": "2020.2",
+            "parameters": [
+              {
+                "name": "record_id",
+                "type": "string",
+                "description": "Retrieve all locks information for specified record id. This optional parameter provides you with the ability to specify the record Id. If this parameter is not specified, then the record that the event action is being triggered on (the current record) will be used instead.",
+                "required": false
+              }
+            ],
+            "return_value": {
+              "type": "mixed",
+              "description": "Array of lock details, or null if none"
+            },
+            "description": "This function provides you with the ability to retrieve in depth details about the the lock and lock holder for a Viewport. The returned data is based upon the configuration of the locks themselves and whether they are set to Global, User Role or Subset Queue. For each lock, the role_id will only return a value if the viewport lock is configured to lock on User Role. For each lock, the subset_id will only return a value if the Viewport lock is configured to lock on Subset Queue.",
+            "examples": [
+              {
+                "title": "lock_info_all usage",
+                "description": "Example Output",
+                "code": "let record_id = 1234;\nlet record = cs.record(record_id);\nlet lock = record.lock_info_all();\ncs.log(lock);",
+                "output": "Array\n(\n\t[0] => Array\n\t(\n\t\t[record_id] => 1234\n\t\t[user_id] => 245\n\t\t[role_id] => URL0000001AAAAA9\n\t\t[user_name] => Merry Poppins\n\t\t[last_activity_stamp] => 1609758285\n\t\t[expiry_stamp] => 1609758345\n\t\t[expiry_length] => 60\n\t\t[viewport_id] => VWP0000009EDDCE1\n\t\t[subset_id] => 0\n\t),\n\t[2] => Array\n\t(\n\t\t[record_id] => 1235\n\t\t[user_id] => 265\n\t\t[role_id] => URL0000001AAAAA9\n\t\t[user_name] => Johnny Bravo\n\t\t[last_activity_stamp] => 1609758285\n\t\t[expiry_stamp] => 1609758345\n\t\t[expiry_length] => 60\n\t\t[viewport_id] => VWP0000009EDDCE1\n\t\t[subset_id] => 0\n\t)\n)"
+              }
+            ]
+          },
+          {
+            "name": "remove_from_subset",
+            "summary": "Remove current record from an event-based subset",
+            "signature": "record.remove_from_subset(subset_id, suppress_events)",
+            "since": "10.4",
+            "parameters": [
+              {
+                "name": "subset_id",
+                "type": "string",
+                "description": "The subset ID.",
+                "required": true
+              },
+              {
+                "name": "suppress_events",
+                "type": "boolean",
+                "description": "Whether to suppress events.",
+                "required": false
+              }
+            ],
+            "return_value": {
+              "type": "boolean",
+              "description": "Whether the removal was successful"
+            },
+            "description": "Remove current record from an event-based subset",
+            "examples": [
+              {
+                "title": "Removing a record from an event-based subset",
+                "description": "Removing a record and checking if it has been removed. Create a subset in Data Store -> Subsets page based on the User object. In Code Studio > References page create a subset reference.",
+                "code": "let record = cs.record(123); \n\nlet removed = record.remove_from_subset(cs.ref('SpecialUsers'));\nif(removed){\n\tcs.log('record removed from subset');\n}\n\nlet in_subset = record.in_subset(cs.ref('SpecialUsers'))\nif(in_subset){\n\tcs.log('record in subset');\n}else{\n\tcs.log('record not in subset');\n}",
+                "output": null
+              }
+            ]
+          },
+          {
+            "name": "remove_relationships",
+            "summary": "Removes a relationship to a record or multiple records given a relationship path",
+            "signature": "record.remove_relationships(relation_path, record_ids)",
+            "since": "10.3",
+            "parameters": [
+              {
+                "name": "relation_path",
+                "type": "string",
+                "description": "Path of relationship",
+                "required": true
+              },
+              {
+                "name": "record_ids",
+                "type": "mixed",
+                "description": "Record ID or an array of record ID's to unrelate.",
+                "required": true
+              }
+            ],
+            "return_value": {
+              "type": "object",
+              "description": "List of record ID's that were unrelated."
+            },
+            "description": "Removes a relationship to a record or multiple records given a relationship path",
+            "examples": [
+              {
+                "title": "remove_relationships usage",
+                "description": "In this example we will be removing specific related records from a user. We will need the bellow before we start. Create a file type Object. Create a one-to-many relationship in User Object (user - many files). Upload some files against a user so that we can use this in our example. Lastly In Code Studio > References page create a relation path reference to the users -> files object.",
+                "code": "let record = cs.record(1009); \nlet items = record.remove_relationships(cs.ref('UserFiles'),[1073, 1075])\ncs.log(items);",
+                "output": "Array\n(\n    [0] => 1073\n    [1] => 1075\n)"
+              }
+            ]
+          },
+          {
+          "name": "replace_relationships",
+          "summary": "Replaces the relationship of a record with a supplied new list",
+          "signature": "record.replace_relationships(relationship_path, record_ids)",
+          "since": "10.4",
+          "parameters": [
+            {
+              "name": "relationship_path",
+              "type": "string",
+              "description": "The relationship path.",
+              "required": true
+            },
+            {
+              "name": "record_ids",
+              "type": "array",
+              "description": "The record identifiers",
+              "required": true
+            }
+          ],
+          "return_value": {
+            "type": "boolean",
+            "description": "Whether the replacement was successful"
+          },
+          "description": "Replaces the relationship of a record with a supplied new list",
+          "examples": [
+            {
+              "title": "replace_relationships usage",
+              "description": "In this example we will be replacing all the related records from a user with a specific list of records. We will need the bellow before we start. Create a file type Object. Create a one-to-many relationship in User Object (user - many files). Upload some files against a user so that we can use this in our example. Lastly In Code Studio > References page create a relation path reference to the users -> files object.",
+              "code": "let record = cs.record(1009);\nlet items = record.replace_relationships(cs.ref('UserFiles'), [1033, 1035, 1037, 1041])\ncs.log(items);",
+              "output": "Array\n(\n    [0] => 1033\n    [1] => 1035\n    [2] => 1037\n    [3] => 1041\n)"
+            }
+          ]
+        },
+        {
+          "name": "save_uploaded_files",
+          "summary": "Save uploaded files to a related File object",
+          "signature": "record.save_uploaded_files(relationship_path, silent, valid_extensions)",
+          "since": "10.2",
+          "parameters": [
+            {
+              "name": "relationship_path",
+              "type": "string",
+              "description": "Relationship to File object",
+              "required": true
+            },
+            {
+              "name": "silent",
+              "type": "boolean",
+              "description": "Whether to suppress rule triggering. Same as the 'Apply changes silently' rule configuration. This param provides you with the ability to prevent subsequent record-changing rules from triggering when this rule has been executed. This is useful if you would like to silently execute a rule, that doesn't trigger any subsequent rules based on system-triggered events - Hence applying the changes 'silently'.",
+              "required": false,
+              "default": false
+            },
+            {
+              "name": "valid_extensions",
+              "type": "string",
+              "description": "Array of allowed file extensions. This optional param enables you to provide an array of files restrictions that can be saved/uploaded (e.g. only allow extension \"csv\")",
+              "required": false,
+              "default": "null",
+              "since": "2023.1"
+            }
+          ],
+          "return_value": {
+            "type": "object",
+            "description": "Information about the saved records"
+          },
+          "description": "Save uploaded files to a related File object",
+          "examples": [
+            {
+              "title": "Uploading a file in a custom widget",
+              "description": "In this example we will be looking at how we can create an upload form in the frontend, post a file to the backend, save the uploaded file against a file object and return back the saved file data. We will need the bellow before we start. Create a file type Object. Create a one-to-many relationship in User Object (user - many files). Create a relation path reference in Code Studio > References page mapping to user -> file object.",
+              "code": "/* frontend JS */\nexport default {\n\tmounted: function(){\n\t\tlet SELF = this;\n\t\tlet container = document.createElement('div');\n\n\t\tlet file_input = document.createElement('input');\n\t\tfile_input.className = 'file_upload';\n\t\tfile_input.setAttribute(\"type\",\"file\");\n\t\tcontainer.appendChild(file_input);\n\n\t\tlet file_upload = document.createElement('button');\n\t\tfile_upload.innerHTML = \"Upload\";\n\t\tfile_upload.addEventListener(\"click\",  function(e){\n\t\t\te.preventDefault();\n\n\t\t\tif(SELF.$el.querySelector('.file_upload').value == ''){\n\t\t\t\treturn;\n\t\t\t}\n\t\t\tlet postData = new FormData();\n\t\t\tif(SELF.$el.querySelector('input[type=file]') != null){\n\t\t\t\tpostData.append('widget_action', 'handle_event');\n\t\t\t\tpostData.append('code_action', 'upload');\n\t\t\t\tpostData.append('action_page_id', SELF.mats.widget.page_id);\n\t\t\t\tpostData.append('action_cell_id', SELF.mats.widget.cell_id);\n\t\t\t\tpostData.append('form_check_ajax', CSRF);\n\t\t\t\tpostData.append('fragment_collection_record_id', CONTEXT_RECORD_ID);\n\t\t\t\tpostData.append('files[]', SELF.$el.querySelector('input[type=file]').files[0]);\n\t\t\t}\n\t\t\tSELF.mats.widget.ajax('upload',{\n\t\t\t\ttype: \"POST\",\n\t\t\t\tdata : postData,\n\t\t\t\tprocessData: false,\n\t\t\t\tcontentType: false,\n\t\t\t\tsuccess: function(rsp){\n\n\t\t\t\t\tif(rsp.response !== undefined){\n\t\t\t\t\t\tconsole.info(rsp);\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t});\n\t\t});\n\t\tcontainer.appendChild(file_upload);\n\t\tthis.$el.append(container);\n\t}\n}\n\n\naction_upload: function() {\n\n\tlet record = cs.record(1009);\n\tlet uploaded_files = record.get_uploaded_files();\n\n\tcs.log(uploaded_files)\n\n\tlet saved = record.save_uploaded_files(cs.ref('UserFiles'));\n\n\tlet temp = {};\n\ttemp['file'] = saved.files[0];\n\ttemp['record_data'] = saved.records[0]['record_data'];\n\ttemp['record_field_file'] = saved.records[0]['record_field_file']['instance']['file_data'];\n\n        cs.log(temp)\n\n\treturn temp;\n}",
+              "output": "Array\n(\n    [file] => Array\n        (\n            [name] => Screenshot(1).png\n            [type] => image/png\n            [tmp_name] => /tmp/phpJWELzt\n            [error] => 0\n            [size] => 3782\n        )\n    [record_data] => Array\n        (\n            [REL0000002EFCAE1:id] => 1009\n            [file_id] => 59\n            [filename] => Screenshot(1).png\n            [size] => 3782\n            [mime_type] => image/png\n            [extension] => png\n            [id] => 1077\n        )\n    [record_field_file] => Array\n        (\n            [id] => 59\n            [record_id] => 1077\n            [field] => file_id\n            [saved_filename] => F000059_20201231_145855\n            [original_filename] => Screenshot(1).png\n            [extension] => png\n            [mime_type] => image/png\n            [status] => active\n            [create_stamp] => 1609426735\n            [destroy_stamp] =>\n            [destroy_reason] =>\n            [preview_file_id] =>\n            [thumbnail_file_id] =>\n            [saved_directory] => record_field_files\n        )\n)"
+            },
+            {
+              "title": "File restrictions",
+              "description": "An optional array param that allows you to restrict the file extensions that can be processed using this method. It must ne an array, and if not specified will be passed as null.",
+              "code": "let valid_extensions = [ \"csv\", \"xls\", \"xlsx\"]\nlet saved = record.save_uploaded_files(cs.ref('UserFiles'), false, valid_extensions );",
+              "output": null
+            }
+          ]
+        },
+        {
+          "name": "schema",
+          "summary": "Return available properties and attributes for the loaded record",
+          "signature": "record.schema(object_id)",
+          "since": "10.2",
+          "parameters": [
+            {
+              "name": "object_id",
+              "type": "string",
+              "description": "The object ID.",
+              "required": false
+            }
+          ],
+          "return_value": {
+            "type": "object",
+            "description": "List of properties and attributes for the record"
+          },
+          "description": "Return available properties and attributes for the loaded record",
+          "examples": [
+            {
+              "title": "schema usage",
+              "description": "There are two slightly different ways in achieving the same depending on the use case. The schema can be returned based on a loaded record or an object id. For the purpose of this example we will require a valid user id and a reference to be created in Code Studio > References page mapping to the users object.",
+              "code": "//Based on a record id\nlet record = cs.record(1009);\nlet schema = record.schema();\ncs.log(schema);\n\n//Based on an object id\nlet schema = cs.record(null).schema(cs.ref(\"Users\"));\ncs.log(schema);",
+              "output": "Example output of a user type object\nArray\n(\n    [details] => Array\n        (\n            [id] => OBJ0000001EFCAE9\n            [name] => User\n            [display_name] => User\n            [type] => user\n        )\n    [properties] => Array\n        (\n            [PRO0000113EFCAE9] => Forename\n            [PRO0000114EFCAE9] => Surname\n            [PRO0000001EFCAE9] => Email address\n            [PRO0000038EFCAE9] => Mobile number\n            [PRO0000118EFCAE9] => Timezone\n            [PRO0000123EFCAE1] => Language\n        )\n    [relationships] => Array\n        (\n            [REL0000001EFCAE1] => Array\n                (\n                    [id] => REL0000001EFCAE1\n                    [reverse] => REL0000002EFCAE1\n                    [base_object_id] => OBJ0000001EFCAE9\n                    [target_object_id] => OBJ0000002EFCAE1\n                    [type] => one2many\n                    [base_name] => User\n                    [base_display_name] => User\n                    [target_name] => files\n                    [target_display_name] => files\n                    [base_subset_id] =>\n                    [target_subset_id] =>\n                )\n        )\n    [attributes] => Array\n        (\n            [id] => id\n            [object_id] => object_id\n            [remote_id] => remote_id\n            [inorder] => inorder\n            [status] => status\n            [create_stamp] => create_stamp\n            [modify_stamp] => modify_stamp\n            [username] => username\n            [last_login_stamp] => last_login_stamp\n            [lock_status] => lock_status\n            [lock_reason] => lock_reason\n            [user_role_id] => user_role_id\n            [privileges] => privileges\n            [last_password_change_stamp] => last_password_change_stamp\n            [failed_login_attempts] => failed_login_attempts\n            [access_expiry_stamp] => access_expiry_stamp\n            [2fa_preferred_method] => 2fa_preferred_method\n            [2fa_sms_configured] => 2fa_sms_configured\n            [2fa_google_auth_configured] => 2fa_google_auth_configured\n            [2fa_sms_enabled] => 2fa_sms_enabled\n            [2fa_google_auth_enabled] => 2fa_google_auth_enabled\n            [2fa_email_enabled] => 2fa_email_enabled\n            [2fa_email_configured] => 2fa_email_configured\n            [2fa_email_token] => 2fa_email_token\n            [visually_impaired] => visually_impaired\n            [acc_use_contrasting_colors] => acc_use_contrasting_colors\n            [acc_use_color_blindness_palette] => acc_use_color_blindness_palette\n            [acc_show_persistent_banners] => acc_show_persistent_banners\n            [acc_chart_to_table] => acc_chart_to_table\n            [test_studio_profile] => test_studio_profile\n            [licence_type] => licence_type\n        )\n    [default_fields] => Array\n        (\n            [ref] => :username\n            [name] => :CMP0000011EFCAE9\n            [email] => :PRO0000001EFCAE9\n        )\n)"
+            }
+          ]
+        },
+        {
+          "name": "send_message",
+          "summary": "Send a message with the specified message ID and optional content override",
+          "signature": "record.send_message(mesage_id, content)",
+          "since": "10.4",
+          "parameters": [
+            {
+              "name": "mesage_id",
+              "type": "string",
+              "description": "The message ID (MSGXXXXXXABCDE1) to send",
+              "required": true
+            },
+            {
+              "name": "content",
+              "type": "string",
+              "description": "Optional content to send as an override to the default message content",
+              "required": false
+            }
+          ],
+          "return_value": {
+            "type": "boolean",
+            "description": "Message sent status"
+          },
+          "description": "Send a message with the specified message ID and optional content override",
+          "examples": []
+        },
+        {
+          "name": "set",
+          "summary": "Sets the value of a specified field",
+          "signature": "record.set(field_path, value, mode)",
+          "since": "10.0",
+          "parameters": [
+            {
+              "name": "field_path",
+              "type": "string",
+              "description": "Field path of the field to be changed",
+              "required": true
+            },
+            {
+              "name": "value",
+              "type": "string",
+              "description": "The new value",
+              "required": true
+            },
+            {
+              "name": "mode",
+              "type": "string",
+              "description": "Which format to save the data in. This allows you to specify which format you would like to save your data in, and you have two formats you can choose from; \"editable\" or \"saveable\".",
+              "required": false,
+              "default": "editable",
+              "since": "2022.3"
+            }
+          ],
+          "return_value": {
+            "type": "void",
+            "description": ""
+          },
+          "description": "Sets the value of a specified field",
+          "examples": [
+            {
+              "title": "Setting a property value of a record",
+              "description": "A simple example how to set a value for a property. In Code Studio > References page create a field path reference to a property and replace that in the code example.",
+              "code": "let record = cs.record(1009);\nrecord.set(cs.ref('IntegerField'), 999);",
+              "output": null
+            },
+            {
+              "title": "Mode",
+              "description": "This allows you to specify which format you would like to save your data in, and you have two formats you can choose from; Editable or Saveable. However, if no mode is specified, then this function will set the data in Editable format by default. In the below example, we save the same data above in the Saveable format.",
+              "code": "let record = cs.record(1009);\nrecord.set(cs.ref('IntegerField'), 999, 'saveable');",
+              "output": null
+            },
+            {
+              "title": "Alternative format",
+              "description": "Alternatively, you can condense your save function as stated in the below example, which allows you to write similar code in fewer lines - By initialising your record in the same line in which you set the data. In this example, we're going to set the same data as above, in the alternative format.",
+              "code": "cs.record(1009).set(cs.ref('IntegerField'), 999, 'saveable');",
+              "output": null
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

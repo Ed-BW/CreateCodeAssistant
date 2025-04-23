@@ -1,0 +1,136 @@
+{
+    "category": "BACKEND CLASSES",
+    "classes": [
+      {
+        "name": "component",
+        "description": "Represents a Data Store component",
+        "methods": [
+          {
+            "name": "get_attributes",
+            "summary": "Returns a list of Attributes for an Object",
+            "signature": "component.get_attributes()",
+            "since": "2023.1",
+            "parameters": [],
+            "return_value": {
+              "type": "object",
+              "description": "List of Attributes for the component"
+            },
+            "description": "The returned object will contain a child object for each Attribute, referenced by their IDs, and containing basic details such as name and display name.\n\nFor the full details of any Attributes, the cs.get_component(attribute_id) function can be used.\n\nNote that this function is only applicable to Object components, and will throw an error for other types of component.",
+            "examples": [
+              {
+                "title": "Fetch the Attributes of an Object",
+                "description": "This is only applicable to Object type components.",
+                "code": "let my_object = cs.get_component(cs.ref('my_object'));\ncs.log(my_object.get_attributes());",
+                "output": "{\n    \"ATT0001098GBMCB1\": {\n        \"id\": \"ATT0001098GBMCB1\",\n        \"name\": \"create_stamp\",\n        \"display_name\": \"create_stamp\",\n        \"object_id\": \"OBJ0000075GBMCB1\"\n    },\n    \"ATT0001093GBMCB1\": {\n        \"id\": \"ATT0001093GBMCB1\",\n        \"name\": \"id\",\n        \"display_name\": \"id\",\n        \"object_id\": \"OBJ0000075GBMCB1\"\n    },\n    ...\n}"
+              },
+              {
+                "title": "Extracting each attribute",
+                "description": "While the output will list each attribute within the specified object, it's possible to extract the data from the returned array. What is displayed in the detective as an output in this case is just information about the output, as opposed to what the exact structure of the data is. That being said, you would use the next_row method to loop through your data.",
+                "code": "const object = cs.get_component(cs.ref('object'));\nconst attributes = object.get_attributes()\n\nlet extracted_attributes = []\nwhile (attributes.next_row()) {\n     extracted_attributes.push(attributes.current())\n}\n\ncs.log(extracted_attributes)",
+                "output": null
+              }
+            ]
+          },
+          {
+            "name": "get_choices",
+            "summary": "Returns a list of Choices or Colours for a Data Type",
+            "signature": "component.get_choices()",
+            "since": "2023.1",
+            "parameters": [],
+            "return_value": {
+              "type": "object",
+              "description": "List of Choices or Colours for the component"
+            },
+            "description": "For Data Types with a base format of Choice, the returned object will contain a child object for each Choice option, referenced by their IDs, and containing basic details such as name and display name.\n\nFor Data Types with a base format of Colour, the returned object will contain a child object for each defined Colour option, referenced by an ID, and containing basic details such as name and display name.\n\nNote that this function is only applicable to Data Type components, and will throw an error for other types of component. An empty object will be returned for Data Types with a base format other than Choice or Colour.",
+            "examples": [
+              {
+                "title": "Fetch the Choices of a Choice Data Type",
+                "description": "This is only applicable to Data Types with a base format of Choice.",
+                "code": "let my_choice= cs.get_component(cs.ref('my_choice'));\ncs.log(my_choice.get_choices());",
+                "output": "{\n    \"DTC0000061GBMCB1\": {\n        \"id\": \"DTC0000061GBMCB1\",\n        \"name\": \"A\",\n        \"display_name\": \"A\"\n    },\n    \"DTC0000062GBMCB1\": {\n        \"id\": \"DTC0000062GBMCB1\",\n        \"name\": \"B\",\n        \"display_name\": \"B\"\n    },\n        \"DTC0000063GBMCB1\": {\n        \"id\": \"DTC0000063GBMCB1\",\n        \"name\": \"C\",\n        \"display_name\": \"C\"\n    }\n}"
+              },
+              {
+                "title": "Fetch the Colour of a Colour Data Type",
+                "description": "This is only applicable to Data Types with a base format of Colour.",
+                "code": "let my_colour= cs.get_component(cs.ref('my_colour'));\ncs.log(my_colour.get_choices());",
+                "output": "{\n    \"0\": {\n        \"name\": \"Red\",\n        \"value\": \"#dc3545\"\n    },\n    \"1\": {\n        \"name\": \"White\",\n        \"value\": \"#ffffff\"\n    },\n    \"2\": {\n        \"name\": \"Blue\",\n        \"value\": \"#007bff\"\n    }\n}"
+              }
+            ]
+          },
+          {
+            "name": "get_properties",
+            "summary": "Returns a list of Properties for an Object",
+            "signature": "component.get_properties()",
+            "since": "2023.1",
+            "parameters": [],
+            "return_value": {
+              "type": "object",
+              "description": "List of Properties for the component"
+            },
+            "description": "The returned object will contain a child object for each Property, referenced by their IDs, and containing basic details such as name and display name.\n\nFor the full details of any Property, the cs.get_component(property_id) function can be used.\n\nNote that this function is only applicable to Object components, and will throw an error for other types of component.",
+            "examples": [
+              {
+                "title": "Fetch the Properties of an Object",
+                "description": "This is only applicable to Object type components.",
+                "code": "let my_object = cs.get_component(cs.ref('my_object'));\ncs.log(my_object.get_properties());",
+                "output": "{\n    \"PRO0000312GBMCB1\": {\n        \"id\": \"PRO0000312GBMCB1\",\n        \"name\": \"Ref\",\n        \"display_name\": \"Ref\",\n        \"object_id\": \"OBJ0000074GBMCB1\"\n    },\n    \"PRO0000311GBMCB1\": {\n        \"id\": \"PRO0000311GBMCB1\",\n        \"name\": \"Remote ID\",\n        \"display_name\": \"Remote ID\",\n        \"object_id\": \"OBJ0000074GBMCB1\"\n    }\n}"
+              },
+              {
+                "title": "Extracting each property",
+                "description": "While the output will list each property within the specified object, it's possible to extract the data from the returned array. What is displayed in the detective as an output in this case is just information about the output, as opposed to what the exact structure of the data is. That being said, you would use the next_row method to loop through your data.",
+                "code": "const object = cs.get_component(cs.ref('object'));\nconst props = object.get_properties()\n\nlet extracted_props = []\nwhile (props.next_row()) {\n     extracted_props.push(props.current())\n}\n\ncs.log(extracted_props)",
+                "output": null
+              }
+            ]
+          },
+          {
+            "name": "get_relationships",
+            "summary": "Returns a list of Relationships for an Object",
+            "signature": "component.get_relationships()",
+            "since": "2023.1",
+            "parameters": [],
+            "return_value": {
+              "type": "object",
+              "description": "List of Relationships for the component"
+            },
+            "description": "The returned object will contain a child object for each Relationship, referenced by their IDs, and containing basic details such as type and reverse relationship ID, as well as name, display name, and object ID for both directions.\n\nFor the full details of any Relationships, the cs.get_component(relationship_id) function can be used.\n\nNote that this function is only applicable to Object components, and will throw an error for other types of component.",
+            "examples": [
+              {
+                "title": "Fetch the Relationships of an Object",
+                "description": "This is only applicable to Object type components.",
+                "code": "let my_object = cs.get_component(cs.ref('my_object'));\ncs.log(my_object.get_relationships());",
+                "output": "{\n    \"REL0000072GBMCB1\": {\n        \"id\": \"REL0000072GBMCB1\",\n        \"reverse_relationship_id\": \"REL0000071GBMCB1\",\n        \"type\": \"one2many\",\n        \"left_relation_name\": \"Case\",\n        \"left_relation_display_name\": \"Case\",\n        \"left_object_id\": \"OBJ0000075GBMCB1\",\n        \"right_relation_name\": \"Case Notes\",\n        \"right_relation_display_name\": \"Case Notes\",\n        \"right_object_id\": \"OBJ0000081GBMCB1\"\n    },\n    \"REL0000073GBMCB1\": {\n        \"id\": \"REL0000073GBMCB1\",\n        \"reverse_relationship_id\": \"REL0000074GBMCB1\",\n        \"type\": \"many2one\",\n        \"left_relation_name\": \"Case\",\n        \"left_relation_display_name\": \"Case\",\n        \"left_object_id\": \"OBJ0000075GBMCB1\",\n        \"right_relation_name\": \"Case Owner\",\n        \"right_relation_display_name\": \"Case Owner\",\n        \"right_object_id\": \"OBJ0000001GBMCB1\"\n    }\n}"
+              },
+              {
+                "title": "Extracting each relationship",
+                "description": "While the output will list each relationship within the specified object, it's possible to extract the data from the returned array. What is displayed in the detective as an output in this case is just information about the output, as opposed to what the exact structure of the data is. That being said, you would use the next_row method to loop through your data.",
+                "code": "const object = cs.get_component(cs.ref('object'));\nconst relations = object.get_relationships()\n\nlet extracted_relations = []\nwhile (relations.next_row()) {\n     extracted_relations.push(relations.current())\n}\n\ncs.log(extracted_relations)",
+                "output": null
+              }
+            ]
+          },
+          {
+            "name": "get_type",
+            "summary": "Returns the type of the component",
+            "signature": "component.get_type()",
+            "since": "2023.1",
+            "parameters": [],
+            "return_value": {
+              "type": "string",
+              "description": "The type of the component"
+            },
+            "description": "Returns one of the following strings, which represents the type of the component:\n  \"object\"\n  \"property\"\n  \"object_relationship\"\n  \"attribute\"\n  \"data_type\"\n  \"data_type_choice\"\n  \"subset\"\n  \"composite\"\n  \"variable\"\n  \"special_record\"\n  \"record_group\"",
+            "examples": [
+              {
+                "title": "Get the type of a component",
+                "description": "This function will work for all component types returned by cs.get_component().",
+                "code": "let my_object = cs.get_component(cs.ref('my_object'));\ncs.log(my_object.get_type());",
+                "output": "\"object\""
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+  

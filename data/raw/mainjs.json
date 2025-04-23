@@ -1,0 +1,162 @@
+{
+    "category": "OTHER",
+    "classes": [
+      {
+        "name": "main.js",
+        "description": "User definable functions for page components",
+        "methods": [
+          {
+            "name": "action_xxxxx",
+            "summary": "Define a backend action which can be triggered from the frontend",
+            "signature": "main.js.action_xxxxx(request_data)",
+            "since": "10.2",
+            "parameters": [
+              {
+                "name": "request_data",
+                "type": "object",
+                "description": "Data passed to the backend from the frontend using a this.trigger_action('action_name', data) call.",
+                "required": true
+              }
+            ],
+            "return_value": {
+              "type": "any",
+              "description": "Data to be returned to the frontend"
+            },
+            "description": "Any function named action_{something} can be triggered from frontend code using the trigger_action() method. Can be passed any data needed from frontend, and returns data back to the frontend on completion. Only the {something} part of the name needs to be specified when calling trigger_action().",
+            "examples": [
+              {
+                "title": "Making a call to the backend from the frontend",
+                "description": "In this example we will be making a request to the backend with some data.",
+                "code": "// Inside main.htm\n<button class=\"btn btn-primary\" v-on:click=\"test_event\">Trigger Event</button>\n\n// Equivalent code for static type widget\n<button class=\"btn btn-primary test_button\" >Trigger Event</button>\n\n\n// Now we need to define our frontend.js code to handle the action.\nexport default {\n\tmethods: {\n\t\ttest_event:function(e) {\n\t\t\te.preventDefault();\n\t\t\tthis.trigger_action('test', {message : 'I am frontend'}, function(e){\n\t\t\t\tif(e != null && e.result !== undefined && e.result == \"success\"  ){\n\t\t\t\t\tif(e.response !== undefined){\n\t\t\t\t\t\tconsole.log(e.response);\n\t\t\t\t\t}\n\t\t\t\t}\t\n\t\t\t});\t\t\t\t\n\t\t}\n\t}\n}\n\n// Equivalent code for static type widget\nreturn {\n\tinit: function (widget) {\n\n\t\tvar template_element = widget.container.find('script[type=\"text/x-handlebars-template\"]');\n\t\tvar template = Handlebars.compile(template_element.html());\n\t\tvar processed_html = template(widget.params.template_data);\n\t\ttemplate_element.replaceWith(processed_html);\n\n\t\tthis.widget = widget;\n\t\tvar SELF = this;\n\t\tvar btn = document.querySelectorAll('.test_button');\n\t\tfor (var i = 0; i < btn.length; i++) {\n\t\t\tbtn[i].addEventListener('click', function (event) {\n\t\t\t\tevent.preventDefault();\n\t\t\t\tSELF.test_event(this);\n\t\t\t});\n\t\t}\n\n\t},\n\ttest_event: function (element) {\n\n\t\tvar code_params = JSON.stringify({\n\t\t\tmessage: 'I am frontend'\n\t\t})\n\n\t\t$.ajax({\n\t\t\ttype: 'POST',\n\t\t\turl: ABSOLUTE_URI_PATH,\n\t\t\tdataType: 'json',\n\t\t\tdata: {\n\t\t\t\twidget_action: 'handle_event',\n\t\t\t\tcode_action: 'test',\n\t\t\t\taction_page_id: this.widget.page_id,\n\t\t\t\taction_cell_id: this.widget.id,\n\t\t\t\tform_check_ajax: CSRF,\n\t\t\t\tcode_params: code_params,\n\t\t\t},\n\t\t\tsuccess: function (e) {\n\t\t\t\tif (e != null && e.result !== undefined && e.result == \"success\") {\n\t\t\t\t\tif (e.response !== undefined) {\n\t\t\t\t\t\tconsole.log(e.response);\n\t\t\t\t\t}\n\t\t\t\t}\n\t\t\t}\n\t\t});\n\t}\n}\n\n\n// We will be sending an object with a message property to the backend and logging that message in detective\n// The backend action will send us back an object and we will be logging that message inside the browser console.\n// Notice that in the frontend we are calling test method, but in the main.js we will need to add a prefix so it would look like action_test\nreturn {\n\taction_test: function (e) {\n\t\tcs.log('test called');\n\t\tif(e.message !== undefined){\n\t\t\tcs.log(e.message)\n\t\t}\n\t\t\n\t\treturn {message : 'Message from backend'}\n\t},\n\tget_template_data: function () {\n\t\t..........\n\t},\n\tget_settings: function () {\n\t\t..........\n\t}\n}",
+                "output": null
+              }
+            ]
+          },
+          {
+            "name": "get_settings",
+            "summary": "Defines any settings for this component which should be available in the page builder",
+            "signature": "main.js.get_settings()",
+            "since": "10.2",
+            "parameters": [],
+            "return_value": {
+              "type": "object",
+              "description": "Returns developer defined settings object"
+            },
+            "description": "This allows for the same Component to be reused in multiple places, but have its functionality in each instance modified by the builder by configuring these settings. The returned object should contain one object for each desired setting, indexed by an internal code name. Works with Widgets, Presenters and Wrappers. For Widgets these settings will appear in their own \"Code studio\" side panel, for Presenters and Wrappers they will appear in the \"Presentation\" side panel.",
+            "examples": [
+              {
+                "title": "Defining configurable settings",
+                "description": "The returned object should contain one object for each setting, indexed by an internal code name. Below are some of the more common configuration options available for each setting object.",
+                "code": "// A simple example of how to define a configurable option within the function.\n\nget_settings: function () {\n\treturn {\n\t\texample_field: {\n\t\t\tmain_label: \"Example Field\",\n\t\t\tbase_format: \"string\"\n\t\t}\n\t};\n}",
+                "output": null
+              },
+              {
+                "title": "Configuring a setting which only shows up when another setting has a specific value",
+                "description": "In this example we have two settings a choice and a string input setting. The input setting has a requirements parameter set which requires the choice setting to have a value of 'DESC' in order for it to appear.",
+                "code": "get_settings: function () {\n\treturn {\n\t\tchoice: {\n\t\t\tcsid: \"choice\",\n\t\t\tmain_label: \"Choice Example\",\n\t\t\tbase_format: \"choice\",\n\t\t\tchoices: { \"DESC\": \"Descending \", \"ASC\": \"Ascending \" },\n\t\t},\n\t\tinput: {\n\t\t\tcsid: \"input\",\n\t\t\tmain_label: \"Input Example\",\n\t\t\tbase_format: \"string\",\n\t\t\trequirements: { choice: 'DESC' },\n\t\t}\n\t};\n}",
+                "output": null
+              },
+              {
+                "title": "Configuring a field path that does not use a component's base object",
+                "description": "When using a field_path selector normally it is fixed to the base object of the component. This can be overcome by defining a dependency with a callback where the callback will modify the object id of the chosen one in the objects setting.",
+                "code": "get_settings: function () {\n\treturn {\n\t\tobjects: {\n\t\t\tmain_label: \"Objects\",\n\t\t\tcsid: 'objects',\n\t\t\tbase_format: \"choice\",\n\t\t\tchoices: cs.build_choices('object'),\n\t\t},\n\t\tfield_path_to_something: {\n\t\t\tmain_label: 'Field Path',\n\t\t\tcsid: 'field_path_to_something',\n\t\t\tbase_format: 'field_path',\n\t\t\trequirements: ['objects'],\n\t\t\tdependencies: {\n\t\t\t\tfields: ['objects'],\n\t\t\t\tcallback: 'get_objects'\n\t\t\t},\n\t\t},\n\t};\n},\nsettings_callback_get_objects: function (element, values) {\n\telement.object_id = values.objects;\n\treturn element;\n}",
+                "output": null
+              },
+              {
+                "title": "Number range setting",
+                "description": "An example of how to configure a number with a range restriction",
+                "code": "get_settings: function () {\n\treturn {\n\t\tnumber_range: {\n\t\t\tmain_label: \"Number range\",\n\t\t\tbase_format: \"integer\",\n\t\t\tclass: 'valid_min_value valid_max_value',\n\t\t\tsettings: {\n\t\t\t\thint: \"Value between 0 and 10\"\n\t\t\t},\n\t\t\tattributes: {\n\t\t\t\t'data-min_value': 0,\n\t\t\t\t'data-max_value': 10\n\t\t\t},\n\t\t}\n\t};\n}",
+                "output": null
+              },
+              {
+                "title": "Build component types",
+                "description": "An example of how to configure a build component type of linking usage of settings and components. You'll need to use CSID and Build Component Types.",
+                "code": "get_settings: function () {\n\treturn {\n\t\tobject_id: {\n\t\t\tmain_label: \"Object\",\n\t\t\tcsid: \"object_id\",\n\t\t\tbuild_component_type: \"object\",\n\t\t\tbase_format: \"choice\",\n\t\t\tchoices: cs.build_choices(\"object\")\n\t\t},\n\t\tevent: {\n\t\t\tmain_label: \"Event to trigger\",\n\t\t\tcsid: \"event_to_trigger\",\n\t\t\tbuild_component_type: 'event',\n\t\t\tbase_format: \"choice\",\n\t\t\tchoices: cs.build_choices(\"event\")\n\t\t}\n\t};\n}",
+                "output": null
+              }
+            ]
+          },
+          {
+            "name": "get_template_data",
+            "summary": "Defines any data for this component which should be avilable in the frontend",
+            "signature": "main.js.get_template_data()",
+            "since": "10.2",
+            "parameters": [],
+            "return_value": {
+              "type": "object",
+              "description": "Returns developer defined template data object"
+            },
+            "description": "Used to pass backend data to the frontend for use by frontend JS code. The returned object should contain kay value pairs of data. For Vue components this will become the reactive data elements. Works with Widgets, Presenters and Wrappers.",
+            "examples": [
+              {
+                "title": "get_template_data usage",
+                "description": "We can return anything within the return statement. In this example we are returning a variable called example1 which will be available in the component's template. The variable can be referenced within the main.htm and also inside frontend.js",
+                "code": "/* frontend JS */\nexport default {\n\tmounted: function(){\n\t\tconsole.log(this.example1);\n\t}\n}\nget_template_data: function() {\n\treturn {\n\t\texample1 : 'Code Studio'\n\t}\n}",
+                "output": null
+              }
+            ]
+          },
+          {
+            "name": "prepare_save_data",
+            "summary": "Allows for manipulating of form data before saving",
+            "signature": "main.js.prepare_save_data(data)",
+            "since": "10.2",
+            "parameters": [
+              {
+                "name": "data",
+                "type": "object",
+                "description": "The object will contain and form data found in the Widget's input fields, as key value pairs.",
+                "required": true
+              }
+            ],
+            "return_value": {
+              "type": "object",
+              "description": "Data to be saved"
+            },
+            "description": "For Widgets which contain inputs and act as part of a form submission to edit record data, this optional method allows for manipulation of those submitted fields before saving. The function must return an object with key value pairs of data to be saved, where the keys are field paths to editable fields of the record (Properties for example). Available for Widgets only.",
+            "examples": [
+              {
+                "title": "Saving data from a custom component as part of a form submission",
+                "description": "In this example a custom Widget will have an input text field which will be used to set the Surname of the logged in user when submitted.",
+                "code": "return {\n\tprepare_save_data: function(payload) {\n\t\tcs.log(payload);\n\t\tif (payload.test !== undefined) { // Was a value submitted?\n\t\t\tpayload[cs.ref(\"SurnameFieldPath\")] = payload.test + \" - it works !\"; // Set the surname to the submitted value plus an extra string\n\t\t}\n\t\tdelete payload.test; // Delete the original input key, as it is not a valid field path\n\t\treturn payload;\n\t}\n}",
+                "output": null
+              }
+            ]
+          },
+          {
+            "name": "settings_callback_xxxxx",
+            "summary": "Define a callback function for a setting dependency",
+            "signature": "main.js.settings_callback_xxxxx(setting, values)",
+            "since": "2020.2",
+            "parameters": [
+              {
+                "name": "setting",
+                "type": "object",
+                "description": "An object containing the current setting's options (as defined by get_settings()), which can be modified by this callback.",
+                "required": true
+              },
+              {
+                "name": "values",
+                "type": "object",
+                "description": "The values of other settings for this Component in the page builder. These values can be used to determine any changes required to the setting's options. Only settings with non-default values will be provided.",
+                "required": true
+              }
+            ],
+            "return_value": {
+              "type": "object",
+              "description": "The modified setting options"
+            },
+            "description": "Any function named settings_callback_{something} can be used to modify the options of a Component setting (as defined using get_settings()), when other setting values are changed. The {something} part of the name can be defined as the dependency \"callback\" within a setting, see get_settings() for more details. A callback function will receive params with details of the setting, and the current values of the Component's settings. The function should return the setting details object, with any necessary modifications made.",
+            "examples": [
+              {
+                "title": "Configuring a field path that does not use a component's base object",
+                "description": "When using a field_path selector normally it is fixed to the base object of the component. This can be overcome by defining a dependency with a callback where the callback will modify the object id of the chosen one in the object setting. Note: You must have a CSID present in your source ('objects') and target ('field_path_to_something') for your callback to function correctly.",
+                "code": "get_settings: function () {\n\treturn {\n\t\tobjects: {\n\t\t\tmain_label: \"Objects\",\n\t\t\tcsid: 'objects',\n\t\t\tbase_format: \"choice\",\n\t\t\tchoices: cs.build_choices('object'),\n\t\t},\n\t\tfield_path_to_something: {\n\t\t\tmain_label: 'Field Path',\n\t\t\tcsid: 'field_path_to_something',\n\t\t\tbase_format: 'field_path',\n\t\t\trequirements: ['objects'],\n\t\t\tdependencies: {\n\t\t\t\tfields: ['objects'],\n\t\t\t\tcallback: 'get_objects'\n\t\t\t},\n\t\t},\n\t};\n},\n\nsettings_callback_get_objects: function (setting, values) {\n\tsetting.object_id = values.objects;\n\treturn setting;\n}",
+                "output": null
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }

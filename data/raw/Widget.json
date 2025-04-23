@@ -1,0 +1,223 @@
+{
+    "category": "COMPONENT CLASSES",
+    "classes": [
+      {
+        "name": "widget",
+        "description": "Represents a Widget instance",
+        "methods": [
+          {
+            "name": "asset_url",
+            "summary": "Return the URL for widget files",
+            "signature": "widget.asset_url(local_path) or widget.asset_url(local_path, options)",
+            "since": "10.2",
+            "parameters": [
+              {
+                "name": "local_path",
+                "type": "string",
+                "description": "Local path of file",
+                "required": true
+              },
+              {
+                "name": "options",
+                "type": "object",
+                "description": "Additional options. Options include 'append_time' which adds the file creation/modification time to the URL.",
+                "required": false
+              }
+            ],
+            "return_value": {
+              "type": "string",
+              "description": "The fully resolved URL"
+            },
+            "description": "Returns the URL for widget files, with optional parameters to control the URL format.",
+            "examples": [
+              {
+                "title": "Displaying an asset image from a component's files",
+                "description": "This example is for a standard component (Non-static). We might want to display an image that is stored within the component. In the component's files section click the plus icon and upload an image into the frontend folder.",
+                "code": "// main.js inside get_template_data()\n\nlet asset = widget.asset_url('logo.png');\nreturn {\n\timage : asset\n}\n\n// Now the asset's url is available as a variable image in the frontend\n// Lets use this in our template file main.htm\n\n// <img :src=\"image\" />",
+                "output": ""
+              }
+            ]
+          },
+          {
+            "name": "get_base_object_id",
+            "summary": "The widget's base object ID",
+            "signature": "widget.get_base_object_id()",
+            "since": "10.2",
+            "parameters": [],
+            "return_value": {
+              "type": "string",
+              "description": "MUID of the base object"
+            },
+            "description": "Returns the base object ID of the widget.",
+            "examples": [
+              {
+                "title": "Getting total items for the base object",
+                "description": "Simple usage of the get_base_object_id() method",
+                "code": "let items = cs.search({\n\t'base_object_id': widget.get_base_object_id(),\n});\ncs.log(items.length);",
+                "output": ""
+              }
+            ]
+          },
+          {
+            "name": "get_base_record_id",
+            "summary": "Returns the base record ID for this Widget",
+            "signature": "widget.get_base_record_id()",
+            "since": "10.2",
+            "parameters": [],
+            "return_value": {
+              "type": "number",
+              "description": "The base record ID"
+            },
+            "description": "Returns the ID of the base record for this widget.",
+            "examples": [
+              {
+                "title": "Retrieving all the properties of a base record",
+                "description": "We might want to get all the data of the base record and then perform some logic.",
+                "code": "let base_record_id = widget.​​get_base_record_id();\nlet record = cs.record(base_record_id);\nlet schema = record.schema();\n\nlet properties = [];\nObject.keys(schema.properties).map(function(key, index) {\n\tproperties[schema.properties[key]] = \"\" + key;\n});\n\nlet record_data = record.get(properties, 'displayable');\n\ncs.log(record_data);",
+                "output": ""
+              }
+            ]
+          },
+          {
+            "name": "get_filters",
+            "summary": "Returns an array of filters applicable to this widget",
+            "signature": "widget.get_filters()",
+            "since": "2020.1",
+            "parameters": [],
+            "return_value": {
+              "type": "object",
+              "description": "Returns an array of filters that were used in a separate search widget"
+            },
+            "description": "Returns the filters that are applicable to this widget, typically from a search widget in the same group.",
+            "examples": [
+              {
+                "title": "get_filters usage",
+                "description": "Returns filter data when the component invoking the method is placed within the same group as the search widget.",
+                "code": "let filters = widget.get_filters();\ncs.log(filters);",
+                "output": "Array\n(\n    [0] => Array\n        (\n            [field_path] => :CMP0000011EFCAE9\n            [comparison_operator] => 1\n            [value] => Johnson\n        )\n\n    [1] => Array\n        (\n            [field_path] => :user_role_id\n            [comparison_operator] => 4\n            [value] => URL0000001AAAAA9\n        )\n)"
+              }
+            ]
+          },
+          {
+            "name": "get_focus_object_id",
+            "summary": "Returns the focus Object ID for this Widget",
+            "signature": "widget.get_focus_object_id()",
+            "since": "2023.1",
+            "parameters": [],
+            "return_value": {
+              "type": "string",
+              "description": "The focus Object ID"
+            },
+            "description": "Returns the ID of the object that is currently in focus for this widget.",
+            "examples": []
+          },
+          {
+            "name": "get_focus_record_id",
+            "summary": "Returns the focus record ID for this Widget",
+            "signature": "widget.get_focus_record_id()",
+            "since": "10.2",
+            "parameters": [],
+            "return_value": {
+              "type": "number",
+              "description": "The focus record ID"
+            },
+            "description": "Returns the ID of the record that is currently in focus for this widget.",
+            "examples": []
+          },
+          {
+            "name": "get_relation_path",
+            "summary": "Return the relation path of the Widget",
+            "signature": "widget.get_relation_path()",
+            "since": "10.2",
+            "parameters": [],
+            "return_value": {
+              "type": "string",
+              "description": "The relation path"
+            },
+            "description": "Returns the relation path for the widget, indicating its relationship to other objects.",
+            "examples": []
+          },
+          {
+            "name": "get_root_object_id",
+            "summary": "Returns the root Object ID for this Widget",
+            "signature": "widget.get_root_object_id()",
+            "since": "10.2",
+            "parameters": [],
+            "return_value": {
+              "type": "string",
+              "description": "The root Object ID"
+            },
+            "description": "Returns the ID of the root object for this widget.",
+            "examples": []
+          },
+          {
+            "name": "get_root_record_id",
+            "summary": "Returns the root record ID for this Widget",
+            "signature": "widget.get_root_record_id()",
+            "since": "10.2",
+            "parameters": [],
+            "return_value": {
+              "type": "number",
+              "description": "The root record ID"
+            },
+            "description": "Returns the ID of the root record for this widget.",
+            "examples": []
+          },
+          {
+            "name": "get_setting",
+            "summary": "Return the value of a setting, as set by the builder in the Widget",
+            "signature": "widget.get_setting(setting_name) or widget.get_setting(setting_name, default)",
+            "since": "10.2",
+            "parameters": [
+              {
+                "name": "setting_name",
+                "type": "string",
+                "description": "The key in the array returned by get_settings() in main.js",
+                "required": true
+              },
+              {
+                "name": "default",
+                "type": "any",
+                "description": "Explicit value to be returned by this function call if no value has been set in the widget by the builder",
+                "required": false,
+                "default": "null"
+              }
+            ],
+            "return_value": {
+              "type": "any",
+              "description": "The setting value"
+            },
+            "description": "Returns the value of a specific setting for this widget, with an optional default value if the setting is not defined.",
+            "examples": [
+              {
+                "title": "Retrieve a specific setting",
+                "description": "Code studio components can have configurable settings defined within the component's code. These configurations will be hooked into the page builder when placing a component onto a page the builder will have the ability to set them up.",
+                "code": "// Within main.js code, inside get_settings function we can return any amount of configurations.\n\nget_settings: function () {\n\treturn {\n\t\texample_field: {\n\t\t\tmain_label: \"Example Field\",\n\t\t\tbase_format: \"string\"\n\t\t},\n\t\texample_number: {\n\t\t\tmain_label: \"Example Number\",\n\t\t\tbase_format: \"integer\"\n\t\t}\n\t};\n}\n\n// After configuring our component and setting some values within the page builder we can invoke the method call to retrieve our setting.\n// Additionally, we can define a default setting value if one has not been set by the builder when configuring.\nlet setting = widget.get_setting('example_number', '123');\ncs.log(setting);",
+                "output": ""
+              }
+            ]
+          },
+          {
+            "name": "get_settings",
+            "summary": "Fetch all PageBuilder settings for this widget instance",
+            "signature": "widget.get_settings()",
+            "since": "10.2",
+            "parameters": [],
+            "return_value": {
+              "type": "object",
+              "description": "Widget settings"
+            },
+            "description": "Returns all of the settings configured for this widget instance in the PageBuilder.",
+            "examples": [
+              {
+                "title": "Retrieving settings",
+                "description": "Code studio components can have configurable settings defined within the component's code. These configurations will be hooked into the page builder when placing a component onto a page the builder will have the ability to set them up.",
+                "code": "// Within main.js code, inside get_settings function we can return any amount of configurations.\n\nget_settings: function () {\n\treturn {\n\t\texample_field: {\n\t\t\tmain_label: \"Example Field\",\n\t\t\tbase_format: \"string\"\n\t\t},\n\t\texample_number: {\n\t\t\tmain_label: \"Example Number\",\n\t\t\tbase_format: \"integer\"\n\t\t}\n\t};\n}\n\n// After configuring our component and setting some values within the page builder we can invoke the method call to retrieve our settings.\nlet settings = widget.get_settings();\ncs.log(settings);",
+                "output": "Array\n(\n    [example_field] => Example value\n    [example_number] => 123\n)"
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
